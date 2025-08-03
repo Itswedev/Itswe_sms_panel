@@ -1,0 +1,27 @@
+CREATE DEFINER=`root`@`localhost` TRIGGER `az_sendnumbers_after_insert` AFTER INSERT ON `az_sendnumbers` FOR EACH ROW BEGIN
+IF NEW.`status` = 'Submitted' THEN
+        IF NEW.is_scheduled = '0' THEN
+			IF NEW.cut_off = 'No' THEN
+				IF NEW.route = 'OTP' THEN
+					IF NEW.unicode_type = '0' THEN
+						INSERT INTO otp_send (momt, sender, receiver, msgdata, smsc_id, sms_type, dlr_mask, dlr_url, boxc_id, coding, `charset`,`udh`, meta_data)
+						VALUES ('MT', NEW.senderid, NEW.mobile_number, NEW.send_msg, NEW.service_id, 2, 19, NEW.id, 'sqlbox', '0', 'utf8',0, NEW.metadata);
+					ELSEIF NEW.unicode_type = '1' THEN
+						INSERT INTO otp_send (momt, sender, receiver, msgdata, smsc_id, sms_type, dlr_mask, dlr_url, boxc_id, coding, `charset`,`udh`, meta_data)
+						VALUES ('MT', NEW.senderid, NEW.mobile_number, NEW.send_msg, NEW.service_id, 2, 19, NEW.id, 'sqlbox', '2', 'utf8', 0,NEW.metadata);
+					END IF;
+                ELSE
+					IF NEW.unicode_type = '0' THEN
+						INSERT INTO send_sms (momt, sender, receiver, msgdata, smsc_id, sms_type, dlr_mask, dlr_url, boxc_id, coding, `charset`,`udh`, meta_data)
+						VALUES ('MT', NEW.senderid, NEW.mobile_number, NEW.send_msg, NEW.service_id, 2, 19, NEW.id, 'sqlbox', '0', 'utf8',0, NEW.metadata);
+					ELSEIF NEW.unicode_type = '1' THEN
+						INSERT INTO send_sms (momt, sender, receiver, msgdata, smsc_id, sms_type, dlr_mask, dlr_url, boxc_id, coding, `charset`,`udh`, meta_data)
+						VALUES ('MT', NEW.senderid,NEW.mobile_number, NEW.send_msg, NEW.service_id, 2, 19, NEW.id, 'sqlbox', '2', 'utf8', 0,NEW.metadata);
+						 
+					END IF;
+                END IF;
+				
+			END IF;
+        END IF;
+END IF;
+END

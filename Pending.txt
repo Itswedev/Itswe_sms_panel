@@ -1,0 +1,86 @@
+Pending list on 6-11-24
+
+2. tracking URL we need to add sender id after our domain name
+3. data tables need to be change
+4. RCS Reports - Summary , 
+7. Change logo & Company name everywhere
+8. RND to load heavy data faster
+9. Dashboard- gateway
+10. loader logo should reduce to minimum size
+
+- in download center users are not getting loaded
+
+
+***********************************
+
+***********************************
+
+
+#################### Complated Task ####################
+
+12/11/24
+1. Recharge - Username not loaded
+7. today report view is not proper - done
+8. calendar is not loading anywhere - done
+5. send job details page graph is not getting displayed -- Done
+6. Need to do changes in graph as well on send jobs -- Done
+
+
+16/11/24
+5. Back to admin
+13. archive script is not runing on master table -- Done
+- archive record move & summary cron - done
+- changes in customis mis senderwise - done
+- bill credit issue in job summary - done
+- after message sending send job summry redirection issue - Done
+- wrap issue in datatable-Done
+- Account bal - Done
+- download issue in send_job report - Done
+- API send sms service issue - Done
+12. change Bill credit as per the message count like if mobile numbers are 50k and message is under 160 then bill credit should be displayed 50k not 1 - done
+6. Show route balance - Done
+Congratulations admin!! - Done
+9. dynamic message preview is not getting displayed -- Done
+
+
+
+17/11/24
+
+- Add group function is missing - Done
+
+11. security reasons we have to encrypt our URL reference (https://chatgpt.com/share/6738c901-69f8-8010-b073-2c5e38242a7b) -Done
+Below are few URL's whcih we have to encrypt - Done
+
+https://www.onereach.in:6070/dashboard.php?page=today_report&report_type=total&user_role=mds_adm&uid=44&selected_role=All
+https://www.onereach.in:6070/dashboard.php?page=send_job&job_id=7g654qQe8xjLA1k&table_name=az_sendmessages202411&job_date=2024-11-16%2021:55:50
+
+
+
+
+
+Permission
+/var/www/html/itswe_panel/view/include/data/dynamic_sms_csv/
+controller/upload
+itswe_panel/error
+
+
+03-08-2025
+
+assets2
+buttons
+controllers/classes/schedule_sms
+controllers/classes/sent_sms
+controllers/cron/__pycache__
+controllers/cron/*.log
+controllers/cron/*.txt
+controllers/rnd/*.log
+controllers/upload
+itswe_panel/error
+itswe_panel/include
+itswe_panel/phpmailer
+itswe_panel/python-venv
+itswe_panel/s
+itswe_panel/vendor
+itswe_panel/view/include/data/
+itswe_panel/xhtml
+itswe_panel/composer.json

@@ -1,0 +1,8 @@
+{
+    "query_data": [
+        [
+            "(NULL, \"1\", \"Hello There how are you\", \"+917045972989\", NOW(), \"tttttt\", \"FAKE\", \"\", \"0\", \"0\", \"0\", \"0000-00-00 00:00:00\", \"1\", \"44\", \"\", \"Submitted\", \"\", \"0\", \"TRANS\", \"23\", \"Ivz1g9bkm6t4Qye\", \"1\", \"1\", \"2025-08-03 19:23:14\",\"No\",\"X9r5vBeuTU0oHF8wZhiM\",\"Hello There how are you\",\"0\",\"?smpp?PEID=7234725374572&TID=123456587098\",\"\")"
+        ]
+    ],
+    "msg_job_id": "Ivz1g9bkm6t4Qye"
+}

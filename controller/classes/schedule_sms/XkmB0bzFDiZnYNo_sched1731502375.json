@@ -1,0 +1,8 @@
+{
+    "query_data": [
+        [
+            "(NULL, \"30\", \"Hello Test {#var#}\", \"+917045972989\", NOW(), \"OTPOPT\", \"FAKE\", \"\", \"0\", \"0\", \"1\", \"2024-11-13 18:35:00\", \"1\", \"44\", \"\", \"Scheduled\", \"\", \"0\", \"TRANS\", \"18\", \"XkmB0bzFDiZnYNo\", \"0\", \"1\", \"2024-11-13 18:35:00\",\"No\",\"jRUkqyYbF4s2uBpdTAnP\",\"Hello Test {#var#}\",\"0\",\"?smpp?PEID=777777777777&TID=1234\",\"\")"
+        ]
+    ],
+    "msg_job_id": "XkmB0bzFDiZnYNo"
+}
