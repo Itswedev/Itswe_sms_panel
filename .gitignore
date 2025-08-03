@@ -1,1 +1,11 @@
-
+include/
+assets/
+assets2/
+error/
+*.log
+buttons/
+phpmailer/
+s/
+vendor/
+xhtml/
+*.txt
