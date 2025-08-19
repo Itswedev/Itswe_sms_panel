@@ -206,9 +206,9 @@ $mon_yr=date('M Y');
 									<button class="nav-link" data-series="month" id="pills-month-tab" data-bs-toggle="pill" data-bs-target="#pills-month" type="button" role="tab" aria-selected="false">Month</button>
 								  </li>
 								  
-								   <li class="nav-item" role="presentation">
+								   <!-- <li class="nav-item" role="presentation">
 									<button class="nav-link" data-series="all" id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-selected="false">All</button>
-								  </li>
+								  </li> -->
 								</ul>
 							</div>
 							<div class="card-body custome-tooltip p-0">

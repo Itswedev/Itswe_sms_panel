@@ -5,8 +5,8 @@
  //$baseURL = 'https://' . $_SERVER['HTTP_HOST'] ;
  //$baseURL = "https://sms.vapio.io/";
  //$baseURL = "https://onereach.in:8080/";
- $baseURL = "https://".$_SERVER['HTTP_HOST']."/";
- //$baseURL = "https://156.67.105.86:8080/client_panel/";
+ //$baseURL = "https://".$_SERVER['HTTP_HOST']."/";
+ $baseURL = "http://localhost/itswe_sms_app/";
  //$baseURL = "https://156.67.105.86:8080/";
 @session_start();
 

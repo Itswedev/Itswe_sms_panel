@@ -6,7 +6,7 @@ var page_name=$("#page_name").html();
 if(page_name=="manage_user")
 {
 /*    loadUserData();*/
- var full_url = window.location.origin;
+ var full_url = window.location.origin+"/itswe_sms_app";
            $('#user_tbl').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -39,7 +39,7 @@ if(page_name=="manage_user")
 
   $(document).on('click', '.inactive_user_btn', function(){
    var id = $(this).data('id');
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
                    swal.fire({
   title: 'Are you sure?',
   text: "You want to make this user account inactive!",
@@ -91,7 +91,7 @@ if(page_name=="manage_user")
 
   $(document).on('click', '.active_user_btn', function(){
    var id = $(this).data('id');
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
                           swal.fire({
   title: 'Are you sure?',
   text: "You want to make this user account active!",
@@ -141,7 +141,7 @@ if(page_name=="manage_user")
 
     $(document).on('click', '.login_to_acct', function(){
    var id = $(this).data('id');
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
 
              $.ajax({
                     url: full_url+"/controller/utility_controller.php",
@@ -174,7 +174,7 @@ if(page_name=="manage_user")
 
     $(document).on('click', '.user_edit_btn', function(){
    var id = $(this).data('id');
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
     $.post(full_url+'/controller/store_session.php', {uid:id});
     var page_name=encodeURIComponent('page=edit_user');
     var edit_url=full_url+'/dashboard.php?page=edit_user';
@@ -193,7 +193,7 @@ if(page_name=="manage_user")
 else if(page_name=="inactive_user")
 {
 /*    loadUserData();*/
- var full_url = window.location.origin;
+ var full_url = window.location.origin+"/itswe_sms_app";
            $('#user_tbl').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -220,7 +220,7 @@ else if(page_name=="inactive_user")
 
   $(document).on('click', '.active_user_btn', function(){
    var id = $(this).data('id');
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
                           swal.fire({
   title: 'Are you sure?',
   text: "You want to make this user account active!",
@@ -328,7 +328,7 @@ else if(page_name=='edit_user')
        }
        else
        {
-               var full_url = window.location.origin;
+               var full_url = window.location.origin+"/itswe_sms_app";
                $.ajax({
                url: full_url+'/controller/credit_controller.php',
                type: 'post',
@@ -406,7 +406,7 @@ else if(page_name=='edit_user')
           /*var file_data = $('#rcs_key_file').prop('files')[0];*/
 
            /* if(file_data != undefined) {*/
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
                 /*var form_data = new FormData(); */    
                 var userid=$("#rcs_userid").val();  
                 var text_rate=$("#text_rate").val();  
@@ -448,7 +448,7 @@ else if(page_name=='edit_user')
             var agent_id=$("#agent_id").val();
 
             if(public_key_file != undefined && private_key_file != undefined && service_key_file != undefined) {
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
                 var form_data = new FormData();     
                 var userid=$("#userid").val();             
                 form_data.append('public_key_file', public_key_file);
@@ -485,7 +485,7 @@ else if(page_name=='edit_user')
         var access_name=$(this).attr('name');
         var userid=$("#userid").val();
         if($(this).is(':checked')) { 
-               var full_url = window.location.origin;
+               var full_url = window.location.origin+"/itswe_sms_app";
            $.ajax({
                     url: full_url+'/controller/user_controller.php',
                     type: 'post',
@@ -514,7 +514,7 @@ else if(page_name=='edit_user')
     }
     else
         {
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
            
                  $.ajax({
                     url: full_url+'/controller/user_controller.php',
@@ -582,7 +582,7 @@ else if(page_name=='edit_user')
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
 
                             $.ajax({
                                         url: full_url+'/controller/user_controller.php',
@@ -625,7 +625,7 @@ else if(page_name=='edit_user')
 
     $("#save_plan_btn").click(function(){
 
-            var full_url = window.location.origin;
+            var full_url = window.location.origin+"/itswe_sms_app";
               $.ajax({
                     url: full_url+'/controller/user_controller.php',
                     type: 'post',
@@ -702,7 +702,7 @@ else if(page_name=='edit_user')
         return false;
     }
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
        $.ajax({
                     url: full_url+'/controller/sender_id_function.php',
                     type: 'post',
@@ -736,7 +736,7 @@ else if(page_name=='edit_user')
 
 
 $("#role").change(function(){
- var full_url = window.location.origin;
+ var full_url = window.location.origin+"/itswe_sms_app";
  var user_role=$("#role").val();
      $.ajax({
                     url: full_url+'/controller/user_controller.php',
@@ -807,7 +807,7 @@ $("#role").change(function(){
             submitHandler: function(form,e) {
             e.preventDefault();
             console.log('Form submitted');
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
 
                  var user_role=$("#selected_user_role").val();
            
@@ -896,7 +896,7 @@ $("#role").change(function(){
             submitHandler: function(form,e) {
             e.preventDefault();
             //console.log('Form submitted');
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
            $.ajax({
                     url: full_url+'/controller/user_controller.php',
                     type: 'post',
@@ -979,7 +979,7 @@ $("#role").change(function(){
 
             e.preventDefault();
             //console.log('Form submitted');
-           var full_url = window.location.origin;
+           var full_url = window.location.origin+"/itswe_sms_app";
            $.ajax({
                     url: full_url+'/controller/user_controller.php',
                     type: 'post',
@@ -1043,7 +1043,7 @@ else if(page_name=='Recharge History')
 
 function load_cutoff_dtls()
 {
-     var full_url = window.location.origin;
+     var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -1070,7 +1070,7 @@ function load_cutoff_dtls()
 
 function load_role_dropdown()
 {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -1100,7 +1100,7 @@ function load_credit_route()
     
     var u_id=$("#userid").val();
   
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
            $.ajax({
                     url: full_url+'/controller/credit_controller.php',
                     type: 'post',
@@ -1129,7 +1129,7 @@ function edit_user(form_id)
 }
 function loadData()
 {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
 
 var table="";
 	$.ajax({
@@ -1223,7 +1223,7 @@ function load_overview()
 {
 
     var userid=$("#userid").val();
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
     $.ajax({
                 url: full_url+'/controller/utility_controller.php',
                 type: 'post',
@@ -1521,7 +1521,7 @@ function load_overview()
 
 function load_route_dropdown()
 {
-      var full_url = window.location.origin;
+      var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -1560,7 +1560,7 @@ function load_route_dropdown()
 function load_edit_route_dropdown()
 {
 
-      var full_url = window.location.origin;
+      var full_url = window.location.origin+"/itswe_sms_app";
       var edit_userid=$("#userid").val();
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -1690,7 +1690,7 @@ function load_acct_manager_dropdown()
 {
 
 
-      var full_url = window.location.origin;
+      var full_url = window.location.origin+"/itswe_sms_app";
       var userid=$("#userid").val();
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -1736,7 +1736,7 @@ function load_acct_manager_dropdown()
 function loadUserData()
 {
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
     $.ajax({
                 url: full_url+'/controller/utility_controller.php',
                 type: 'post',

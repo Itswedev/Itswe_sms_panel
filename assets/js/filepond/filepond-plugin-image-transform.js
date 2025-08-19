@@ -1512,7 +1512,7 @@
 
         // if is cross origin image add cross origin attribute
         var isCrossOriginImage =
-            new URL(markup.src, window.location.href).origin !== window.location.origin;
+            new URL(markup.src, window.location.href).origin !== window.location.origin+"/itswe_sms_app";
         if (isCrossOriginImage) image.crossOrigin = '';
 
         image.onload = function () {

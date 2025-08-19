@@ -10,8 +10,8 @@
 												<div class="card bg-primary text-white">
 													<div class="card-header border-0 flex-wrap">
 														<div class="revenue-date">
-															<span>revenue</span>
-															<h4 class="text-white">$310.435</h4>
+															<span>Weekly Summary</span>
+															<!-- <h4 class="text-white">$310.435</h4> -->
 														</div>
 														<div class="avatar-list avatar-list-stacked me-2">
 															<img src="assets2/images/contacts/pic555.jpg"
@@ -53,8 +53,11 @@
 												<div class="card bg-secondary text-white">
 													<div class="card-header border-0">
 														<div class="revenue-date">
-															<span class="text-black">Expenses</span>
-															<h4 class="text-black">$920.035</h4>
+															<span class="text-black">Balance</span>
+														
+															<h5 class="text-black">Trans - 920.035</h5>
+															<h5 class="text-black">PROMO - 920.035</h5>
+															<h5 class="text-black">OTP - 920.035</h5>
 														</div>
 														<div class="avatar-list avatar-list-stacked me-2">
 															<span class="avatar rounded-circle">
@@ -149,8 +152,8 @@
 														<div
 															class="depostit-card-media d-flex justify-content-between pb-0">
 															<div>
-																<h6>Total Deposit</h6>
-																<h3>$1200.00</h3>
+																<h6>Used Balance</h6>
+																<h3>1200.00</h3>
 															</div>
 															<div class="icon-box bg-primary">
 																<svg width="12" height="20" viewBox="0 0 12 20"
@@ -278,11 +281,11 @@
 															data-bs-toggle="pill" data-bs-target="#pills-year"
 															type="button" role="tab" aria-selected="false">Year</button>
 													</li>
-													<li class="nav-item" role="presentation">
+													<!-- <li class="nav-item" role="presentation">
 														<button class="nav-link" data-series="all" id="pills-all-tab"
 															data-bs-toggle="pill" data-bs-target="#pills-all"
 															type="button" role="tab" aria-selected="false">All</button>
-													</li>
+													</li> -->
 												</ul>
 											</div>
 											<div class="card-body custome-tooltip p-0">
@@ -894,7 +897,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-3 respo col-xxl-4 col-lg-5">
+					<!-- <div class="col-xl-3 respo col-xxl-4 col-lg-5">
 						<div class="row">
 							<div class="col-xl-12">
 								<div class="card my-calendar">
@@ -998,7 +1001,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<div class="col-xl-6 col-xxl-12">
 						<div class="card">
 							<div class="card-body p-0">
@@ -1390,7 +1393,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-6 col-xxl-8 col-lg-7">
+					<!-- <div class="col-xl-6 col-xxl-8 col-lg-7">
 						<div class="card h-auto">
 							<div class="card-header border-0 pb-3">
 								<h4 class="heading mb-0">Running Projects</h4>
@@ -1540,6 +1543,6 @@
 							</div>
 						</div>
 
-					</div>
+					</div> -->
 				</div>
 			

@@ -34,7 +34,7 @@ $( document ).ready(function(){
         
     $("#download_temp").click(function(){
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
         $.ajax({
             url: full_url + "/controller/template_function.php",
             type: 'POST',
@@ -84,7 +84,7 @@ $(document).on( "click", '.delete_template_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
 
                             $.ajax({
                                         url: full_url+'/controller/template_function.php',
@@ -163,7 +163,7 @@ $(document).on( "click", '.edit_template_btn',function(e) {
 //                             search: true,
 //                             selectAll: true
 //                         });
- var full_url = window.location.origin;
+ var full_url = window.location.origin+"/itswe_sms_app";
 
                         $.ajax({
                             url: full_url+'/controller/template_function.php',
@@ -260,7 +260,7 @@ $(document).on( "click", '.edit_template_btn',function(e) {
                else
                {
 
-                    var full_url = window.location.origin;
+                    var full_url = window.location.origin+"/itswe_sms_app";
                     $.ajax({
                             url: full_url+'/controller/template_function.php',
                             type: 'post',
@@ -369,7 +369,7 @@ $(document).on( "click", '.edit_template_btn',function(e) {
                else
                {
 
-                    var full_url = window.location.origin;
+                    var full_url = window.location.origin+"/itswe_sms_app";
                     $.ajax({
                             url: full_url+'/controller/template_function.php',
                             type: 'post',
@@ -416,7 +416,7 @@ $(document).on( "click", '.edit_template_btn',function(e) {
           var file_data = $('#upload_template').prop('files')[0];
 
             if(file_data != undefined) {
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
                 var form_data = new FormData();     
                     
                 form_data.append('upload_template', file_data);
@@ -467,7 +467,7 @@ function load_username_dropdown()
    
 
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -542,7 +542,7 @@ function load_username_dropdown()
 
 // function load_username_dropdown()
 // {
-//         var full_url = window.location.origin;
+//         var full_url = window.location.origin+"/itswe_sms_app";
 //             $.ajax({
 //                 url: full_url+'/controller/user_controller.php',
 //                 type: 'post',
@@ -579,7 +579,7 @@ function load_username_dropdown2()
    
 
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -663,7 +663,7 @@ function load_edit_username_dropdown(edit_userid)
    
 // console.log(edit_userid);
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -766,7 +766,7 @@ function load_sender_id()
 {
 
     var userid=$("#username_senderid").val();
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
 
 
     $.ajax({
@@ -856,7 +856,7 @@ function load_sender_id2(edit_userid,senderids)
 {
     
     var userid=edit_userid;
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
 
 
     $.ajax({
@@ -974,7 +974,7 @@ function load_sender_id2(edit_userid,senderids)
 function load_template_list()
 {
 
-var full_url = window.location.origin;
+var full_url = window.location.origin+"/itswe_sms_app";
 var user_role=$("#user_role").val();
 
 if(user_role!='mds_adm')
@@ -1038,7 +1038,7 @@ else
        
 
 
-       /* var full_url = window.location.origin;
+       /* var full_url = window.location.origin+"/itswe_sms_app";
      $.ajax({
                 url: full_url+'/controller/template_function.php',
                 type: 'post',
@@ -1096,7 +1096,7 @@ function addTemplate() {
         action_message1('Please enter template data', 'error');
         return false;
     }
-       var full_url = window.location.origin;
+       var full_url = window.location.origin+"/itswe_sms_app";
     $.ajax({
         type: "POST",
         url: full_url+"/controller/template_function.php",
@@ -1136,7 +1136,7 @@ function addTemplate() {
 function load_template_dropdown()
 {
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
      $.ajax({
                 url: full_url+'/controller/template_function.php',
                 type: 'post',

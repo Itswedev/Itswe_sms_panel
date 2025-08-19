@@ -149,7 +149,7 @@ $( document ).ready(function(){
             var selected_user=$("#username_senderid").val();
 
  
-         var full_url = window.location.origin;
+         var full_url = window.location.origin+"/itswe_sms_app";
    $.ajax({
                     url: full_url+'/controller/multimedia_controller.php',
                     type: 'post',
@@ -206,7 +206,7 @@ $( document ).ready(function(){
                 e.preventDefault();
 
 
-                    var full_url = window.location.origin;
+                    var full_url = window.location.origin+"/itswe_sms_app";
                     $.ajax({
                             url: full_url+'/controller/longcode_controller.php',
                             type: 'post',
@@ -278,7 +278,7 @@ $( document ).ready(function(){
         e.preventDefault();
 
 
-            var full_url = window.location.origin;
+            var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                     url: full_url+'/controller/longcode_controller.php',
                     type: 'post',
@@ -326,7 +326,7 @@ $( document ).ready(function(){
             $(document).on('click','#download_report_btn',function(){
             
             var list_type="download_longcode_report"; 
-            var full_url = window.location.origin;
+            var full_url = window.location.origin+"/itswe_sms_app";
 
             frmDate = ($("#frmDate").val()) ? $("#frmDate").val() : '';
 
@@ -379,7 +379,7 @@ $( document ).ready(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
 
                             $.ajax({
                                         url: full_url+'/controller/longcode_controller.php',
@@ -425,7 +425,7 @@ $( document ).ready(function(){
 
 function load_longcode_dtls()
 {
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
 
 
            $.ajax({
@@ -459,7 +459,7 @@ function load_longcode_dtls()
 
 function load_longcode_report()
 {
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
     frmDate = ($("#frmDate").val()) ? $("#frmDate").val() : '';
 
     toDate = ($("#toDate").val()) ? $("#toDate").val() : '';
@@ -489,7 +489,7 @@ function load_longcode_report()
 function load_sender_id()
 {
     
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
    
     var selected_user=$("#username_senderid").val();
     var dataString="";
@@ -531,7 +531,7 @@ function load_sender_id()
 function load_route_id()
 {
     
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
    
     var selected_user=$("#username_senderid").val();
     var dataString="";
@@ -572,7 +572,7 @@ function load_route_id()
 
 function load_username_dropdown()
 {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -614,7 +614,7 @@ function load_username_dropdown()
 
 function load_service_number_dropdown()
 {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/longcode_controller.php',
                 type: 'post',

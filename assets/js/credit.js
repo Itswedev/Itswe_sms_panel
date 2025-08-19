@@ -7,7 +7,7 @@ $(function(){
     
         var u_id=$("#username").val();
        
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
                $.ajax({
                         url: full_url+'/controller/credit_controller.php',
                         type: 'post',
@@ -49,7 +49,7 @@ $(function(){
                 }
                 else
                 {
-                        var full_url = window.location.origin;
+                        var full_url = window.location.origin+"/itswe_sms_app";
                         $.ajax({
                         url: full_url+'/controller/credit_controller.php',
                         type: 'post',
@@ -124,7 +124,7 @@ $(function(){
     
     function load_username_dropdown()
     {
-            var full_url = window.location.origin;
+            var full_url = window.location.origin+"/itswe_sms_app";
                 $.ajax({
                     url: full_url+'/controller/user_controller.php',
                     type: 'post',
@@ -188,7 +188,7 @@ $(function(){
     
     function load_credit_details()
     {
-            var full_url = window.location.origin;
+            var full_url = window.location.origin+"/itswe_sms_app";
                 $.ajax({
                     url: full_url+'/controller/credit_controller.php',
                     type: 'post',
@@ -217,7 +217,7 @@ $(function(){
     
     function load_route_dropdown()
     {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
         
                 $.ajax({
                     url: full_url+'/controller/manage_gateway_controller.php',

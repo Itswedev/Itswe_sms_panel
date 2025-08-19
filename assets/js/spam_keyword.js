@@ -84,7 +84,7 @@ $(document).on( "click", '#update_spam_keyword_btn',function(e) {
                     }).then((result) => {
           if (result.isConfirmed) {
 
-                                 var full_url = window.location.origin;
+                                 var full_url = window.location.origin+"/itswe_sms_app";
 
         /*       var file_data = $('#mobile_file').prop('files')[0];*/
             
@@ -215,7 +215,7 @@ $(document).on( "click", '#update_spam_keyword_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
 
                             $.ajax({
                                         url: full_url+'/controller/spam_keyword_controller.php',
@@ -280,7 +280,7 @@ $(document).on( "click", '#update_spam_keyword_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
 
                             $.ajax({
                                         url: full_url+'/controller/number_block_controller.php',
@@ -345,7 +345,7 @@ $(document).on( "click", '#update_spam_keyword_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
 
                             $.ajax({
                                         url: full_url+'/controller/number_block_controller.php',
@@ -390,7 +390,7 @@ $(document).on( "click", '#update_spam_keyword_btn',function(e) {
 
 function load_keyword_dtls()
 {
-	 var full_url = window.location.origin;
+	 var full_url = window.location.origin+"/itswe_sms_app";
 	$('#keyword_tbl').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -415,7 +415,7 @@ function load_keyword_dtls()
 
 function load_route_dropdown()
 {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/spam_keyword_controller.php',
                 type: 'post',
@@ -502,7 +502,7 @@ $("#save_btn").click(function(){
 					}).then((result) => {
 		  if (result.isConfirmed) {
 
-		  						 var full_url = window.location.origin;
+		  						 var full_url = window.location.origin+"/itswe_sms_app";
 
 		/*       var file_data = $('#mobile_file').prop('files')[0];*/
             

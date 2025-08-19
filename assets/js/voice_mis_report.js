@@ -53,7 +53,7 @@ $(function(){
 	  $(document).on('click','#search_custom_submit',function(){
             
        
-               var full_url = window.location.origin;
+               var full_url = window.location.origin+"/itswe_sms_app";
                var userid=$("#user_dropdown_mis").val();
                if(userid=='' || userid==undefined)
                	{
@@ -109,7 +109,7 @@ $(function(){
 });
 	function daily_mis_report(userid){
 		var selected_user_role=$("#user_role_dropdown_mis").val();
-		var full_url = window.location.origin;
+		var full_url = window.location.origin+"/itswe_sms_app";
 		$.ajax({
 		    url: full_url+'/controller/voice_mis_report_controller.php',
 		    type: 'post',
@@ -140,7 +140,7 @@ $(function(){
 
 function load_username_dropdown()
 {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -172,7 +172,7 @@ function load_username_dropdown()
 function load_users_mis()
 {
 	
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
         var selected_user_role=$("#user_role_dropdown_mis").val();
        
             $.ajax({

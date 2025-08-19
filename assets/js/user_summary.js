@@ -5,7 +5,7 @@ load_user_dropdown();
 $("#u_name").change(function(){
 
 var u_id=$("#u_name").val();
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
 	   $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -33,7 +33,7 @@ var u_id=$("#u_name").val();
 
 function load_user_dropdown()
 {
-       var full_url = window.location.origin;
+       var full_url = window.location.origin+"/itswe_sms_app";
 	   $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',

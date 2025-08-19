@@ -93,7 +93,7 @@ $("#schedule_now_btn").click(function(){
           }
           }).then((result) => {
           if (result.isConfirmed) {
-              var full_url = window.location.origin;
+              var full_url = window.location.origin+"/itswe_sms_app";
 
    
           $.ajax({
@@ -186,7 +186,7 @@ function setSubmitBtnValue(value) {
 $("#importBtn_bulk").click(function(){
     /*alert('text');*/
 /*  e.preventDefault();*/
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
     var file_data = $('#uploadfile').prop('files')[0];
 var bar = $('#bar');
 var bar_per = $('#bar_per');
@@ -326,7 +326,7 @@ var bar_per = $('#bar_per');
 
 /*
    	var btnUpload= $('#importBtn');
-   	var full_url = window.location.origin;
+   	var full_url = window.location.origin+"/itswe_sms_app";
     new AjaxUpload(btnUpload, {
 	    action:full_url+'/controller/dynamic_sms_function.php?act=import1',
 	    name: 'uploadfile', 
@@ -423,7 +423,7 @@ var bar_per = $('#bar_per');
         if(sid!='')
         {
  
-         var full_url = window.location.origin;
+         var full_url = window.location.origin+"/itswe_sms_app";
    $.ajax({
                     url: full_url+'/controller/bulk_sms_function.php',
                     type: 'post',
@@ -472,7 +472,7 @@ valueChanged2();
 	$("#template").change(function(){
 
 		var template_id=$("#template").val();
-         var full_url = window.location.origin;
+         var full_url = window.location.origin+"/itswe_sms_app";
 		//alert(group_id);
 
 	 
@@ -588,7 +588,7 @@ valueChanged2();
   }
 }).then((result1) => {
   if (result1.isConfirmed) {
-     var full_url = window.location.origin;
+     var full_url = window.location.origin+"/itswe_sms_app";
     
    $.ajax({
                     url: full_url+'/controller/sending.php',
@@ -705,7 +705,7 @@ valueChanged2();
   }
 }).then((result) => {
   if (result.isConfirmed) {
-     var full_url = window.location.origin;
+     var full_url = window.location.origin+"/itswe_sms_app";
    $.ajax({
                     url: full_url+'/controller/sending.php',
                     type: 'post',
@@ -818,7 +818,7 @@ $("#btn_default_val").click(function(){
     var default_value=$("#default_value").val();
     var placeholder = $("#dynamicsms_placeholder_dropdown").val();
 
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                     url: full_url+'/controller/dynamic_sms_function.php',
                     type: 'post',
@@ -853,7 +853,7 @@ $("#btn_default_val").click(function(){
         dynamic_url="";
       }
 
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
     	    $.ajax({
                     url: full_url+'/controller/dynamic_sms_function.php',
                     type: 'post',
@@ -1435,7 +1435,7 @@ document.getElementById(response).innerHTML= c;
     {
 
 
-     var full_url = window.location.origin;
+     var full_url = window.location.origin+"/itswe_sms_app";
            $.ajax({
                 url: full_url+'/controller/template_function.php',
                 type: 'post',
@@ -1510,7 +1510,7 @@ function checkChar()
 
 function load_route_dropdown()
 {
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -1539,7 +1539,7 @@ function load_route_dropdown()
 function load_sender_id()
 {
 /*alert('test load senderids');*/
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
      $.ajax({
                 url: full_url+'/controller/template_function.php',
                 type: 'post',
@@ -1574,7 +1574,7 @@ function load_sender_id()
 function load_sender_id_dropdown()
 {
 
-      var full_url = window.location.origin;
+      var full_url = window.location.origin+"/itswe_sms_app";
            $.ajax({
                 url: full_url+'/controller/sender_id_function.php',
                 type: 'post',
@@ -1610,7 +1610,7 @@ function addSenderIds() {
         return false;
     }
 
-        var full_url = window.location.origin;
+        var full_url = window.location.origin+"/itswe_sms_app";
     $.ajax({
         type: "POST",
         url: full_url+"/controller/sender_id_function.php",
@@ -1714,7 +1714,7 @@ function addSenderIds() {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-     var full_url = window.location.origin;
+     var full_url = window.location.origin+"/itswe_sms_app";
    $.ajax({
                     url: full_url+'/controller/sending.php',
                     type: 'post',
@@ -1825,7 +1825,7 @@ function addSenderIds() {
             submitHandler: function(form,e) {
             e.preventDefault();
             console.log('Form submitted');
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
            $.ajax({
                     url: full_url+'/controller/sending.php',
                     type: 'post',

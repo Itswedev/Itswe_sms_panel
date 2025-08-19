@@ -63,7 +63,7 @@ $("#save_user_btn").click(function(){
             submitHandler: function(form,e) {
             e.preventDefault();
             console.log('Form submitted');
-            var full_url = window.location.origin;
+            var full_url = window.location.origin+"/itswe_sms_app";
             var user_role=$("#selected_user_role").val();
            
 
@@ -156,7 +156,7 @@ $("#save_user_btn").click(function(){
 $("#role").change(function(){
 
 
- var full_url = window.location.origin;
+ var full_url = window.location.origin+"/itswe_sms_app";
  var user_role=$("#role").val();
      $.ajax({
                     url: full_url+'/controller/user_controller.php',
@@ -221,7 +221,7 @@ $("#save_acct_manager_btn").click(function(){
             submitHandler: function(form,e) {
             e.preventDefault();
             console.log('Form submitted');
-            var full_url = window.location.origin;
+            var full_url = window.location.origin+"/itswe_sms_app";
          
          
            $.ajax({
@@ -277,7 +277,7 @@ function makeid() {
 }
 function load_route_dropdown()
 {
-      var full_url = window.location.origin;
+      var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -370,7 +370,7 @@ function load_route_dropdown()
 
 // function load_acct_manager_dropdown()
 // {
-//       var full_url = window.location.origin;
+//       var full_url = window.location.origin+"/itswe_sms_app";
 //             $.ajax({
 //                 url: full_url+'/controller/manage_gateway_controller.php',
 //                 type: 'post',
@@ -417,7 +417,7 @@ function load_route_dropdown()
 function load_role_dropdown()
 {
     
-      var full_url = window.location.origin;
+      var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',

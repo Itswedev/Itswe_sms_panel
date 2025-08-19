@@ -9,7 +9,7 @@ load_smpp_error_details();
 
 	$("#save_empp_error").click(function(){
 
-			    var full_url = window.location.origin;
+			    var full_url = window.location.origin+"/itswe_sms_app";
 
 			$.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -48,7 +48,7 @@ load_smpp_error_details();
 
     
             if(file_data != undefined) {
-                var full_url = window.location.origin;
+                var full_url = window.location.origin+"/itswe_sms_app";
                 var form_data = new FormData();     
                     
                 form_data.append('upload_error_code', file_data);
@@ -104,7 +104,7 @@ function load_gateway_dropdown()
 {
     
 
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -180,7 +180,7 @@ function load_smpp_error_details()
 {
     
 
-    var full_url = window.location.origin;
+    var full_url = window.location.origin+"/itswe_sms_app";
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',

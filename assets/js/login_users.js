@@ -11,7 +11,7 @@ $(function(){
 
 function load_all_login_users()
 {
-var full_url = window.location.origin;
+var full_url = window.location.origin+"/itswe_sms_app";
 
   //  alert('ok');
            $.ajax({
