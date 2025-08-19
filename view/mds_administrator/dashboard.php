@@ -29,16 +29,16 @@ $mon_yr=date('M Y');
 												<div class="card bg-primary text-white">
 													<div class="card-header border-0 flex-wrap">
 														<div class="revenue-date">
-															<span>revenue</span>
-															<h4 class="text-white">$310.435</h4>
+															<span>Weekly Summary</span>
+															<!-- <h4 class="text-white">.435</h4> -->
 														</div>
-														<div class="avatar-list avatar-list-stacked me-2">
+														<!-- <div class="avatar-list avatar-list-stacked me-2">
 															<img src="assets2/images/contacts/pic555.jpg"
 																class="avatar rounded-circle" alt="">
 															<img src="assets2/images/contacts/pic666.jpg"
 																class="avatar rounded-circle" alt="">
 															<span class="avatar rounded-circle">25+</span>
-														</div>
+														</div> -->
 
 													</div>
 													<div
@@ -72,10 +72,12 @@ $mon_yr=date('M Y');
 												<div class="card bg-secondary text-white">
 													<div class="card-header border-0">
 														<div class="revenue-date">
-															<span class="text-black">Expenses</span>
-															<h4 class="text-black">$920.035</h4>
+															<span class="text-black">Balance</span>
+															<h5 class="text-black">Trans - 920.035</h5>
+															<h5 class="text-black">PROMO - 920.035</h5>
+															<h5 class="text-black">OTP - 920.035</h5>
 														</div>
-														<div class="avatar-list avatar-list-stacked me-2">
+														<!-- <div class="avatar-list avatar-list-stacked me-2">
 															<span class="avatar rounded-circle">
 																<a href="#">
 																	<svg width="14" height="15" viewBox="0 0 14 15"
@@ -86,13 +88,13 @@ $mon_yr=date('M Y');
 																	</svg>
 																</a>
 															</span>
-														</div>
+														</div> -->
 
 													</div>
 													<div
 														class="card-body pb-0 custome-tooltip d-flex align-items-center">
-														<div id="expensesChart" class="chartBar"></div>
-														<div>
+														<!-- <div id="expensesChart" class="chartBar"></div> -->
+														<!-- <div>
 															<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
 																xmlns="http://www.w3.org/2000/svg">
 																<circle cx="10" cy="10" r="10" fill="#222B40" />
@@ -112,7 +114,7 @@ $mon_yr=date('M Y');
 																</defs>
 															</svg>
 															<span class="d-block font-w600 text-black">45%</span>
-														</div>
+														</div> -->
 													</div>
 												</div>
 											</div>
@@ -168,8 +170,8 @@ $mon_yr=date('M Y');
 														<div
 															class="depostit-card-media d-flex justify-content-between pb-0">
 															<div>
-																<h6>Total Balance</h6>
-																<h3>$1200.00</h3>
+																<h6>Used Balance</h6>
+																<h3>1200.00</h3>
 															</div>
 															<div class="icon-box bg-primary">
 																<svg width="12" height="20" viewBox="0 0 12 20"
@@ -491,7 +493,7 @@ $mon_yr=date('M Y');
 											<tr>
 												<th>User Name</th>
 												<th>Campaign Id</th>
-												<th>Progress</th>
+												<th>SMS Count</th>
 												<th>Parent</th>
 												<th>Status</th>
 												<th>Date</th>
@@ -509,12 +511,8 @@ $mon_yr=date('M Y');
 												</td>
 												<td class="pe-0">
 													<div class="tbl-progress-box">
-														<div class="progress">
-															<div class="progress-bar bg-primary"
-																style="width:53%; height:5px; border-radius:4px;"
-																role="progressbar"></div>
-														</div>
-														<span class="text-primary">53%</span>
+														
+														<span class="text-primary">51000</span>
 													</div>
 												</td>
 												<td class="pe-0">
@@ -545,12 +543,8 @@ $mon_yr=date('M Y');
 												</td>
 												<td class="pe-0">
 													<div class="tbl-progress-box">
-														<div class="progress">
-															<div class="progress-bar bg-danger"
-																style="width:30%; height:5px; border-radius:4px;"
-																role="progressbar"></div>
-														</div>
-														<span class="text-danger">30%</span>
+														
+														<span class="text-danger">300200</span>
 													</div>
 												</td>
 												<td class="pe-0">
@@ -581,12 +575,8 @@ $mon_yr=date('M Y');
 												</td>
 												<td class="pe-0">
 													<div class="tbl-progress-box">
-														<div class="progress">
-															<div class="progress-bar bg-success"
-																style="width:40%; height:5px; border-radius:4px;"
-																role="progressbar"></div>
-														</div>
-														<span class="text-success">40%</span>
+														
+														<span class="text-success">40000</span>
 													</div>
 												</td>
 												<td class="pe-0">
@@ -619,12 +609,8 @@ $mon_yr=date('M Y');
 												</td>
 												<td class="pe-0">
 													<div class="tbl-progress-box">
-														<div class="progress">
-															<div class="progress-bar bg-primary"
-																style="width:53%; height:5px; border-radius:4px;"
-																role="progressbar"></div>
-														</div>
-														<span class="text-primary">53%</span>
+														
+														<span class="text-primary">53000</span>
 													</div>
 												</td>
 												<td class="pe-0">
@@ -655,12 +641,8 @@ $mon_yr=date('M Y');
 												</td>
 												<td class="pe-0">
 													<div class="tbl-progress-box">
-														<div class="progress">
-															<div class="progress-bar bg-danger"
-																style="width:30%; height:5px; border-radius:4px;"
-																role="progressbar"></div>
-														</div>
-														<span class="text-danger">30%</span>
+														
+														<span class="text-danger">300000</span>
 													</div>
 												</td>
 												<td class="pe-0">
@@ -871,7 +853,7 @@ $mon_yr=date('M Y');
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-xl-6 col-xxl-8 col-lg-7">
 						<div class="card h-auto">
 							<div class="card-header border-0 pb-3">
@@ -1129,7 +1111,7 @@ $mon_yr=date('M Y');
 						</div>
 					</div>
 					
-				</div>
+				</div> -->
 			
 
 				<script type="text/javascript" src="assets/js/dashboard.js?=<?=time();?>"></script>
