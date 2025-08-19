@@ -638,7 +638,7 @@
 					<div class="collapse navbar-collapse justify-content-between">
 						<div class="header-left">
 							<div class="dashboard_bar">
-								Welcome 123
+								Welcome
 							</div>
 						</div>
 						<div class="header-right d-flex align-items-center">
