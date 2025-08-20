@@ -76,7 +76,7 @@ $(function(){
             e.preventDefault();
            
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
 			$.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -143,7 +143,7 @@ $(function(){
             e.preventDefault();
            
 
-                var full_url = window.location.origin;
+                //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -202,7 +202,7 @@ $(document).on( "click", '.delete_route_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 
                             $.ajax({
                                         url: full_url+'/controller/manage_gateway_controller.php',
@@ -264,7 +264,7 @@ $(document).on( "click", '.delete_route_plan_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
                             $.ajax({
                                         url: full_url+'/controller/manage_gateway_controller.php',
                                         type: 'post',
@@ -350,7 +350,7 @@ $(document).on( "click", '.delete_route_plan_btn',function(e) {
 
             if(gateway_name!='')
             {
-                    var full_url = window.location.origin;
+                    //var full_url = window.location.origin;
                 $.ajax({
                     url: full_url+'/controller/manage_gateway_controller.php',
                     type: 'post',
@@ -446,7 +446,7 @@ $(document).on( "click", '.delete_route_plan_btn',function(e) {
 
             if(gateway_name!='')
             {
-                    var full_url = window.location.origin;
+                    //var full_url = window.location.origin;
                 $.ajax({
                     url: full_url+'/controller/manage_gateway_controller.php',
                     type: 'post',
@@ -499,7 +499,7 @@ $(document).on( "click", '.delete_route_plan_btn',function(e) {
 
 
         $("#save_sender_routing").click(function(){   
-            var full_url = window.location.origin;        
+            //var full_url = window.location.origin;        
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -604,7 +604,7 @@ $(document).on( "click", '.delete_route_plan_btn',function(e) {
 
 function load_group_list()
 {
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
              $.ajax({
                 url: full_url+'/controller/group_function.php',
                 type: 'post',
@@ -630,7 +630,7 @@ function load_group_list()
 function load_route_list()
 {
         var list_type="all"; 
-           var full_url = window.location.origin;
+           //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -658,7 +658,7 @@ function load_route_list()
 function load_sender_id_list()
 {
     
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
 
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -685,7 +685,7 @@ function load_sender_id_list()
 function load_route_plan()
 {
     
-         var full_url = window.location.origin;
+         //var full_url = window.location.origin;
 /*          var list_type="all_plan"; 
         table= $('#routing_plan_tbl').DataTable({
             "processing": true,
@@ -749,7 +749,7 @@ function load_route_plan()
 
 function load_route_plan_form()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -798,7 +798,7 @@ function load_route_plan_form()
 
 function load_gateway()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -838,7 +838,7 @@ function load_gateway()
 
 function load_gateway2()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -878,7 +878,7 @@ function load_gateway2()
 
 function load_other_gateway()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -919,7 +919,7 @@ function load_other_gateway()
 
 function load_other_gateway2()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -959,7 +959,7 @@ function load_other_gateway2()
 
 function load_route_plan_edit_form()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',

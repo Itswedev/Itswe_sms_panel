@@ -29,7 +29,7 @@ $("#save_sender_id").click(function(){
             },
             submitHandler: function(form,e) {
             e.preventDefault();
-               var full_url = window.location.origin;
+               //var full_url = window.location.origin;
         			$.ajax({
                         url: full_url+'/controller/sender_id_function.php',
                         type: 'post',
@@ -88,7 +88,7 @@ $("#save_sender_id").click(function(){
 
 function load_sender_id_block()
 {
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
     $.ajax({
         url: full_url + '/controller/sender_id_function.php',
         type: 'post',

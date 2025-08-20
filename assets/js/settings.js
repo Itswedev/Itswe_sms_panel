@@ -270,7 +270,7 @@ $(function(){
                             ans3=$("#answers3").val();
                             dataString+="&security_question="+security_question;
                             dataString+="&que1="+que1+"&que2="+que2+"&que3="+que3+"&ans1="+ans1+"&ans2="+ans2+"&ans3="+ans3;
-                             var full_url = window.location.origin;
+                             //var full_url = window.location.origin;
                              
 
                                $.ajax({
@@ -343,7 +343,7 @@ $(function(){
 
            /* alert(dataString);*/
            
-           var full_url = window.location.origin;
+           //var full_url = window.location.origin;
                               $.ajax({
                                         url: full_url+'/controller/settings_controller.php',
                                         type: 'post',
@@ -430,7 +430,7 @@ $("#change_password_btn").click(function(){
                     }).then((result) => {
                           if (result.isConfirmed) {
 
-                                 var full_url = window.location.origin;
+                                 //var full_url = window.location.origin;
 
                                    
                                    $.ajax({
@@ -521,7 +521,7 @@ $("#change_api_key_btn").click(function(){
                     }).then((result) => {
                           if (result.isConfirmed) {
 
-                                 var full_url = window.location.origin;
+                                 //var full_url = window.location.origin;
 
                                    
                                    $.ajax({
@@ -582,7 +582,7 @@ $("#api_key_btn").click(function(){
 
 function load_settings()
 {
-var full_url = window.location.origin;
+//var full_url = window.location.origin;
 var low_balance,low_bal_limit,login_alert,login_otp,daily_usage,security_question,que1,que2,que3,ans1,ans2,ans3;
             $.ajax({
                  url: full_url+'/controller/settings_controller.php',
@@ -752,7 +752,7 @@ function makeid() {
 
 function load_route_dropdown()
 {
-      var full_url = window.location.origin;
+      //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -786,7 +786,7 @@ function load_route_dropdown()
 
 function load_sender_dropdown()
 {
-      var full_url = window.location.origin;
+      //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -813,7 +813,7 @@ function load_sender_dropdown()
 
 function load_template_dropdown()
 {
-      var full_url = window.location.origin;
+      //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',

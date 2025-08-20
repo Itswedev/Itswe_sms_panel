@@ -195,7 +195,7 @@ $("#muliselect_div").css('width','80%');
 $("#importBtn_bulk").click(function(){
     /*alert('text');*/
 /*  e.preventDefault();*/
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
     var file_data = $('#uploadfile').prop('files')[0];
 var bar = $('#bar');
      if(file_data != undefined) {
@@ -345,7 +345,7 @@ $("#group_id").change(function(){
 
 		var group_id=$("#group_id").val();
 		//alert(group_id);
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 	
             $.ajax({
                 url: full_url+'/controller/group_function.php',
@@ -428,7 +428,7 @@ $("#group_id").change(function(){
 					  }
 					}).then((result) => {
 					  if (result.isConfirmed) {
-					        var full_url = window.location.origin;
+					        //var full_url = window.location.origin;
 					   $.ajax({
                     url: full_url+'/controller/sending_dynamic_rcs.php',
                     type: 'post',
@@ -481,7 +481,7 @@ $("#group_id").change(function(){
 $("#template").change(function(){
 	var temp_name=$(this).val();
 
-	var full_url = window.location.origin;
+	//var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/rcs_function.php',
                 type: 'post',
@@ -543,7 +543,7 @@ $("#template").change(function(){
 
 $("#bot_type").change(function(){
 	var bot_type = $(this).val();
-	var full_url = window.location.origin;
+	//var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/rcs_function.php',
                 type: 'post',

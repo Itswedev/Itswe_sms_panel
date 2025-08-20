@@ -8,7 +8,7 @@ $(function() {
         $('#job_id').text(item_id);
 
 
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
         $.ajax({
             type: "POST",
             url: full_url+"/controller/repush_controller.php",
@@ -30,7 +30,7 @@ $(function() {
 
       $("#push_job_btn").click(function(){
 
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
         $.ajax({
             type: "POST",
             url: full_url+"/controller/repush_controller.php",
@@ -75,7 +75,7 @@ $(function() {
       });
 
       $(document).on('click', '.pause_btn', function(){
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 
         var job_id=$(this).data('item-id');
         
@@ -114,7 +114,7 @@ $(function() {
 
 
     $(document).on('click', '.play_btn', function(){
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 
         var job_id=$(this).data('item-id');
         

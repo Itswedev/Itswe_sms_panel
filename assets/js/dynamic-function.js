@@ -18,7 +18,7 @@ load_route_dropdown();
 
 function load_route_dropdown()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
              $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',

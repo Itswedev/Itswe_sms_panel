@@ -27,7 +27,7 @@ $(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 
                             $.ajax({
                                         url: full_url+'/controller/ipmanagement_controller.php',
@@ -70,7 +70,7 @@ $(function(){
 
 function load_block_ip_dtls()
 {
-	 var full_url = window.location.origin;
+	 //var full_url = window.location.origin;
 	$('#ip_manage_tbl').DataTable( {
         "processing": true,
         "serverSide": true,

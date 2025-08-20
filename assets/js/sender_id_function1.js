@@ -2,7 +2,7 @@
     "use strict";
     $(document).ready(function () {
      
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
         
         $("#sender_id_tbl").DataTable({
             dom: "Bfrtip",
@@ -57,7 +57,7 @@
 
   function load_data()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 
         $('#sender_id_tbl').DataTable( {
         "processing": true,
@@ -115,7 +115,7 @@ function addSenderIds() {
         return false;
     }
 
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
     $.ajax({
         type: "POST",
         url: full_url+"/controller/sender_id_function.php",
@@ -168,7 +168,7 @@ function editSenderIds() {
         return false;
     }
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
     $.ajax({
         type: "POST",
         url: full_url+"/controller/sender_id_function.php",
@@ -207,7 +207,7 @@ function editSenderIds() {
 
 function load_senderid_dropdown(form_name)
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
      $.ajax({
                 url: full_url+'/controller/sender_id_function.php',
                 type: 'post',

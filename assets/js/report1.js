@@ -14,7 +14,7 @@
     var user_role=$("#user_role").val();
   
     var uid=$("#uid").val();
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
       
     // var table = $("#today_report_tbl").DataTable({
     //     paging: false, // Disable pagination

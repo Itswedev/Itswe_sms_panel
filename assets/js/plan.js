@@ -6,7 +6,7 @@ load_all_plan();
 
             if(p_name!='')
             {
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
 
 			$.ajax({
                 url: full_url+'/controller/plan_controller.php',
@@ -92,7 +92,7 @@ load_all_plan();
             else
             {   
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
                 $.ajax({
                     url: full_url+'/controller/plan_controller.php',
                     type: 'post',
@@ -170,7 +170,7 @@ load_all_plan();
   }
 }).then((result) => {
   if (result.isConfirmed) {
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
                             $.ajax({
                                         url: full_url+'/controller/plan_controller.php',
                                         type: 'post',
@@ -213,7 +213,7 @@ load_all_plan();
 
 function load_all_plan()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/plan_controller.php',
                 type: 'post',

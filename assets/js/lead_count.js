@@ -9,7 +9,7 @@ $(function() {
 
 
     $(document).on('click','#download_url_tracking_btn',function(){
-            var full_url = window.location.origin;
+            //var full_url = window.location.origin;
             var job_id = $("#job_id").val();
 
                  $.ajax({
@@ -39,7 +39,7 @@ $(function() {
 
 
 function load_count_details() {
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
     var job_id = $("#job_id").val();
 
     $.ajax({
