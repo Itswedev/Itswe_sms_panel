@@ -7,7 +7,7 @@
  //$baseURL = "https://onereach.in:8080/";
  //$baseURL = "https://".$_SERVER['HTTP_HOST']."/";
  //$baseURL = "http://localhost/itswe_sms_app/";
- $baseURL = "https://156.67.105.86:8081/";
+ $baseURL = "http://156.67.105.86:8081/";
 @session_start();
 
 /*ini_set('display_errors', 1);
