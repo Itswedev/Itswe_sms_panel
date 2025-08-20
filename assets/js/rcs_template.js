@@ -33,7 +33,7 @@ $("#addRCSTemplate").click(function(){
             e.preventDefault();
            
 
-            var full_url = window.location.origin;
+            //var full_url = window.location.origin;
 
             /*var page_name=$(".page_name").text();*/
             $.ajax({
@@ -84,7 +84,7 @@ $("#addRCSTemplate").click(function(){
 
 function load_username_dropdown()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -117,7 +117,7 @@ function load_username_dropdown()
 
 function load_data()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 
         $('#rcs_temp_tbl').DataTable( {
         "processing": true,

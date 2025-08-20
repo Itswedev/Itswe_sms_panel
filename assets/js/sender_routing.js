@@ -51,7 +51,7 @@ load_sender_id_routing();
             },
             submitHandler: function(form,e) {
             e.preventDefault();
-               var full_url = window.location.origin;
+               //var full_url = window.location.origin;
         			$.ajax({
                         url: full_url+'/controller/manage_gateway_controller.php',
                         type: 'post',
@@ -115,7 +115,7 @@ $(document).on( "click", '.delete_sender_routing_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
 
                             $.ajax({
                                         url: full_url+'/controller/manage_gateway_controller.php',
@@ -218,7 +218,7 @@ $("#edit_sender_routing").click(function(){
             },
             submitHandler: function(form,e) {
             e.preventDefault();
-         var full_url = window.location.origin;
+         //var full_url = window.location.origin;
                     $.ajax({
                     url: full_url+'/controller/manage_gateway_controller.php',
                     type: 'post',
@@ -262,7 +262,7 @@ $("#edit_sender_routing").click(function(){
 
 function load_username_dropdown()
 {
-        var full_url = window.location.origin;
+        //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -301,7 +301,7 @@ $("#username_senderid").change(function(){
     var userid=$("#username_senderid").val();
 
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -333,7 +333,7 @@ $("#edit_username_senderid").change(function(){
     var userid=$("#edit_username_senderid").val();
 
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -438,7 +438,7 @@ function load_sender_id_list()
 {
     
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -469,7 +469,7 @@ function load_sender_id_list()
 function load_sender_id_routing()
 {
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
 
         $('#sender_routing_tbl').DataTable( {
         "processing": true,
@@ -496,7 +496,7 @@ function load_sender_id_routing()
         });
 
 
-  /*  var full_url = window.location.origin;
+  /*  //var full_url = window.location.origin;
              $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',
@@ -522,7 +522,7 @@ function load_gateway_dropdown()
 {
     
 
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
                 type: 'post',

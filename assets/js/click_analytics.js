@@ -13,7 +13,7 @@ $("#toDate").change(function() {
 });
 
 function load_click_details() {
-    var full_url = window.location.origin;
+    //var full_url = window.location.origin;
     var frmDate = $("#frmDate").val();
     var toDate = $("#toDate").val();
 

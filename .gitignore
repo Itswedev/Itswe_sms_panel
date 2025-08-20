@@ -1,5 +1,7 @@
 /include/connection.php
 /include/config.php
+/include/header_files.php
+/include/datatable_dbconnection.php
 *.log
 
 *.txt

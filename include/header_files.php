@@ -49,3 +49,6 @@
 	<script src="<?php echo $baseURL ; ?>assets/js/jquery.min.js?=<?=time();?>"></script>
 	<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@4.9.8/dist/tagify.css" rel="stylesheet" />
 	
+<script>
+	 var full_url = window.location.origin+"/itswe_sms_app";
+</script>
