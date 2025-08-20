@@ -2,6 +2,8 @@
 
 (function($) {
     /* "use strict" */
+
+	
 	
  var dzChartlist = function(){
 	
@@ -211,7 +213,7 @@
 		chartBar1.render();
 	 
 	}
-	
+	var chart;
 	var overiewChart = function(){
 		 var options = {
           series: [{
@@ -350,7 +352,7 @@
         }
         };
 
-        var chart = new ApexCharts(document.querySelector("#overiewChart"), options);
+        chart = new ApexCharts(document.querySelector("#overiewChart"), options);
         chart.render();
 		
 		$(".mix-chart-tab .nav-link").on('click',function(){
@@ -401,6 +403,70 @@
 			]);
 		})
 	 
+	}
+
+
+	
+	$(".nav-link").on("click", function () {
+       
+        var seriesType = $(this).data("series");
+        console.log(seriesType); // today / week / month / year
+        load_chart_count(seriesType);
+    });
+
+	function load_chart_count(seriesType) {
+ 
+		var send_data = {
+		 
+			list_type: "load_chart_count",
+			series: seriesType
+		};
+	
+		$.ajax({
+			url: full_url + '/controller/dashboard_controller.php',
+			type: 'POST',
+			data: send_data,
+			dataType: 'json',
+			success: function (res) {
+				console.log("API Response:", res);
+	
+				// example expected response from PHP:
+				// { "Submitted": 150, "Delivered": 120, "Failed": 30 }
+	
+				// pass to chart update
+				chart.updateSeries([
+					{
+						name: "Submitted",
+						type: 'column',
+						data: res.Submitted || []
+					}, {
+						name: "Delivered",
+						type: 'area',
+						data: res.Delivered || []
+					}, {
+						name: "Undelivered",
+						type: 'line',
+						data: res.Undelivered || []
+					}
+				]);
+				//updateOverviewChart(res);
+			},
+			error: function (xhr, status, error) {
+				console.error("AJAX Error:", error);
+			}
+		});
+	}
+	function updateOverviewChart(data) {
+		// data = { Submitted: 150, Delivered: 120, Failed: 30 }
+		var newData = [
+			data.Submitted || 0,
+			data.Delivered || 0,
+			data.Failed || 0
+		];
+	
+		overiewChart.updateSeries([{
+			data: newData
+		}]);
 	}
 
 	var chartBar = function(){

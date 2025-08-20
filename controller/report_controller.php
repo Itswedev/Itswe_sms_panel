@@ -15,8 +15,11 @@ ini_set('error_log', $log_file);
 
 
 error_reporting(0);
+
 include('../include/connection.php');
+
 require('classes/ssp.class.php');
+
 include('../include/config.php');
 include_once('../include/datatable_dbconnection.php');
 include_once('../include/url_encode.php');
@@ -4952,13 +4955,16 @@ function load_rcs_status($job_result)
 
 function load_today_summary()
 {
+
 	global $dbc;
 	$userid=$_SESSION['user_id'];
+	
 	$select_user_id=$_REQUEST['u_id'];
   	$user_role=$_REQUEST['user_role'];
 	$sendtabledetals = SENDSMSDETAILS;
 	$u_id=$_REQUEST['u_id'];
 	$today_dt=date('Y-m-d');
+
 	if($user_role=='mds_rs' || $user_role=='mds_ad')
 	{
 		
@@ -4983,10 +4989,7 @@ function load_today_summary()
 			if($select_user_id=="All")
 			{
 
-			/*$parent_resellers=fetch_resellers($userid);
-				$check_parent_ids=implode(",",$parent_resellers);
-				$user_ids=fetch_userids_by_resellers($check_parent_ids);
-				$check_user_ids=implode(",",$user_ids);*/
+		
 
 					$userid_arr[]=$userid;
                     $child_users=get_childUsers($userid_arr);
@@ -5172,6 +5175,7 @@ function load_today_summary()
 	
 	$result=mysqli_query($dbc,$sql);
 	$count=mysqli_num_rows($result);
+	
 	$i=1;
 	if($count>0)
 	{
@@ -5211,10 +5215,10 @@ function load_today_summary()
 
    			$table_head.="</tr></thead>";
 
-$u_id=$_REQUEST['u_id'];
-$select_user_id=$_REQUEST['u_id'];
-if($user_role=='mds_rs' || $user_role=='mds_ad')
-	{
+		$u_id=$_REQUEST['u_id'];
+		$select_user_id=$_REQUEST['u_id'];
+		if($user_role=='mds_rs' || $user_role=='mds_ad')
+		{
 		
 		$selected_role=$_REQUEST['selected_role'];
 
@@ -5297,6 +5301,7 @@ if($user_role=='mds_rs' || $user_role=='mds_ad')
 			}
 
 		}
+
 	}
 	else if($user_role=='mds_sub_usr')
 	{
@@ -5428,9 +5433,9 @@ if($user_role=='mds_rs' || $user_role=='mds_ad')
 			$sql_select.=" from $sendtabledetals where userids='".$userid."'  and date(sent_at)='$today_dt' and schedule_sent=1 group by userids";
 	}
 
-
+	
 	//echo $sql_select;
-   		
+	
   		$result_select = mysqli_query($dbc, $sql_select);
 
   		$count_record=mysqli_num_rows($result_select);
@@ -5438,8 +5443,11 @@ if($user_role=='mds_rs' || $user_role=='mds_ad')
   		{
   			$total_bill=0;
   			$table_body2.="<tr><td></td>";
+			
   			while($row=mysqli_fetch_array($result_select))
   			{
+				
+  				
   				/*$created_date=date('dS F y',strtotime($row['created_at']));*/
   				$bill_credit=$row['msgcredit'];
   				
@@ -5452,7 +5460,8 @@ if($user_role=='mds_rs' || $user_role=='mds_ad')
   				
   				<td>$username</td>
   				<td><a href='#' class='report_type' name='total' data-role='$user_role' data-uid='$u_id' data-selected_role='$selected_role'>$bill_credit</a></td>";
-  				$total_stat_val=0;
+  				// $total_stat_val=0;
+				  
   				for($j=0;$j<count($status_arr1);$j++)
 		   		{
 		   			$stat=$status_arr1[$j];
@@ -5462,19 +5471,21 @@ if($user_role=='mds_rs' || $user_role=='mds_ad')
 		   			//$table_body2.="<td>$stat</td>";
 						
 		   		}
-
+			
   				$table_body.="</tr>";
   				
 
   			}
 
-  			for($j=0;$j<count($status_arr1);$j++)
-		   		{
-		   			$stat=$status_arr1[$j];
+		
+  			// for($j=0;$j<count($status_arr1);$j++)
+		   	// 	{
+		   	// 		$stat=$status_arr1[$j];
 		   			
-						$total_stat_val1=array_sum($total_stat_val[$stat]);
-						$table_body_stat.="<td></td>";
-		   		}
+			// 			$total_stat_val1=array_sum($total_stat_val[$stat]);
+			// 			$table_body_stat.="<td></td>";
+		   	// 	}
+				   
   			// $table_body2.="<td>$total_bill</td>";
   			$table_body2.=$table_body_stat;
   			$table_body2.="</tr>";

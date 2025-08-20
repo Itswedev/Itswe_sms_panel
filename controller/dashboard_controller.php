@@ -366,6 +366,59 @@ function load_schedule_count()
 	}
 }
 
+
+
+if ($_POST['list_type'] == 'load_chart_count') {
+    $series = $_POST['series']; // today/week/month/year
+    $user_role = $_SESSION['user_role'];
+
+    // Default response
+    $data = [
+        "Submitted"   => [],
+        "Delivered"   => [],
+        "Undelivered" => []
+    ];
+
+    // Example SQL condition based on role
+    if ($user_role == "mds_usr") {
+        // logged in user ka ID session se lo
+        $user_id = $_SESSION['userid'];
+        // SQL: count messages only for this user
+        // $sql = "SELECT ... WHERE user_id='$user_id' AND DATE(sent_time)=CURDATE()";
+        $data = [
+            "Submitted"   => [10,20,30,40,50,60,70,80,90,100,110,120],
+            "Delivered"   => [8,18,28,35,48,55,65,75,85,90,100,110],
+            "Undelivered" => [2,2,2,5,2,5,5,5,5,10,10,10]
+        ];
+    } elseif ($user_role == "mds_rs") {
+        $reseller_id = $_SESSION['reseller_id'];
+        // SQL: count messages for all users under this reseller
+		$data = [
+            "Submitted"   => [100,150,200,180,220,250,300,280,260,240,210,230],
+            "Delivered"   => [90,140,180,160,200,230,280,250,230,220,200,210],
+            "Undelivered" => [10,10,20,20,20,20,20,30,30,20,10,20]
+        ];
+    } elseif ($user_role == "mds_ad") {
+        // SQL: count messages for all clients under admin
+		$data = [
+            "Submitted"   => [200,250,280,300,350,400,420,410,390,370,360,380],
+            "Delivered"   => [180,230,250,270,320,370,390,380,350,340,330,350],
+            "Undelivered" => [20,20,30,30,30,30,30,30,40,30,30,30]
+        ];
+    } elseif ($user_role == "mds_adm") {
+        // Top level: count everything
+        $data = [
+            "Submitted"   => [500,520,530,540,560,580,600,590,570,560,550,540],
+            "Delivered"   => [480,500,510,520,540,560,580,570,550,540,530,520],
+            "Undelivered" => [20,20,20,20,20,20,20,20,20,20,20,20]
+        ];
+    }
+
+    echo json_encode($data);
+    exit;
+}
+
+
 function load_live_gateway()
 {
 	libxml_use_internal_errors(true);

@@ -262,8 +262,11 @@
 									<div class="col-xl-8">
 										<div class="card overflow-hidden">
 											<div class="card-header border-0 pb-0 flex-wrap">
-												<h4 class="heading mb-0">Projects Overview</h4>
+												<h4 class="heading mb-0">Campaign Overview</h4>
 												<ul class="nav nav-pills mix-chart-tab" id="pills-tab" role="tablist">
+												<li class="nav-item" role="presentation">
+													<button class="nav-link active" data-series="today" id="pills-today-tab" data-bs-toggle="pill" data-bs-target="#pills-today" type="button" role="tab" aria-selected="false">Today</button>
+												</li>
 													<li class="nav-item" role="presentation">
 														<button class="nav-link active" data-series="week"
 															id="pills-week-tab" data-bs-toggle="pill"
