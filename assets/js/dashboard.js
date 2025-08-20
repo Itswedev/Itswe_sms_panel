@@ -12,7 +12,7 @@ var chart,option;
 
     function load_schedule_count()
     {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         var send_data="";
         var user_role=$("#login_user_role").html();
         send_data="user_role="+user_role+"&list_type=load_schedule_count";
@@ -39,7 +39,7 @@ var chart,option;
     $("#pills-today-tab").click(function(){
         var lbl_series = [];
         var status_val = [];
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         var send_data="";
         var user_role=$("#login_user_role").html();
         
@@ -216,7 +216,7 @@ var chart,option;
 
 function load_sender_performance()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
     $.ajax({
          url: full_url+'/controller/dashboard_controller.php',
@@ -412,7 +412,7 @@ chart.render();
 }
 function load_campaign_status()
 {
-  var full_url = window.location.origin+"/itswe_sms_app";
+  var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -510,7 +510,7 @@ function load_initial_analysis()
 
 function load_analysis(check_analysis)
 {
-  var full_url = window.location.origin+"/itswe_sms_app";
+  var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -626,7 +626,7 @@ function load_analysis(check_analysis)
 
 function load_yearly_traffic()
 {
-  var full_url = window.location.origin+"/itswe_sms_app";
+  var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -927,7 +927,7 @@ function load_weekly_trend()
 {
    
     
-  var full_url = window.location.origin+"/itswe_sms_app";
+  var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -1055,7 +1055,7 @@ function load_weekly_trend()
 
 function load_template_summary(check_temp_summary)
 {
-  var full_url = window.location.origin+"/itswe_sms_app";
+  var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -1109,7 +1109,7 @@ function updateChartData(newSeries,total_sent) {
 }
 function load_live_gateway()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -1232,7 +1232,7 @@ function stop_smsc (smsc) {
 
 function load_live_gateway2()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -1322,7 +1322,7 @@ function load_live_gateway2()
 
 function load_userwise_queue()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
            $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
@@ -1420,7 +1420,7 @@ function load_user_chart(check_statistic)
     var report_dt=$("#report_dt").val();
     var user=$("#user_dropdown").val();  
     var selected_role=$("#user_role_dropdown").val();  
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     
   
     var send_data="";
@@ -1635,7 +1635,7 @@ function load_user_chart(check_statistic)
 
 function load_users()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
     var role=$("#user_role_dropdown").val();
     $(".role_name").text(role);
@@ -1665,7 +1665,7 @@ function load_users()
 }
 function load_dashboard_schedule()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
                 type: 'post',
@@ -1709,7 +1709,7 @@ function load_dashboard_schedule()
 
 function top_five_users()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
   
   
@@ -1774,7 +1774,7 @@ function top_five_users()
 
 function load_cut_off_chart(dt)
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
   
   
@@ -1832,7 +1832,7 @@ function load_cut_off_chart(dt)
 
 function load_acct_bal()
 {
-var full_url = window.location.origin+"/itswe_sms_app";
+var full_url = window.location.origin;
 
     
            $.ajax({
@@ -1860,7 +1860,7 @@ var full_url = window.location.origin+"/itswe_sms_app";
 }
 function load_login_users()
 {
-var full_url = window.location.origin+"/itswe_sms_app";
+var full_url = window.location.origin;
 
   //  alert('ok');
            $.ajax({

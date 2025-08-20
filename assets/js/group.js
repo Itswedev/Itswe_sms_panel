@@ -15,7 +15,7 @@ $('.ms-options-wrap').css('display','block');
       //  console.log(select_val);
 
             var btnUpload=$('#importBtn_group');
-            var full_url = window.location.origin+"/itswe_sms_app";
+            var full_url = window.location.origin;
             new AjaxUpload(btnUpload, {
                 action:full_url+'/controller/group_function.php',
                 name: 'import_contact',
@@ -42,7 +42,7 @@ $('.ms-options-wrap').css('display','block');
 
     $("#importBtn_bulk1").click(function(){
         /*  e.preventDefault();*/
-            var full_url = window.location.origin+"/itswe_sms_app";
+            var full_url = window.location.origin;
             var file_data = $('#uploadfile').prop('files')[0];
         
             var group = $("#select_group_contact").val();
@@ -93,7 +93,7 @@ $('.ms-options-wrap').css('display','block');
         $(document).on( "click", '.contact_link',function(e) {
   
             var gid = $(this).data('id');
-            var full_url = window.location.origin+"/itswe_sms_app";
+            var full_url = window.location.origin;
 
                      /*$("#tbl_contact_list").empty();*/
 
@@ -131,7 +131,7 @@ $('.ms-options-wrap').css('display','block');
       //  console.log(select_val);
 
             var btnUpload=$('#uploadBtn_group');
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
             new AjaxUpload(btnUpload, {
                 action:full_url+'/controller/group_function.php',
                 name: 'upload_contact',
@@ -191,7 +191,7 @@ $('.ms-options-wrap').css('display','block');
         if($("#edit_g_name").val()!='')
         {
 
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
                     $.ajax({
                     url: full_url+'/controller/group_function.php',
                     type: 'post',
@@ -275,7 +275,7 @@ $('.ms-options-wrap').css('display','block');
   }
 }).then((result) => {
   if (result.isConfirmed) {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
                             $.ajax({
                                         url: full_url+'/controller/group_function.php',
                                         type: 'post',
@@ -388,7 +388,7 @@ function action_message(msg, type,form_name) {
 }
 function load_group_list()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
              $.ajax({
                 url: full_url+'/controller/group_function.php',
                 type: 'post',
@@ -415,7 +415,7 @@ function load_group_list()
 function load_group_dropdown()
 {
     
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
              $.ajax({
                 url: full_url+'/controller/group_function.php',
@@ -449,7 +449,7 @@ function add_group()
             action_message('Enter group name', 'error','add_group');
             return false;
         }
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
              $.ajax({
             type: 'POST',
             cache: false, 
@@ -515,7 +515,7 @@ function addIndNumber()
             action_message('Please enter contact number', 'error','add_contact');
             return false;
         }
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
                 $.ajax({
             type: 'POST',
             cache: false, 

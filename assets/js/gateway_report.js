@@ -48,7 +48,7 @@ $(function() {
 });
 function load_gateway_dropdown()
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/gateway_controller.php',
                 type: 'post',
@@ -100,7 +100,7 @@ function load_today_report()
 {
 
 
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     $.ajax({
                 url: full_url+'/controller/report_controller.php',
                 type: 'post',
@@ -130,7 +130,7 @@ function load_today_report()
 function load_today_gateway_summary_report()
 {
     //alert('summary');
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     
     var gateway_id=$("#gateway_dropdown").val();
     var frmDate = $("#frmDate").val();
@@ -200,7 +200,7 @@ function load_today_gateway_summary_report()
 function load_today_voice_summary_report()
 {
     //alert('summary');
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     var selected_role=$("#user_role_dropdown").val();
     var user_role=$("#user_role").val();
     var u_id=$("#user_dropdown").val();

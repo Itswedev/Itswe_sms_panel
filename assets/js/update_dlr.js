@@ -3,7 +3,7 @@ $( document ).ready(function(){
    
    load_username_dropdown();
    $('#username_senderid').change(function(){
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     var userid=$('#username_senderid').val();
     $.ajax({
         url: full_url+'/controller/update_dlr_controller.php',
@@ -39,7 +39,7 @@ $( document ).ready(function(){
 
 
    $('#camp_id').change(function(){
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     var camp_id=$('#camp_id').val();
     $.ajax({
         url: full_url+'/controller/update_dlr_controller.php',
@@ -70,7 +70,7 @@ $( document ).ready(function(){
 
 
    $('#old_status').change(function(){
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     var old_status=$('#old_status').val();
     var camp_id=$('#camp_id').val();
     $.ajax({
@@ -133,7 +133,7 @@ $( document ).ready(function(){
         submitHandler: function(form,e) {
                 e.preventDefault();
 
-                    var full_url = window.location.origin+"/itswe_sms_app";
+                    var full_url = window.location.origin;
                     var rows_count=$("#rows_count").val();
 
                     $.ajax({
@@ -185,7 +185,7 @@ $( document ).ready(function(){
 
 function load_username_dropdown()
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',

@@ -89,7 +89,7 @@ load_gateway_list();
 
             // return false;
 
-               var full_url = window.location.origin+"/itswe_sms_app";
+               var full_url = window.location.origin;
                     $.ajax({
                     url: full_url+'/controller/gateway_controller.php',
                     type: 'post',
@@ -124,7 +124,7 @@ load_gateway_list();
        $(document).on( "click", '.edit_gatway_btn',function(e) {
   
             var id = $(this).data('id');
-            var full_url = window.location.origin+"/itswe_sms_app";
+            var full_url = window.location.origin;
             $.ajax({
                     url: full_url+'/controller/gateway_controller.php',
                     type: 'post',
@@ -193,7 +193,7 @@ load_gateway_list();
   }
 }).then((result) => {
   if (result.isConfirmed) {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
                             $.ajax({
                                         url: full_url+'/controller/gateway_controller.php',
                                         type: 'post',
@@ -302,7 +302,7 @@ $("#edit_gateway").click(function(){
             e.preventDefault();
             console.log('Form submitted');
 
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
                 
                     $.ajax({
                     url: full_url+'/controller/gateway_controller.php',
@@ -354,7 +354,7 @@ $("#edit_gateway").click(function(){
 
 function load_gateway_list()
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/gateway_controller.php',
                 type: 'post',

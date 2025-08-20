@@ -250,7 +250,7 @@ $(function(){
 	
 			var group_id=$("#group_id").val();
 			//alert(group_id);
-			var full_url = window.location.origin+"/itswe_sms_app";
+			var full_url = window.location.origin;
 		
 				$.ajax({
 					url: full_url+'/controller/group_function.php',
@@ -333,7 +333,7 @@ $(function(){
 						  }
 						}).then((result) => {
 						  if (result.isConfirmed) {
-								var full_url = window.location.origin+"/itswe_sms_app";
+								var full_url = window.location.origin;
 						   $.ajax({
 						url: full_url+'/controller/sending_rcs.php',
 						type: 'post',
@@ -386,7 +386,7 @@ $(function(){
 	$("#template").change(function(){
 		var temp_name=$(this).val();
 	
-		var full_url = window.location.origin+"/itswe_sms_app";
+		var full_url = window.location.origin;
 				$.ajax({
 					url: full_url+'/controller/rcs_function.php',
 					type: 'post',
@@ -448,7 +448,7 @@ $(function(){
 	
 	$("#bot_type").change(function(){
 		var bot_type = $(this).val();
-		var full_url = window.location.origin+"/itswe_sms_app";
+		var full_url = window.location.origin;
 				$.ajax({
 					url: full_url+'/controller/rcs_function.php',
 					type: 'post',

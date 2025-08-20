@@ -68,7 +68,7 @@ load_resellers();
 						  }
 					}).then((result) => {
 		  if (result.isConfirmed) {
-		     var full_url = window.location.origin+"/itswe_sms_app";
+		     var full_url = window.location.origin;
 
 		       var file_data = $('#uploadfile').prop('files')[0];
 
@@ -166,7 +166,7 @@ load_resellers();
 		});
 
 $("#edit_brand_btn").click(function(){
-	 var full_url = window.location.origin+"/itswe_sms_app";
+	 var full_url = window.location.origin;
 				        $( "#editbrandingForm" ).validate( {
 		            rules: {
 		            	
@@ -338,7 +338,7 @@ $("#edit_brand_btn").click(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
 
                             $.ajax({
                                         url: full_url+'/controller/branding.php',
@@ -415,7 +415,7 @@ $(document).on( "click", '.edit_branddtls_btn',function(e) {
 });
 function load_resellers()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
     var role=$("#reseller_dropdown").val();
    
@@ -442,7 +442,7 @@ function load_resellers()
 
 function load_branding_dtls()
 {
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 
 
            $.ajax({

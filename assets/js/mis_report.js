@@ -53,7 +53,7 @@ $(function(){
 	  $(document).on('click','#search_custom_submit',function(){
             
        
-               var full_url = window.location.origin+"/itswe_sms_app";
+               var full_url = window.location.origin;
                var userid=$("#user_dropdown_mis").val();
                if(userid=='' || userid==undefined)
                	{
@@ -157,7 +157,7 @@ function downloadTableAsCSV(tableId, filename) {
 // Download script end
 	function daily_mis_report(userid){
 		var selected_user_role=$("#user_role_dropdown_mis").val();
-		var full_url = window.location.origin+"/itswe_sms_app";
+		var full_url = window.location.origin;
 		$.ajax({
 		    url: full_url+'/controller/mis_report_controller.php',
 		    type: 'post',
@@ -189,7 +189,7 @@ function downloadTableAsCSV(tableId, filename) {
 
 function load_username_dropdown()
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -221,7 +221,7 @@ function load_username_dropdown()
 function load_users_mis()
 {
 	
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         var selected_user_role=$("#user_role_dropdown_mis").val();
        
             $.ajax({

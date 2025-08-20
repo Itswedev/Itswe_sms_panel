@@ -9,7 +9,7 @@ $(function() {
  
 		
 		$(document).on('click', '.view_delivery_count', function() {
-			var full_url = window.location.origin+"/itswe_sms_app";
+			var full_url = window.location.origin;
  		 var itemId = $(this).data('item-id');
  		 var span_id = "#delivery_count_"+itemId;
 
@@ -71,7 +71,7 @@ $("#user_dropdown").change(function(){
 			var job_id=$("#job_id").text();
 			var job_date=$("#job_date").text();
 			var table_name=$("#table_name").text();
-			var full_url = window.location.origin+"/itswe_sms_app";
+			var full_url = window.location.origin;
 
 
 				 $.ajax({
@@ -106,7 +106,7 @@ $("#user_dropdown").change(function(){
 		$(document).on('click','#download_report_btn',function(){
 			
 			var list_type="send_job_summary_report"; 
-			var full_url = window.location.origin+"/itswe_sms_app";
+			var full_url = window.location.origin;
 
 			var data_string="list_type="+list_type+"&frmDate="+frmDate+"&toDate="+toDate;
 				 $.ajax({
@@ -140,7 +140,7 @@ function load_send_jobs_report()
 {
 	
 	var list_type="api_job_table_dtls_uat"; 
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 	table= $('#send_job_details_tbl').DataTable({
 		"processing": true,
 		"serverSide": true,
@@ -186,7 +186,7 @@ function load_send_jobs_report()
 	
 
 //    	var list_type="api_job_summary_report"; 
-//    	var full_url = window.location.origin+"/itswe_sms_app";
+//    	var full_url = window.location.origin;
 //    	table= $('#send_report_tbl').DataTable({
 // 	   "processing": true,
 // 	   "serverSide": true,
@@ -226,7 +226,7 @@ function load_send_job_data()
 		var table_name=$("#table_name").text();
 		var dtlstable=$("#dtlstable").text();
 		var job_date=$("#job_date").text();
-		var full_url = window.location.origin+"/itswe_sms_app";
+		var full_url = window.location.origin;
 		/*alert(job_date);*/
 	    $.ajax({
         url: full_url+'/controller/report_controller.php',
@@ -384,7 +384,7 @@ Highcharts.chart('container', {
 
 
 	    var list_type="api_job_table_dtls"; 
-		var full_url = window.location.origin+"/itswe_sms_app";
+		var full_url = window.location.origin;
 		table= $('#send_job_details_tbl').DataTable({
         	"processing": true,
         	"serverSide": true,
@@ -415,7 +415,7 @@ Highcharts.chart('container', {
 
 function load_users()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
     var role=$("#user_role_dropdown").val();
     $(".role_name").text(role);
@@ -444,7 +444,7 @@ function test()
 	alert('test');
 }
 function load_user_chart(){
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
     $.ajax({
         url: full_url+'/controller/report_controller.php',
         type: 'post',

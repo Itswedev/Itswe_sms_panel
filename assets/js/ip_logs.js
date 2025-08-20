@@ -7,7 +7,7 @@ var today_report_type="";
 			
 $(function() {
 		var list_type="load_ip_logs"; 
-		var full_url = window.location.origin+"/itswe_sms_app";
+		var full_url = window.location.origin;
 		table= $('#ip_logs_tbl').DataTable({
         	"processing": true,
         	"serverSide": true,
@@ -40,7 +40,7 @@ $(function() {
 		$(document).on('click','#download_report_btn',function(){
 			
 			var list_type="ip_logs_report"; 
-			var full_url = window.location.origin+"/itswe_sms_app";
+			var full_url = window.location.origin;
 
 			var data_string="list_type="+list_type+"&frmDate="+frmDate+"&toDate="+toDate;
 				 $.ajax({

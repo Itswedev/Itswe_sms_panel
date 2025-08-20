@@ -13,7 +13,7 @@ load_group_dropdown();
 
 
 
-//  var full_url = window.location.origin+"/itswe_sms_app";
+//  var full_url = window.location.origin;
 //    $.ajax({
 //                     url: full_url+'/controller/bulk_sms_function.php',
 //                     type: 'post',
@@ -52,7 +52,7 @@ load_group_dropdown();
         if(route_name=='RCS')
         {
  
-         var full_url = window.location.origin+"/itswe_sms_app";
+         var full_url = window.location.origin;
    $.ajax({
                     url: full_url+'/controller/bulk_sms_function.php',
                     type: 'post',
@@ -88,7 +88,7 @@ load_group_dropdown();
         if(sid!='')
         {
  
-         var full_url = window.location.origin+"/itswe_sms_app";
+         var full_url = window.location.origin;
    $.ajax({
                     url: full_url+'/controller/bulk_sms_function.php',
                     type: 'post',
@@ -236,7 +236,7 @@ $("#send_sms").click(function(){
             }
             }).then((result) => {
             if (result.isConfirmed) {
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
 
      
             $.ajax({
@@ -406,7 +406,7 @@ $("#schedule_now_btn").click(function(){
             }
             }).then((result) => {
             if (result.isConfirmed) {
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
 
      
             $.ajax({
@@ -593,7 +593,7 @@ $("#send_test_msg").click(function(){
             }
             }).then((result) => {
             if (result.isConfirmed) {
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
                 //console.log($("#sendSMSForm").serialize());
 
               
@@ -762,7 +762,7 @@ $("#schedule_sms").click(function(){
   }
 }).then((result1) => {
   if (result1.isConfirmed) {
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
     
    $.ajax({
                     url: full_url+'/controller/sending.php',
@@ -902,7 +902,7 @@ $("#schedule_sms").click(function(){
 
 		var group_id=$("#group_id").val();
 		//alert(group_id);
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
 	
             $.ajax({
                 url: full_url+'/controller/group_function.php',
@@ -939,7 +939,7 @@ $("#schedule_sms").click(function(){
 	$("#template").change(function(){
 
 		var template_id=$("#template").val();
-         var full_url = window.location.origin+"/itswe_sms_app";
+         var full_url = window.location.origin;
 		//alert(group_id);
        
 
@@ -1047,7 +1047,7 @@ function addTemplate() {
         return false;
     }
    
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     $.ajax({
         type: "POST",
         url: full_url+"/controller/template_function.php",
@@ -1086,7 +1086,7 @@ function addTemplate() {
 function load_route_dropdown()
 {
 
- var full_url = window.location.origin+"/itswe_sms_app";
+ var full_url = window.location.origin;
     
             $.ajax({
                 url: full_url+'/controller/manage_gateway_controller.php',
@@ -1115,7 +1115,7 @@ function load_route_dropdown()
 function load_sender_id_dropdown()
 {
 
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
            $.ajax({
                 url: full_url+'/controller/sender_id_function.php',
                 type: 'post',
@@ -1143,7 +1143,7 @@ function load_sender_id_dropdown()
 function load_sender_id()
 {
 /*alert('test load senderids');*/
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
      $.ajax({
                 url: full_url+'/controller/template_function.php',
                 type: 'post',
@@ -1216,7 +1216,7 @@ $("#addSenderId").click(function(){
             submitHandler: function(form,e) {
             e.preventDefault();
            
- var full_url = window.location.origin+"/itswe_sms_app";
+ var full_url = window.location.origin;
 
             $.ajax({
                 url: full_url+'/controller/sender_id_function.php',
@@ -1318,7 +1318,7 @@ $('#create_template_modal').on('shown', function(){
                else
                {
 
-                 var full_url = window.location.origin+"/itswe_sms_app";
+                 var full_url = window.location.origin;
                     $.ajax({
                             url: full_url+'/controller/template_function.php',
                             type: 'post',
@@ -1372,7 +1372,7 @@ function addSenderIds() {
         return false;
     }
 
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
     $.ajax({
         type: "POST",
         url: full_url+"/controller/sender_id_function.php",
@@ -1438,7 +1438,7 @@ function valueChanged(){
 function load_template_list()
 {
 
-var full_url = window.location.origin+"/itswe_sms_app";
+var full_url = window.location.origin;
 var user_role=$("#user_role").val();
 
 if(user_role!='mds_adm')
@@ -1537,7 +1537,7 @@ function load_template_dropdown()
     {
 
 
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
            $.ajax({
                 url: full_url+'/controller/template_function.php',
                 type: 'post',
@@ -1567,7 +1567,7 @@ function load_template_dropdown()
 
 function load_group_dropdown()
 {
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/group_function.php',
                 type: 'post',
@@ -1639,7 +1639,7 @@ $("#btn_img_url").click(function() {
             var file_data = $('#original_url_img').prop('files')[0];
             var list_type="upload_url";
             if(file_data != undefined) {
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
                 var form_data = new FormData();     
                 
                 form_data.append('original_url', file_data);

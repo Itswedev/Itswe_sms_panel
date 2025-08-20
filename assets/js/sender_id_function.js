@@ -43,7 +43,7 @@ $(document).on( "click", '.delete_btn',function(e) {
   }
 }).then((result) => {
   if (result.isConfirmed) {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     $.ajax({
                 url: full_url+'/controller/sender_id_function.php',
                 type: 'post',
@@ -102,7 +102,7 @@ $("#addSenderId").click(function(){
             e.preventDefault();
             // alert('test');
                 
-            var full_url = window.location.origin+"/itswe_sms_app";
+            var full_url = window.location.origin;
 
             var page_name=$(".page_name").text();
             $.ajax({
@@ -187,7 +187,7 @@ $("#addSenderId").click(function(){
 
     $("#download_senderid").click(function(){
 
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         $.ajax({
             url: full_url + "/controller/sender_id_function.php",
             type: 'POST',
@@ -226,7 +226,7 @@ $("#addSenderId").click(function(){
 
             console.log(userid);
               if(file_data != undefined) {
-                  var full_url = window.location.origin+"/itswe_sms_app";
+                  var full_url = window.location.origin;
                   var form_data = new FormData();     
                       
                   form_data.append('upload_sender', file_data);
@@ -281,7 +281,7 @@ function load_username_dropdown()
    
 
 
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -360,7 +360,7 @@ function load_username_dropdown2()
    
 
 
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -432,7 +432,7 @@ function load_username_dropdown2()
 
 function load_data()
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
 
         $('#sender_id_tbl').DataTable( {
         "processing": true,
@@ -507,7 +507,7 @@ function addSenderIds() {
         return false;
     }
 
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
     $.ajax({
         type: "POST",
         url: full_url+"/controller/sender_id_function.php",
@@ -560,7 +560,7 @@ function editSenderIds() {
         return false;
     }
 
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     $.ajax({
         type: "POST",
         url: full_url+"/controller/sender_id_function.php",
@@ -599,7 +599,7 @@ function editSenderIds() {
 
 function load_senderid_dropdown(form_name)
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
      $.ajax({
                 url: full_url+'/controller/sender_id_function.php',
                 type: 'post',

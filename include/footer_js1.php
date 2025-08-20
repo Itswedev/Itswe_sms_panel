@@ -87,7 +87,7 @@
    load_acct_bal();
   function load_acct_bal()
 {
-var full_url = window.location.origin+"/itswe_sms_app";
+var full_url = window.location.origin;
 
     
            $.ajax({

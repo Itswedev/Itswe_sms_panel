@@ -37,7 +37,7 @@ $( document ).ready(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
                $.ajax({
                 url: full_url+'/controller/multimedia_controller.php',
                 type: 'post',
@@ -74,7 +74,7 @@ $( document ).ready(function(){
             alert('test');
             
             var list_type="send_job_summary_report"; 
-            var full_url = window.location.origin+"/itswe_sms_app";
+            var full_url = window.location.origin;
 
             var data_string="list_type="+list_type+"&frmDate="+frmDate+"&toDate="+toDate;
                  $.ajax({
@@ -106,7 +106,7 @@ $( document ).ready(function(){
             
             
             var list_type="download_report"; 
-            var full_url = window.location.origin+"/itswe_sms_app";
+            var full_url = window.location.origin;
 
             var data_string="list_type="+list_type+"&frmDate="+frmDate+"&toDate="+toDate+"&job_id="+job_id+"&job_date="+job_date;
                  $.ajax({
@@ -188,7 +188,7 @@ $( document ).ready(function(){
  var user_role=$("#user_role").val();
 
  var uid=$("#uid").val();
-         var full_url = window.location.origin+"/itswe_sms_app";
+         var full_url = window.location.origin;
          table= $('#today_report_tbl').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -226,7 +226,7 @@ $( document ).ready(function(){
                 
                 var file_id=$(this).val();
 
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
                 var dataString="";
                 dataString="type=load_duration&file_id="+file_id;
                  $.ajax({
@@ -399,7 +399,7 @@ $("#edit_get_response").change(function(event){
 function load_today_summary_report()
 {
     //alert('summary');
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     var selected_role=$("#user_role_dropdown").val();
     var user_role=$("#user_role").val();
     var u_id=$("#user_dropdown").val();
@@ -446,7 +446,7 @@ function load_today_summary_report()
 function load_sender_id()
 {
     
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
    
     var selected_user=$("#username_senderid").val();
     var dataString="";
@@ -492,7 +492,7 @@ function load_sender_id()
 function load_route_id()
 {
     
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
    
     var selected_user=$("#username_senderid").val();
     var dataString="";
@@ -538,7 +538,7 @@ function load_route_id()
             var selected_user=$("#username_senderid").val();
 
  
-         var full_url = window.location.origin+"/itswe_sms_app";
+         var full_url = window.location.origin;
    $.ajax({
                     url: full_url+'/controller/multimedia_controller.php',
                     type: 'post',
@@ -575,7 +575,7 @@ function load_route_id()
             var selected_user=$("#edit_userid").val();
 
  
-         var full_url = window.location.origin+"/itswe_sms_app";
+         var full_url = window.location.origin;
    $.ajax({
                     url: full_url+'/controller/multimedia_controller.php',
                     type: 'post',
@@ -604,7 +604,7 @@ function load_route_id()
 function load_scheduled_report()
 {
         var type="schedule_report";
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         var selected_role=$("#user_role_dropdown").val();
         var user_role=$("#user_role").val();
         var u_id=$("#user_dropdown").val();
@@ -644,7 +644,7 @@ function load_scheduled_report()
 
 function load_users()
 {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
 
     var role=$("#user_role_dropdown").val();
     $(".role_name").text(role);
@@ -674,7 +674,7 @@ function load_users()
 
        $("#importBtn_bulk").click(function(){
 /*	e.preventDefault();*/
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 	var file_data = $('#uploadfile').prop('files')[0];
 	var bar = $('#bar');
      if(file_data != undefined) {
@@ -814,7 +814,7 @@ $("#send_call").click(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
    $.ajax({
                     url: full_url+'/controller/sending1.php',
                     type: 'post',
@@ -989,7 +989,7 @@ popup: 'animate__animated animate__fadeOutUp'
 }
 }).then((result) => {
 if (result.isConfirmed) {
- var full_url = window.location.origin+"/itswe_sms_app";
+ var full_url = window.location.origin;
 $.ajax({
                 url: full_url+'/controller/sending1.php',
                 type: 'post',
@@ -1131,7 +1131,7 @@ $("#schedule_call").click(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
    $.ajax({
                     url: full_url+'/controller/sending1.php',
                     type: 'post',
@@ -1354,7 +1354,7 @@ $("#vsms").change(function(event){
                 form_data.append('client_api',client_api);
               }
 
-                    var full_url = window.location.origin+"/itswe_sms_app";
+                    var full_url = window.location.origin;
                     $.ajax({
                             url: full_url+'/controller/multimedia_controller.php',
                             type: 'post',
@@ -1445,7 +1445,7 @@ $("#vsms").change(function(event){
             e.preventDefault();
 
 
-                    var full_url = window.location.origin+"/itswe_sms_app";
+                    var full_url = window.location.origin;
                     $.ajax({
                             url: full_url+'/controller/multimedia_controller.php',
                             type: 'post',
@@ -1499,7 +1499,7 @@ $("#group_id").change(function(){
 
 		var group_id=$("#group_id").val();
 		//alert(group_id);
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
 	
             $.ajax({
                 url: full_url+'/controller/group_function.php',
@@ -1539,7 +1539,7 @@ $("#group_id").change(function(){
 
 function load_group_dropdown()
 {
-     var full_url = window.location.origin+"/itswe_sms_app";
+     var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/group_function.php',
                 type: 'post',
@@ -1577,7 +1577,7 @@ function load_group_dropdown()
 
 function load_caller_id_dtls()
 {
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 
 
            $.ajax({
@@ -1604,7 +1604,7 @@ function load_caller_id_dtls()
 
 function load_caller_id_dropdown()
 {
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 
 
            $.ajax({
@@ -1641,7 +1641,7 @@ function load_voice_job_data()
          // uid=$("#user_dropdown").val();
 
         var list_type="voice_call_summary_report"; 
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         table= $('#voice_call_summary_tbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -1679,7 +1679,7 @@ function load_voice_job_dtl_data()
         var table_name=$("#table_name").text();
         var dtlstable=$("#dtlstable").text();
         var job_date=$("#job_date").text();
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         /*alert(job_date);*/
         $.ajax({
         url: full_url+'/controller/multimedia_controller.php',
@@ -1841,7 +1841,7 @@ Highcharts.chart('container', {
 
 
         var list_type="send_voice_job_table_dtls"; 
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
         table= $('#send_job_details_tbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -1885,7 +1885,7 @@ Highcharts.chart('container', {
 }
 function load_multimedia_dtls()
 {
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 
 
            $.ajax({
@@ -1934,7 +1934,7 @@ function load_multimedia_dtls()
 function load_edit_route_id(userid,route_id)
 {
     
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     var selected_user=userid;
     var dataString="";
     dataString="selected_userid="+selected_user+"&type=load_route_id";
@@ -1973,7 +1973,7 @@ function load_edit_route_id(userid,route_id)
 function load_edit_sender_id(userid,sender_id)
 {
     
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
    
     var selected_user=userid;
     var dataString="";
@@ -2105,7 +2105,7 @@ $(document).on( "click", '.edit_caller_id_btn',function(e) {
 
 
 $("#update_multimedia").click(function(){
-	 var full_url = window.location.origin+"/itswe_sms_app";
+	 var full_url = window.location.origin;
 				        $( "#updatemultimediaForm" ).validate( {
 		            rules: {
 		            	
@@ -2259,7 +2259,7 @@ $("#update_multimedia").click(function(){
 
 
 $("#update_caller_id").click(function(){
-	 var full_url = window.location.origin+"/itswe_sms_app";
+	 var full_url = window.location.origin;
 				        $( "#updatecalleridForm" ).validate( {
 		            rules: {
 		            	
@@ -2384,7 +2384,7 @@ $("#update_caller_id").click(function(){
 
 
 $("#admin_update_multimedia").click(function(){
-	 var full_url = window.location.origin+"/itswe_sms_app";
+	 var full_url = window.location.origin;
 				        $( "#updateadminmultimediaForm" ).validate( {
 		            rules: {
 		            	
@@ -2589,7 +2589,7 @@ $("#admin_update_multimedia").click(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
 
                             $.ajax({
                                         url: full_url+'/controller/multimedia_controller.php',
@@ -2655,7 +2655,7 @@ $("#admin_update_multimedia").click(function(){
   }
 }).then((result) => {
   if (result.isConfirmed) {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
 
                             $.ajax({
                                         url: full_url+'/controller/multimedia_controller.php',
@@ -2698,7 +2698,7 @@ $("#admin_update_multimedia").click(function(){
 
 function load_username_dropdown()
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/user_controller.php',
                 type: 'post',
@@ -2765,7 +2765,7 @@ function load_username_dropdown()
 
 function load_voice_file_dropdown()
 {
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
             $.ajax({
                 url: full_url+'/controller/multimedia_controller.php',
                 type: 'post',

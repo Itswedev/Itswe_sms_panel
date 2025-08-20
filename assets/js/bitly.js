@@ -11,7 +11,7 @@ $(function() {
 
 
 function load_bitly_details() {
-    var full_url = window.location.origin+"/itswe_sms_app";
+    var full_url = window.location.origin;
     var job_id = $("#job_id").val();
 
     $.ajax({

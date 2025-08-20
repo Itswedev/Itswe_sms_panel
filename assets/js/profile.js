@@ -6,7 +6,7 @@ $("#save_profile_img_btn").click(function(){
 			var file_data = $('#profile_pic_select').prop('files')[0];
 			var list_type="update_profile_pic";
             if(file_data != undefined) {
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
                 var form_data = new FormData();     
                 
                 form_data.append('profile_pic_select', file_data);
@@ -82,7 +82,7 @@ $("#save_profile_img_btn").click(function(){
             submitHandler: function(form,e) {
             e.preventDefault();
             console.log('Form submitted');
-                var full_url = window.location.origin+"/itswe_sms_app";
+                var full_url = window.location.origin;
                    $.ajax({
                             url: full_url+'/controller/user_controller.php',
                             type: 'post',
@@ -120,7 +120,7 @@ $("#save_profile_img_btn").click(function(){
 function load_basic_dtls()
 {
 
-   var full_url = window.location.origin+"/itswe_sms_app";
+   var full_url = window.location.origin;
    var dataString="list_type=load_basic_dtls";
     $.ajax({
                     type: 'POST',

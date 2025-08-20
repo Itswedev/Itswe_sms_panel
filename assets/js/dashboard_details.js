@@ -10,7 +10,7 @@ $(function(){
 function load_user_profile()
 {
 
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
 	  $.ajax({
                 url: full_url+'/controller/dashboard_controller.php',
                 type: 'post',

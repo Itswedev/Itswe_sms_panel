@@ -2,7 +2,7 @@ $(function(){
 
 /*	 $("#upload_file_form").submit(function(e) {
         e.preventDefault();
-        var full_url = window.location.origin+"/itswe_sms_app";
+        var full_url = window.location.origin;
        
         $.ajax({
             url: full_url+'/controller/bulk_sms_function.php', // Url to which the request is send
@@ -20,7 +20,7 @@ $(function(){
 
 $("#importBtn_bulk").click(function(){
 /*	e.preventDefault();*/
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 	var file_data = $('#uploadfile').prop('files')[0];
 	var bar = $('#bar');
 	var bar_per = $('#bar_per');
@@ -104,7 +104,7 @@ $("#importBtn_bulk").click(function(){
 });
 function upload_csv_file()
 {
-	var full_url = window.location.origin+"/itswe_sms_app";
+	var full_url = window.location.origin;
 	var btnUpload=$('#importBtn_bulk');
 	new AjaxUpload(btnUpload, {
 		action:full_url+'/controller/bulk_sms_function.php?act=import',
@@ -131,7 +131,7 @@ function upload_csv_file()
 	}});
 }
 var d = document, w = window;
-/*var full_url = window.location.origin+"/itswe_sms_app";*/
+/*var full_url = window.location.origin;*/
 
 Ajax_upload = AjaxUpload = function(button, options){
 			if (button.jquery){
