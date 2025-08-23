@@ -2,8 +2,21 @@ $(function(){
 
 var frmDate = "";
 var toDate = ""; 
-    load_acct_bal();
 
+    load_acct_bal();
+    let currentYear = new Date().getFullYear();
+    load_chart_count(currentYear); 
+    for (let y = currentYear; y >= currentYear - 5; y--) {
+    $("#yearSelect").append(`<option value="${y}">${y}</option>`);
+    }
+    //console.log(seriesType); // today / week / month / year
+    $("#yearSelect").on("change", function() {
+        let year = $(this).val();
+        if (year) {
+          load_chart_count(year); // Your function for Ajax & chart update
+        }
+      });
+    
 var chart,option;
     
     //load_login_users();
@@ -25,8 +38,45 @@ var chart,option;
             async:true,
 
             success: function(data){
+
              var res = JSON.parse(JSON.stringify(data));
-             console.log(res);
+                $("#schedule_count").text(res);
+
+           
+           
+
+            }
+            
+          });
+    }
+
+
+    load_used_balance();
+
+    function load_used_balance()
+    {
+        //var full_url = window.location.origin;
+        var send_data="";
+        var user_role=$("#login_user_role").html();
+        send_data="user_role="+user_role+"&list_type=load_used_balance";
+        $.ajax({
+            url: full_url+'/controller/dashboard_controller.php',
+            type: 'post',
+            cache: false, 
+            data:send_data,
+             dataType:'json',
+            async:true,
+
+            success: function(data){
+
+                var res = JSON.parse(JSON.stringify(data)); 
+                // res ab ek array hai
+                
+                if (res.length > 0) {
+                    $("#used_balance").text(res[0].total_used_balance);
+                } else {
+                    $("#used_balance").text("0");
+                }
 
            
            
@@ -139,11 +189,11 @@ var chart,option;
      
           top_five_users();
           var dt='This Month';
-          load_cut_off_chart(dt);
+       //   load_cut_off_chart(dt);
           $(".dropdown-item").click(function(){
 
             dt=$(this).text();
-            load_cut_off_chart(dt);
+         //   load_cut_off_chart(dt);
 
 
           })
@@ -192,12 +242,13 @@ var chart,option;
     })
 
 
-    $(".nav-link").on("click", function () {
-        alert('dsf');
-        var seriesType = $(this).data("series");
-        console.log(seriesType); // today / week / month / year
-        load_chart_count(seriesType);
-    });
+    // $(".nav-link").on("click", function () {
+   
+    //     var seriesType = $(this).data("series");
+    //     var currentYear = $("#yearSelect").val();
+    //     //console.log(seriesType); // today / week / month / year
+    //     load_chart_count(currentYear);
+    // });
 
 
     // initial chart setup
@@ -216,55 +267,145 @@ var options = {
 };
 
 var overviewChart = new ApexCharts(document.querySelector("#overiewChart"), options);
-overviewChart.render();
+//overviewChart.render();
 
 
 
 })
+var chart;
 
 
-function load_chart_count(seriesType) {
- 
-    var send_data = {
-     
-        list_type: "load_chart_count",
-        series: seriesType
-    };
-
+function load_chart_count(year) {
     $.ajax({
         url: full_url + '/controller/dashboard_controller.php',
         type: 'POST',
-        data: send_data,
+        data: { 
+            list_type: "load_chart_count",
+            year: year
+        },
         dataType: 'json',
         success: function (res) {
             console.log("API Response:", res);
 
-            // example expected response from PHP:
-            // { "Submitted": 150, "Delivered": 120, "Failed": 30 }
+            let submittedArr = res.Submitted || [];
+            let deliveredArr = res.Delivered || [];
+            let undeliveredArr = res.Undelivered || [];
 
-            // pass to chart update
-            chart.updateSeries([
-                {
-                    name: "Submitted",
-                    type: 'column',
-                    data: res.Submitted || []
-                }, {
-                    name: "Delivered",
-                    type: 'area',
-                    data: res.Delivered || []
-                }, {
-                    name: "Undelivered",
+            let submittedSum = submittedArr.reduce((a, b) => a + b, 0);
+            let deliveredSum = deliveredArr.reduce((a, b) => a + b, 0);
+            let undeliveredSum = undeliveredArr.reduce((a, b) => a + b, 0);
+
+            // check if all data is empty
+            let isEmptyData = submittedArr.length === 0 && deliveredArr.length === 0 && undeliveredArr.length === 0;
+
+            // ===== Update HTML Counters =====
+            $(".ttl-project .pr-data:eq(0) h5").text(submittedSum.toLocaleString());
+            $(".ttl-project .pr-data:eq(1) h5").text(deliveredSum.toLocaleString());
+            $(".ttl-project .pr-data:eq(2) h5").text(undeliveredSum.toLocaleString());
+
+            var options = {
+                series: isEmptyData ? [] : [{
+                    name: 'Submitted',
                     type: 'line',
-                    data: res.Undelivered || []
+                    data: submittedArr
+                }, {
+                    name: 'Delivered',
+                    type: 'area',
+                    data: deliveredArr
+                }, {
+                    name: 'Undelivered',
+                    type: 'column',
+                    data: undeliveredArr
+                }],
+                labels: res.months || [],
+                xaxis: {
+                    categories: res.months || [],
+                    labels: { style: { fontSize: '13px', colors:'#888888' } }
+                },
+                noData: {
+                    text: 'No Data Available',
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    style: { fontSize: '16px', color: '#999' }
                 }
-            ]);
-            //updateOverviewChart(res);
-        },
-        error: function (xhr, status, error) {
-            console.error("AJAX Error:", error);
+            };
+
+            if(chart){ 
+                chart.updateOptions(options, true, true, true);
+            } else {
+                chart = new ApexCharts(document.querySelector("#overiewChart"), Object.assign({
+                    chart: {
+                        height: 300,
+                        type: 'line',
+                        stacked: false,
+                        toolbar: { show: false },
+                    },
+                    stroke: {
+                        width: [0, 1, 1],
+                        curve: 'straight',
+                        dashArray: [0, 0, 5]
+                    },
+                    legend: {
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        labels: { colors:'#888888' }
+                    },
+                    plotOptions: {
+                        bar: { columnWidth: '18%', borderRadius:6 }
+                    },
+                    fill: {
+                        opacity: [0.1, 0.1, 1],
+                        type : 'gradient',
+                        gradient: {
+                            inverseColors: false,
+                            shade: 'light',
+                            type: "vertical",
+                            colorStops : [
+                                [
+                                    { offset: 0, color: 'var(--primary)', opacity: 1 },
+                                    { offset: 100, color: 'var(--primary)', opacity: 1 }
+                                ],
+                                [
+                                    { offset: 0, color: '#3AC977', opacity: 1 },
+                                    { offset: 40, color: '#3AC977', opacity: .15 },
+                                    { offset: 100, color: '#3AC977', opacity: 0 }
+                                ],
+                                [
+                                    { offset: 0, color: '#FF5E5E', opacity: 1 },
+                                    { offset: 100, color: '#FF5E5E', opacity: 1 }
+                                ]
+                            ],
+                            stops: [0, 100, 100, 100]
+                        }
+                    },
+                    colors:["var(--primary)","#3AC977","#FF5E5E"],
+                    markers: { size: 0 },
+                    xaxis: {
+                        type: 'category',
+                        labels: { style: { fontSize: '13px', colors:'#888888' } }
+                    },
+                    yaxis: {
+                        min: 0,
+                        tickAmount: 4,
+                        labels: { style: { fontSize: '13px', colors:'#888888' } }
+                    },
+                    tooltip: {
+                        shared: true,
+                        intersect: false,
+                        y: {
+                            formatter: function (y) {
+                                return (typeof y !== "undefined") ? y.toFixed(0) + " credits" : y;
+                            }
+                        }
+                    }
+                }, options));
+                chart.render();
+            }
         }
     });
 }
+
+
 function updateOverviewChart(data) {
     // data = { Submitted: 150, Delivered: 120, Failed: 30 }
     var newData = [
@@ -1908,10 +2049,9 @@ function load_acct_bal()
 
                 success: function(data){
                     //alert(data);
-                    
-                    $('#balance_sec').empty();
-                    $('#balance_sec').html(data);
-                   
+                    var parts = data.split('***');
+                    $('#balance_sec').empty().html(parts[0]);
+                    $('#account_balance').empty().html(parts[1]);
                     
                 },
                 error: function (xhr, ajaxOptions, thrownError) {

@@ -2,6 +2,9 @@
 $mon_yr=date('M Y');
 
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
 
 <span id="page_name" style="display:none;">Administrator</span>
 <span id="login_user_role" style="display:none;"><?php echo $user_role;?></span>
@@ -73,22 +76,9 @@ $mon_yr=date('M Y');
 													<div class="card-header border-0">
 														<div class="revenue-date">
 															<span class="text-black">Balance</span>
-															<h5 class="text-black">Trans - 920.035</h5>
-															<h5 class="text-black">PROMO - 920.035</h5>
-															<h5 class="text-black">OTP - 920.035</h5>
+															<span id="account_balance"></span>
 														</div>
-														<!-- <div class="avatar-list avatar-list-stacked me-2">
-															<span class="avatar rounded-circle">
-																<a href="#">
-																	<svg width="14" height="15" viewBox="0 0 14 15"
-																		fill="none" xmlns="http://www.w3.org/2000/svg">
-																		<path fill-rule="evenodd" clip-rule="evenodd"
-																			d="M5.83333 6.27083V1.60417C5.83333 0.959834 6.35567 0.4375 7 0.4375C7.64433 0.4375 8.16667 0.959834 8.16667 1.60417V6.27083H12.8333C13.4777 6.27083 14 6.79317 14 7.4375C14 8.08183 13.4777 8.60417 12.8333 8.60417H8.16667V13.2708C8.16667 13.9152 7.64433 14.4375 7 14.4375C6.35567 14.4375 5.83333 13.9152 5.83333 13.2708V8.60417H1.16667C0.522334 8.60417 0 8.08183 0 7.4375C0 6.79317 0.522334 6.27083 1.16667 6.27083H5.83333Z"
-																			fill="#222B40" />
-																	</svg>
-																</a>
-															</span>
-														</div> -->
+														
 
 													</div>
 													<div
@@ -125,7 +115,7 @@ $mon_yr=date('M Y');
 															class="depostit-card-media d-flex justify-content-between style-1">
 															<div>
 																<h6>Schedules for <?php echo $mon_yr; ?></h6>
-																<h3>20</h3>
+																<h3 id="schedule_count"></h3>
 															</div>
 															<div class="icon-box bg-secondary">
 																<svg width="24" height="24" viewBox="0 0 24 24"
@@ -171,7 +161,7 @@ $mon_yr=date('M Y');
 															class="depostit-card-media d-flex justify-content-between pb-0">
 															<div>
 																<h6>Used Balance</h6>
-																<h3>1200.00</h3>
+																<h3 id="used_balance">00.00</h3>
 															</div>
 															<div class="icon-box bg-primary">
 																<svg width="12" height="20" viewBox="0 0 12 20"
@@ -193,17 +183,19 @@ $mon_yr=date('M Y');
 					<div class="col-xl-9 col-lg-7">
 						<div class="card overflow-hidden">
 							<div class="card-header border-0 pb-0 flex-wrap">
-								<h4 class="heading mb-0">Reports</h4>
+								<h4 class="heading mb-0">Monthly Campaign Overview</h4>
 								<ul class="nav nav-pills mix-chart-tab" id="pills-tab" role="tablist">
-								<li class="nav-item" role="presentation">
+								<!-- <li class="nav-item" role="presentation">
 									<button class="nav-link active" data-series="today" id="pills-today-tab" data-bs-toggle="pill" data-bs-target="#pills-today" type="button" role="tab" aria-selected="false">Today</button>
 								  </li>
 								  <li class="nav-item" role="presentation">
 									
 									<button class="nav-link " data-series="week" id="pills-week-tab" data-bs-toggle="pill" data-bs-target="#pills-week" type="button" role="tab" aria-selected="true">Week</button>
-								  </li>
+								  </li> -->
 								  <li class="nav-item" role="presentation">
-									<button class="nav-link" data-series="month" id="pills-month-tab" data-bs-toggle="pill" data-bs-target="#pills-month" type="button" role="tab" aria-selected="false">Month</button>
+								    <select id="yearSelect" class="form-control">
+										<option value="">Select Year</option>
+									</select>
 								  </li>
 								  
 								   <!-- <li class="nav-item" role="presentation">

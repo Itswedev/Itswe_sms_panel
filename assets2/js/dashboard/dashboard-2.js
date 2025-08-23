@@ -452,7 +452,7 @@
 				peityLine2();
 				peityLine();
 				peityLine3();
-				overiewChart();
+				//overiewChart();
 				earningChart();
 				
 				
