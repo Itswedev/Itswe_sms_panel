@@ -92,8 +92,15 @@ if (isset($_REQUEST['list_type'])) {
 	}
 	else if($list_type == 'load_schedule_count')
 	{
+	
 		$load_schedule_count=load_schedule_count();
 		 echo json_encode($load_schedule_count);
+	}
+	else if($list_type == 'load_used_balance')
+	{
+	
+		$load_used_balance=load_used_balance();
+		 echo json_encode($load_used_balance);
 	}
 	else if($list_type == 'load_live_gateway' )
 	{
@@ -333,11 +340,11 @@ function load_schedule_count()
 
 	if($user_role=='mds_adm')
 	{
-		$sql="select count(1) as total_schedule,schedule_sent from az_sendnumbers where is_schedule=1 group by 2 ";
+		$sql="select count(1) as total_schedule,schedule_sent from az_sendnumbers where is_scheduled=1 group by 2 ";
 
 	}
 	else{
-		$sql="select count(1) as total_schedule,schedule_sent from az_sendnumbers where is_schedule=1 and userids='".$userid."' group by 2 ";
+		$sql="select count(1) as total_schedule,schedule_sent from az_sendnumbers where is_scheduled=1 and userids='".$userid."' group by 2 ";
 
 	}
 	
@@ -365,6 +372,150 @@ function load_schedule_count()
 		return 0;
 	}
 }
+
+
+function load_used_balance()
+{
+	global $dbc;
+
+	$today_dt=date("Y-m-d");
+	$user_role=$_REQUEST['user_role'];
+	$userid=$_SESSION['userid'];
+
+	if($user_role=='mds_adm')
+	{
+		$sql="select sum(bill_credit) as total_used_balance from user_summary";
+
+	}
+	else{
+		$sql="select sum(bill_credit) as total_used_balance from user_summary  where  userid='".$userid."' ";
+
+	}
+	
+	$result=mysqli_query($dbc,$sql);
+	$count=mysqli_num_rows($result);
+	
+	if($count>0)
+	{
+
+		while($row=mysqli_fetch_array($result))
+		{
+				$total_record[]=$row;
+		}
+		
+		return $total_record;
+		
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+
+
+if ($_POST['list_type'] == 'load_chart_count') {
+
+    $year = isset($_POST['year']) ? (int)$_POST['year'] : date("Y");
+    $user_role = $_SESSION['user_role'];
+
+    // Default response
+    $response = [
+		"months" => [],
+		"Submitted" => [],
+		"Delivered" => [],
+		"Undelivered" => []
+	];
+
+    // Example SQL condition based on role
+    if ($user_role == "mds_usr") {
+        // logged in user ka ID session se lo
+        $user_id = $_SESSION['userid'];
+		$sql = "SELECT 
+                DATE_FORMAT(FROM_UNIXTIME(summary_date), '%b') AS month,
+                SUM(CASE WHEN status = 'Submitted' THEN bill_credit ELSE 0 END) AS submitted,
+                SUM(CASE WHEN status = 'Delivered' THEN bill_credit ELSE 0 END) AS delivered,
+                SUM(CASE WHEN status = 'Undelivered' THEN bill_credit ELSE 0 END) AS undelivered
+            FROM user_summary
+            WHERE YEAR(FROM_UNIXTIME(summary_date)) = $year
+			AND userid = $user_id
+            GROUP BY MONTH(FROM_UNIXTIME(summary_date))
+            ORDER BY MONTH(FROM_UNIXTIME(summary_date))";
+
+
+	$result=mysqli_query($dbc,$sql) or die(mysqli_error($dbc));
+
+	$count=mysqli_num_rows($result);
+	$i=1;
+	if($count>0)
+	{
+
+		
+
+		while($row = $result->fetch_assoc()){
+			$response["months"][] = $row['month'];
+			$response["Submitted"][] = (int)$row['submitted'];
+			$response["Delivered"][] = (int)$row['delivered'];
+			$response["Undelivered"][] = (int)$row['undelivered'];
+		}
+	
+		echo json_encode($response);
+		exit;
+	}
+        
+    } elseif ($user_role == "mds_rs") {
+        $reseller_id = $_SESSION['reseller_id'];
+        // SQL: count messages for all users under this reseller
+		$data = [
+            "Submitted"   => [100,150,200,180,220,250,300,280,260,240,210,230],
+            "Delivered"   => [90,140,180,160,200,230,280,250,230,220,200,210],
+            "Undelivered" => [10,10,20,20,20,20,20,30,30,20,10,20]
+        ];
+    } elseif ($user_role == "mds_ad") {
+        // SQL: count messages for all clients under admin
+		$data = [
+            "Submitted"   => [200,250,280,300,350,400,420,410,390,370,360,380],
+            "Delivered"   => [180,230,250,270,320,370,390,380,350,340,330,350],
+            "Undelivered" => [20,20,30,30,30,30,30,30,40,30,30,30]
+        ];
+    } elseif ($user_role == "mds_adm") {
+        // Top level: count everything
+        $sql = "SELECT 
+                DATE_FORMAT(created_date, '%b') AS month,
+                SUM(CASE WHEN status = 'Submitted' THEN bill_credit ELSE 0 END) AS submitted,
+                SUM(CASE WHEN status = 'Delivered' THEN bill_credit ELSE 0 END) AS delivered,
+                SUM(CASE WHEN status  NOT IN ('Submitted','Delivered') THEN bill_credit ELSE 0 END) AS undelivered
+            FROM user_summary
+            WHERE YEAR(created_date) = $year
+			
+            GROUP BY MONTH(created_date)
+            ORDER BY MONTH(created_date)";
+
+		
+	$result=mysqli_query($dbc,$sql) or die(mysqli_error($dbc));
+
+	$count=mysqli_num_rows($result);
+	$i=1;
+	if($count>0)
+	{
+
+		
+		while($row = $result->fetch_assoc()){
+			$response["months"][] = $row['month'];
+			$response["Submitted"][] = (int)$row['submitted'];
+			$response["Delivered"][] = (int)$row['delivered'];
+			$response["Undelivered"][] = (int)$row['undelivered'];
+		}
+	
+		echo json_encode($response);
+		exit;
+	}
+    }
+
+    // echo json_encode($data);
+    // exit;
+}
+
 
 function load_live_gateway()
 {

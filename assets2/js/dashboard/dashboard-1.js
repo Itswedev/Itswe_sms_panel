@@ -2,6 +2,8 @@
 
 (function($) {
     /* "use strict" */
+
+	
 	
  var dzChartlist = function(){
 	
@@ -211,147 +213,147 @@
 		chartBar1.render();
 	 
 	}
-	
-	var overiewChart = function(){
-		 var options = {
-          series: [{
-          name: 'Submitted',
-          type: 'column',
-          data: [75, 85, 72, 100, 50, 100, 80, 75, 95, 35, 75,100]
-        }, {
-          name: 'Delivered',
-          type: 'area',
-          data: [44, 65, 55, 75, 45, 55, 40, 60, 75, 45, 50,42]
-        }, {
-          name: 'Undelivered',
-          type: 'line',
-          data: [30, 25, 45, 30, 25, 35, 20, 45, 35, 20, 35,20]
-        }],
-          chart: {
-          height: 300,
-          type: 'line',
-          stacked: false,
-		  toolbar: {
-				show: false,
-			},
-        },
-        stroke: {
-          width: [0, 1, 1],
-          curve: 'straight',
-		  dashArray: [0, 0, 5]
-        },
-		legend: {
-			fontSize: '13px',
-			fontFamily: 'poppins',
-			 labels: {
-				  colors:'#888888', 
-			 }
-		},
-        plotOptions: {
-          bar: {
-            columnWidth: '18%',
-			 borderRadius:6	,
-          }
-        },
+	// var chart;
+	// var overiewChart = function(){
+	// 	 var options = {
+    //       series: [{
+    //       name: 'Submitted',
+    //       type: 'column',
+    //       data: [75, 85, 72, 100, 50, 100, 80, 75, 95, 35, 75,100]
+    //     }, {
+    //       name: 'Delivered',
+    //       type: 'area',
+    //       data: [44, 65, 55, 75, 45, 55, 40, 60, 75, 45, 50,42]
+    //     }, {
+    //       name: 'Undelivered',
+    //       type: 'line',
+    //       data: [30, 25, 45, 30, 25, 35, 20, 45, 35, 20, 35,20]
+    //     }],
+    //       chart: {
+    //       height: 300,
+    //       type: 'line',
+    //       stacked: false,
+	// 	  toolbar: {
+	// 			show: false,
+	// 		},
+    //     },
+    //     stroke: {
+    //       width: [0, 1, 1],
+    //       curve: 'straight',
+	// 	  dashArray: [0, 0, 5]
+    //     },
+	// 	legend: {
+	// 		fontSize: '13px',
+	// 		fontFamily: 'poppins',
+	// 		 labels: {
+	// 			  colors:'#888888', 
+	// 		 }
+	// 	},
+    //     plotOptions: {
+    //       bar: {
+    //         columnWidth: '18%',
+	// 		 borderRadius:6	,
+    //       }
+    //     },
         
-        fill: {
-          //opacity: [0.1, 0.1, 1],
-		  type : 'gradient',
-          gradient: {
-            inverseColors: false,
-            shade: 'light',
-            type: "vertical",
-            /* opacityFrom: 0.85,
-            opacityTo: 0.55, */
-			colorStops : [
-				[
-					{
-					  offset: 0,
-					  color: 'var(--primary)',
-					  opacity: 1
-					},
-					{
-					  offset: 100,
-					  color: 'var(--primary)',
-					  opacity: 1
-					}
-				],
-				[
-					{
-					  offset: 0,
-					  color: '#3AC977',
-					  opacity: 1
-					},
-					{
-					  offset: 0.4,
-					  color: '#3AC977',
-					  opacity: .15
-					},
-					{
-					  offset: 100,
-					  color: '#3AC977',
-					  opacity: 0
-					}
-				],
-				[
-					{
-					  offset: 0,
-					  color: '#FF5E5E',
-					  opacity: 1
-					},
-					{
-					  offset: 100,
-					  color: '#FF5E5E',
-					  opacity: 1
-					}
-				],
-			],
-            stops: [0, 100, 100, 100]
-          }
-        },
-		colors:["var(--primary)","#3AC977","#FF5E5E"],
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-          'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ],
-        markers: {
-          size: 0
-        },
-        xaxis: {
-          type: 'month',
-		  labels: {
-			   style: {
-				   fontSize: '13px',
-				   colors:'#888888',
-			   },
-		  },
-        },
-        yaxis: {
-          min: 0,
-		  tickAmount: 4,
-		  labels: {
-			   style: {
-				   fontSize: '13px',
-				   colors:'#888888',
-			   },
-		  },
-        },
-        tooltip: {
-          shared: true,
-          intersect: false,
-          y: {
-            formatter: function (y) {
-              if (typeof y !== "undefined") {
-                return y.toFixed(0) + " credits";
-              }
-              return y;
+    //     fill: {
+    //       //opacity: [0.1, 0.1, 1],
+	// 	  type : 'gradient',
+    //       gradient: {
+    //         inverseColors: false,
+    //         shade: 'light',
+    //         type: "vertical",
+    //         /* opacityFrom: 0.85,
+    //         opacityTo: 0.55, */
+	// 		colorStops : [
+	// 			[
+	// 				{
+	// 				  offset: 0,
+	// 				  color: 'var(--primary)',
+	// 				  opacity: 1
+	// 				},
+	// 				{
+	// 				  offset: 100,
+	// 				  color: 'var(--primary)',
+	// 				  opacity: 1
+	// 				}
+	// 			],
+	// 			[
+	// 				{
+	// 				  offset: 0,
+	// 				  color: '#3AC977',
+	// 				  opacity: 1
+	// 				},
+	// 				{
+	// 				  offset: 0.4,
+	// 				  color: '#3AC977',
+	// 				  opacity: .15
+	// 				},
+	// 				{
+	// 				  offset: 100,
+	// 				  color: '#3AC977',
+	// 				  opacity: 0
+	// 				}
+	// 			],
+	// 			[
+	// 				{
+	// 				  offset: 0,
+	// 				  color: '#FF5E5E',
+	// 				  opacity: 1
+	// 				},
+	// 				{
+	// 				  offset: 100,
+	// 				  color: '#FF5E5E',
+	// 				  opacity: 1
+	// 				}
+	// 			],
+	// 		],
+    //         stops: [0, 100, 100, 100]
+    //       }
+    //     },
+	// 	colors:["var(--primary)","#3AC977","#FF5E5E"],
+    //     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+    //       'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    //     ],
+    //     markers: {
+    //       size: 0
+    //     },
+    //     xaxis: {
+    //       type: 'month',
+	// 	  labels: {
+	// 		   style: {
+	// 			   fontSize: '13px',
+	// 			   colors:'#888888',
+	// 		   },
+	// 	  },
+    //     },
+    //     yaxis: {
+    //       min: 0,
+	// 	  tickAmount: 4,
+	// 	  labels: {
+	// 		   style: {
+	// 			   fontSize: '13px',
+	// 			   colors:'#888888',
+	// 		   },
+	// 	  },
+    //     },
+    //     tooltip: {
+    //       shared: true,
+    //       intersect: false,
+    //       y: {
+    //         formatter: function (y) {
+    //           if (typeof y !== "undefined") {
+    //             return y.toFixed(0) + " credits";
+    //           }
+    //           return y;
         
-            }
-          }
-        }
-        };
+    //         }
+    //       }
+    //     }
+    //     };
 
-        var chart = new ApexCharts(document.querySelector("#overiewChart"), options);
-        chart.render();
+    //     chart = new ApexCharts(document.querySelector("#overiewChart"), options);
+    //     chart.render();
 		
 		$(".mix-chart-tab .nav-link").on('click',function(){
 			var seriesType = $(this).attr('data-series');
@@ -401,6 +403,70 @@
 			]);
 		})
 	 
+	}
+
+
+	
+	$(".nav-link").on("click", function () {
+       
+        var seriesType = $(this).data("series");
+        console.log(seriesType); // today / week / month / year
+        load_chart_count(seriesType);
+    });
+
+	function load_chart_count(seriesType) {
+ 
+		var send_data = {
+		 
+			list_type: "load_chart_count",
+			series: seriesType
+		};
+	
+		$.ajax({
+			url: full_url + '/controller/dashboard_controller.php',
+			type: 'POST',
+			data: send_data,
+			dataType: 'json',
+			success: function (res) {
+				console.log("API Response:", res);
+	
+				// example expected response from PHP:
+				// { "Submitted": 150, "Delivered": 120, "Failed": 30 }
+	
+				// pass to chart update
+				chart.updateSeries([
+					{
+						name: "Submitted",
+						type: 'column',
+						data: res.Submitted || []
+					}, {
+						name: "Delivered",
+						type: 'area',
+						data: res.Delivered || []
+					}, {
+						name: "Undelivered",
+						type: 'line',
+						data: res.Undelivered || []
+					}
+				]);
+				//updateOverviewChart(res);
+			},
+			error: function (xhr, status, error) {
+				console.error("AJAX Error:", error);
+			}
+		});
+	}
+	function updateOverviewChart(data) {
+		// data = { Submitted: 150, Delivered: 120, Failed: 30 }
+		var newData = [
+			data.Submitted || 0,
+			data.Delivered || 0,
+			data.Failed || 0
+		];
+	
+		overiewChart.updateSeries([{
+			data: newData
+		}]);
 	}
 
 	var chartBar = function(){
@@ -797,7 +863,7 @@
 			load:function(){
 				NewExperience();
 				AllProject();
-				overiewChart();
+				//overiewChart();
 				chartBar();
 				expensesChart();
 				redial();

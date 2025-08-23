@@ -81,19 +81,6 @@ function load_acct_bal()
       $row_route=mysqli_fetch_array($result_route);
       $route_name=$row_route['az_rname'];
       $bal=$row['balance'];
-      // $load_bal_data.="  <div class='list-group-item'>
-      //                     <a class='notification notification-flush notification-unread' href='#!'>
-      //                       <div class='notification-avatar'>
-      //                         <div class='avatar avatar-2xl me-3'>
-      //                           <img class='rounded-circle' style='margin-top: -6px;' src='assets/images/icons8-money-64.png' alt='' />
-      //                         </div>
-      //                       </div>
-      //                       <div class='notification-body'>
-      //                         <p class='mb-1' style='margin-left: -10px;'><strong >$route_name</strong> :- $bal</p>
-                             
-      //                       </div>
-      //                     </a>
-      //                   </div>";
 
       $load_bal_data.="<li>
 										<div class='d-flex bd-highlight'>
@@ -105,10 +92,15 @@ function load_acct_bal()
 										</div>
 									</li>";
 
+
+                  $load_bal_data2.="<h5 class='text-black'>".$route_name." - ".$bal."</h5>";
+
+
+
    }
 
 
-   echo $load_bal_data;
+   echo $load_bal_data."***".$load_bal_data2;
 
 }
 
