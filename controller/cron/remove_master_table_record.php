@@ -59,7 +59,7 @@ update_user_summary_table();
                 $parent_id=$row['parent_id'];
                 $template_id=$row['TID'];
                 $summary_date=time();
-                $query_insert="INSERT INTO `user_summary`(`userid`,`bill_credit`,`status`,`route`,`sender`,`service_id`,`created_date`,`summary_date`,`parent_id`,`tid`)
+                echo $query_insert="INSERT INTO `user_summary`(`userid`,`bill_credit`,`status`,`route`,`sender`,`service_id`,`created_date`,`summary_date`,`parent_id`,`tid`)
                 VALUES('$userid','$bill_credit','$status','$route','$sender','$service_id','$created_dt',$summary_date,'$parent_id',$template_id)";
 
                 $result_insert=mysqli_query($dbc,$query_insert) or die(mysqli_error($dbc));
@@ -73,7 +73,7 @@ update_user_summary_table();
                 }
 
                 echo $response."\n";
-                
+
 
 
 
