@@ -244,11 +244,11 @@ function saveGateway()
 
             if($locate=='smsc')
             {
-              $filepath="/var/kannel/smsc/".$filename;
+              $filepath="/var/kannel/8081/smsc/".$filename;
             }
             else if($locate=='otp')
             {
-              $filepath="/var/kannel/otp/".$filename;
+              $filepath="/var/kannel/8081/otp/".$filename;
             }
             
             $myfile = fopen($filepath, "w");
