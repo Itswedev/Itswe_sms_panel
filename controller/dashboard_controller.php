@@ -520,7 +520,7 @@ if ($_POST['list_type'] == 'load_chart_count') {
 function load_live_gateway()
 {
 	libxml_use_internal_errors(true);
-	$url = 'http://localhost:13000/status.xml?password=aaa';
+	$url = 'http://localhost:18000/status.xml?password=aaa';
 // $url = 'http://localhost:13000/status?password=aaa';
  
 $curl = curl_init();
@@ -551,7 +551,7 @@ curl_close($curl);
 function load_live_gateway2()
 {
 	libxml_use_internal_errors(true);
-$url = 'http://localhost:14000/status.xml?password=aaa';
+$url = 'http://localhost:19000/status.xml?password=aaa';
  
 $curl = curl_init();
  

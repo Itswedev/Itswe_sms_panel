@@ -384,6 +384,10 @@ $dashboard=choose_dashboard($user_role);
                                     $page_name = 'view/url_tracking.php';
                                     break;
                                 }
+                                case 'manage_hash' : {
+                                  $page_name = 'view/manage_hash.php';
+                                  break;
+                              }
                                  case 'download_report_bk' : {
                                     $page_name = 'view/download_archive_report.php';
                                     break;

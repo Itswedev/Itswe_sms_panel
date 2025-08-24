@@ -14,7 +14,7 @@ if ($action == "stop_bearerbox")
 {$output = shell_exec('sudo systemctl stop bearerbox 2>&1');}
 
 if ($action == "soft_restart")
-echo("<div>".htmlspecialchars(implode("", file("http://localhost:13000/graceful-restart?password=" . urlencode('aaa') )))."</div>\n");
+echo("<div>".htmlspecialchars(implode("", file("http://localhost:18000/graceful-restart?password=" . urlencode('aaa') )))."</div>\n");
 //curl "http://localhost:13000/graceful-restart?password=aaa"
 
 ?>

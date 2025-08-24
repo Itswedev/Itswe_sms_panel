@@ -146,6 +146,7 @@
 						<ul aria-expanded="false">
 							<li> <a href="<?php echo $baseURL;?>dashboard.php?page=senderid">Manage Header</a></li>
 							<li> <a href="<?php echo $baseURL;?>dashboard.php?page=template">Templates Upload</a></li>
+							<li> <a href="<?php echo $baseURL;?>dashboard.php?page=manage_hash">Manage Hash</a></li>
 						</ul>
 					</li>
 					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
