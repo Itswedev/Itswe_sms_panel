@@ -34,11 +34,11 @@ if(isset($_REQUEST['list_type']))
 {
     $list_type=$_REQUEST['list_type'];
 
-  if($list_type=='all_plan')
+  if($list_type=='all_hash')
   {
-           $result = viewallplan();
+           $result = viewallhash();
 
-            $return_plan=all_plan($result);
+            $return_plan=all_hash($result);
 
             echo $return_plan;
   }
@@ -57,9 +57,9 @@ if(isset($_REQUEST['list_type']))
 
            
   }
-   else if($list_type=='delete_plan')
+   else if($list_type=='delete_hash')
   {
-    $rs=delete_plan();
+    $rs=delete_hash();
 
     if($rs==1)
     {
@@ -93,11 +93,11 @@ function update_plan() {
         
     }
 
-    function delete_plan() {
+    function delete_hash() {
         global $dbc;
-        $pid=$_REQUEST['pid'];
+        $hash_id=$_REQUEST['hash_id'];
        
-        $sql = "delete from az_plan  where pid='".$pid."'";
+        $sql = "delete from hash_config  where hash_id='".$hash_id."'";
         $result = mysqli_query($dbc, $sql);
         if($result)
         {
@@ -111,49 +111,45 @@ function update_plan() {
     }
 
 
-      function viewallplan() {
+      function viewallhash() {
         global $dbc;
         $result = array();
-        $sql = "SELECT *  FROM az_plan ORDER BY created_date DESC";
+        $sql = "SELECT *  FROM hash_config ORDER BY created_date DESC";
         $values = mysqli_query($dbc, $sql);
         while ($row = mysqli_fetch_assoc($values)) {
-            $pid = $row['pid'];
-            $result[$pid] = $row;
+            $id = $row['hash_id'];
+            $result[$id] = $row;
         }
         return $result;
     }
 
 
-         function all_plan($result)
+         function all_hash($result)
         {
           $i = 1;
           if (!empty($result)) { 
          
            foreach ($result as $key => $value) { 
-            $pid=$value['pid'];
-            $plan_name=$value['p_name'];
-            
+            $hash_id=$value['hash_id'];
+            $userid=$value['userid'];
+            $username=get_username($userid);
+            $tm_value=$value['tm'];
+            $tmd_value=$value['tmd'];
+            $created_date=$value['created_date'];
+            $created_dt=date('d-M-Y h:i a', strtotime($created_date));  
 
-            $pstatus=$value['status'];
-            if($pstatus=='1')
-            {
-               $status='Active';
-            }
-            else
-            {
-              $status='Inactive';
-            }
-            $created_dt=date('d-M-Y h:i a', strtotime($value['created_date']));
+            
+   
               $return_plan.="<tr>
               <td width='5%'>$i</td>
-              <td width='30%'>$plan_name</td>            
-              <td width='15%'>$status</td>
-              <td width='15%'>$created_dt</td>              
+              <td width='15%'>$username</td>            
+              <td width='30%'>$tm_value</td>
+              <td width='15%'>$tmd_value</td>              
               <td width='15%'>
-                <button class='btn btn-primary me-1 mb-1 edit_plan' type='button' data-bs-toggle='modal' data-bs-target='#edit_plan' data-id='".$pid."' data-plan='".$plan_name."' data-status='".$pstatus."' >
+                <button class='btn btn-primary me-1 mb-1 edit_hash' type='button' data-bs-toggle='modal' data-bs-target='#edit_hash' data-id='".$hash_id."' data-plan='".$plan_name."' data-status='".$pstatus."' >
                 <i class='fa fa-pencil'></i>
                 </button>&nbsp;
-                <button class='btn btn-primary me-1 mb-1 delete_plan_btn' type='button'  data-id='".$pid."'>
+                <button class='btn btn-primary me-1 mb-1 delete_hash_btn' type='button'  data-id='".$hash_id."'>
                 <i class='fa fa-trash'></i>
                 </button>
               </td></tr>";
@@ -168,32 +164,60 @@ function update_plan() {
           }
         }
 
+
 function saveHash()
 {
-	global $dbc;
-        $pname = ucwords(strtolower($_POST['p_name']));
-        $sql_select = "SELECT * from hash_config where p_name='$pname'";
-        $query_select = mysqli_query($dbc, $sql_select);
-        $count_plan=mysqli_num_rows($query_select);
-        $plan_status = $_POST['plan_status'];
-        if($count_plan==0)
-        {
-        	 $sql = "INSERT INTO az_plan (userid,p_name,created_date,status) VALUES ('" . $_SESSION['user_id'] . "','" . $pname . "',now(),$plan_status)";
-	        $query = mysqli_query($dbc, $sql);
-	        if ($query) {
-	            unset($_POST);
-	            return 1;
-	        } else {
-	            return 2;
-	        }
-        }
-        else
-        {
-        	return 0;
-        	
-        }
+    global $dbc;
 
-       
+    // Validate required fields
+    if (empty($_POST['username']) || empty($_POST['tmd_value']) || empty($_POST['tm_value'])) {
+        return 3; // Missing data
+    }
 
+    $userid = mysqli_real_escape_string($dbc, $_POST['username']);
+    $tmd_value = mysqli_real_escape_string($dbc, $_POST['tmd_value']);
+
+    // Handle TM values (array to comma-separated)
+    $tm_values = array_filter($_POST['tm_value']); // Remove empty inputs
+    $tm_value_str = mysqli_real_escape_string($dbc, implode(',', $tm_values));
+
+    // Check if record exists
+    $sql_select = "SELECT * FROM hash_config WHERE userid='$userid' AND tmd='$tmd_value'";
+    $query_select = mysqli_query($dbc, $sql_select);
+
+    if (!$query_select) {
+        return 4; // Query error in select
+    }
+
+    $count_hash = mysqli_num_rows($query_select);
+
+    if ($count_hash == 0) {
+        // Insert new record
+        $sql = "INSERT INTO hash_config (userid, tm, tmd, created_date)
+                VALUES ('$userid', '$tm_value_str', '$tmd_value', NOW())";
+
+        $query = mysqli_query($dbc, $sql);
+
+        if ($query) {
+            return 1; // Success
+        } else {
+            return 2; // Insert failed
+        }
+    } else {
+        return 0; // Already exists
+    }
 }
 
+
+function get_username($uid)
+{
+	global $dbc;
+	$sql="select * from az_user where userid='".$uid."'";
+
+	$result=mysqli_query($dbc,$sql);
+	while ($row=mysqli_fetch_array($result)) {
+		$uname=$row['user_name'];
+	}
+
+	return $uname;
+}

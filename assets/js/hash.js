@@ -1,8 +1,32 @@
 $(function(){
 
 load_username_dropdown();
+load_all_hash();
+//tm textbox creation
 
-    
+var maxFields = 5; // Maximum input boxes allowed
+    var wrapper = $("#input-container"); 
+    var addButton = $(".add-btn");
+
+    $(wrapper).on("click", ".add-btn", function(e){
+        e.preventDefault();
+        var totalFields = wrapper.find(".input-group").length;
+
+        if(totalFields < maxFields){
+            var newField = `<div class="input-group mb-2">
+                <input type="text" required class="form-control" name="tm_value[]" placeholder="TM Value">
+                <button type="button" class="btn btn-danger remove-btn">-</button>
+            </div>`;
+            wrapper.append(newField);
+        }
+    });
+
+    $(wrapper).on("click", ".remove-btn", function(e){
+        e.preventDefault();
+        $(this).parent('div').remove();
+    });
+
+
 function load_username_dropdown()
 {
         //var full_url = window.location.origin;
@@ -69,12 +93,44 @@ function load_username_dropdown()
 
 		$("#save_hash").click(function(){
 
-			var userid=$("#username").val();
-            var hash_val=$("#hash_value").val();
+		var userid=$("#username").val();
+           // var hash_val=$("#tm_value").val();
             
-
-            if(userid!='' && hash_val!='')
-            {
+        var tmValues = $("input[name='tm_value[]']")
+           .map(function () {
+               return $(this).val().trim();
+           })
+           .get();
+   
+        // Remove empty values
+        tmValues = tmValues.filter(function (val) {
+            return val !== "";
+        });
+   
+        if (userid === "") {
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Username is required!'
+                
+            }).then((value) => {
+                    return false;
+                        });
+          
+        }
+   
+       if (tmValues.length === 0) {
+        swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please enter at least one TM Value!'
+            
+          }).then((value) => {
+                return false;
+                      });
+         
+       }
+           
     
 
 			$.ajax({
@@ -126,18 +182,7 @@ function load_username_dropdown()
                     //$('#content').html(errorMsg);
                   }
             });
-   }
-    else
-    {
-         swal.fire({
-                          icon: 'error',
-                          title: 'Oops...',
-                          text: 'Please Enter Hash Value!'
-                          
-                        }).then((value) => {
-                              return false;
-                                    });
-    }
+   
 
 
 		});
@@ -280,3 +325,90 @@ function load_username_dropdown()
 
 });
 
+function load_all_hash()
+{
+        //var full_url = window.location.origin;
+            $.ajax({
+                url: full_url+'/controller/hash_controller.php',
+                type: 'post',
+                cache: false, 
+                data:'list_type=all_hash',
+                success: function(data){
+                
+                   if(data!=0)
+                   {
+
+                    $('#hash').html(data);
+                    $("#plan_tbl").DataTable({
+                      info: true
+                  });
+                   }
+                    
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    var errorMsg = 'Ajax request failed: ' + xhr.responseText;
+                    alert(data);
+                    //$('#content').html(errorMsg);
+                  }
+            });
+}
+
+
+$(document).on( "click", '.delete_hash_btn',function(e) {
+  
+    var id = $(this).data('id');
+
+           swal.fire({
+  title: 'Are you sure?',
+  text: "You want to delete this hash value!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#2c7be5',
+  cancelButtonColor: '#748194',
+  confirmButtonText: 'Yes',
+  showClass: {
+    popup: 'animate__animated animate__heartBeat'
+  },
+  hideClass: {
+    popup: 'animate__animated animate__fadeOutUp'
+  }
+}).then((result) => {
+  if (result.isConfirmed) {
+    //var full_url = window.location.origin;
+                            $.ajax({
+                                        url: full_url+'/controller/hash_controller.php',
+                                        type: 'post',
+                                        cache: false, 
+                                        data:'list_type=delete_hash&hash_id='+id,
+                                        success: function(data){
+                                           
+                                           if(data==1)
+                                           {
+                                                swal.fire('','Hash Details Deleted Successfully!!','success').then((value) => {
+                                                load_all_plan();
+                                                    });
+                                           }
+                                           else
+                                           {
+                                                swal.fire({
+                                                  icon: 'error',
+                                                  title: 'Oops...',
+                                                  text: 'Failed to delete Hash details!'
+                                                  
+                                                });
+                                           }
+                                         
+                                          
+                                            
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            var errorMsg = 'Ajax request failed: ' + xhr.responseText;
+                                            alert(data);
+                                            //$('#content').html(errorMsg);
+                                          }
+                                    });
+                        }
+                });
+
+   
+    });

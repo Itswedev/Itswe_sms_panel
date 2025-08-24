@@ -14,8 +14,8 @@
                         <thead style="background-color:#f4f7f9;">
                           <tr>
                             <th>Sr No</th>
-                            <th>Username Name</th>
-                            <th>PE</th>
+                            <th>Username</th>
+                        
                             <th>TM</th>
                             <th>TMD</th>
                             <th>Action</th>

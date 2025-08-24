@@ -23,11 +23,23 @@
               </div>
               <br/>
               <div class="row">
+                <div class="col-md-2">
+                    <label for="hash_value" class="col-form-label">TM Value:</label>
+                </div>
+                <div class="col-md-6" id="input-container">
+                    <div class="input-group mb-2">
+                    <input type="text" required class="form-control" name="tm_value[]" placeholder="TM Value">
+                    <button type="button" class="btn btn-success add-btn">+</button>
+                    </div>
+                </div>
+                </div>
+              <br/>
+              <div class="row">
                 
              
-                <div class="col-md-2"><label for="recipient-name" class="col-form-label">Hash Value:</label></div>
+                <div class="col-md-2"><label for="recipient-name" class="col-form-label">TMD Value:</label></div>
                 <div class="col-md-6">
-                <input type="text" required="required"  class="form-control" name="hash_value" id="hash_value" placeholder="Hash Value">
+                <input type="text" required="required"  class="form-control" name="tmd_value" id="tmd_value" placeholder="TMD Value">
               </div>
             
               </div>
