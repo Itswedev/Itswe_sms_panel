@@ -248,7 +248,7 @@ function saveGateway()
             }
             else if($locate=='otp')
             {
-              $filepath="/var/kannel/8081/otp/".$filename;
+              $filepath="/var/kannel/8081/otp/smsc/".$filename;
             }
             
             $myfile = fopen($filepath, "w");
