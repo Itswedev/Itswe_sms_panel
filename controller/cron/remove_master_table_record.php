@@ -27,7 +27,7 @@ error_reporting(E_ALL);
 update_user_summary_table();
 
 
-remove_master_table_record();
+//remove_master_table_record();
 
 
     function update_user_summary_table()
@@ -37,14 +37,15 @@ remove_master_table_record();
 
         $sendtabledetals = SENDSMSDETAILS;
         $today=date('Y-m-d', strtotime(' -1 day'));
+        $today="2025-08-20";
           /*$sql="select sum(msgcredit) as msgcredit,sum(if(status='Delivered',msgcredit,0))as DELIVRD,sum(if(status='submitted',msgcredit,0))as submitted,sum(if(status='Failed',msgcredit,0))as Failed,sum(if(status='Rejected',msgcredit,0))as Rejected,sum(if(status='DND',msgcredit,0))as DND,sum(if(status='Block',msgcredit,0))as Block,sum(if(status='Spam',msgcredit,0))as Spam,sum(if(status='NULL',msgcredit,0))as null_stat,sum(if(status='Refund',msgcredit,0))as Refund,sum(if(status='Smart',msgcredit,0))as Smart,userids,status,route,senderid,service_id,created_at from $sendtabledetals where STR_TO_DATE(created_at,'%Y-%m-%d')='$today' group by status";*/
-       $sql="select sum(msgcredit) as msgcredit,userids,status,route,senderid,service_id,sent_at,parent_id,SUBSTRING_INDEX(SUBSTRING_INDEX(metadata, 'TID=', -1), '&', 1) AS TID from az_sendnumbers where date(sent_at)='$today' and schedule_sent=1  group by status,userids,senderid,route,tid";
+        $sql="select sum(msgcredit) as msgcredit,userids,status,route,senderid,service_id,sent_at,parent_id,SUBSTRING_INDEX(SUBSTRING_INDEX(metadata, 'TID=', -1), '&', 1) AS TID from az_sendnumbers where date(sent_at)='$today' and schedule_sent=1  group by status,userids,senderid,route,tid";
 
        
-       $result=mysqli_query($dbc,$sql);
+        $result=mysqli_query($dbc,$sql);
         $count=mysqli_num_rows($result);
-      if($count>0)
-       {
+        if($count>0)
+        {
             while($row=mysqli_fetch_array($result))
             {
 
