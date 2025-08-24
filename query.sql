@@ -1,4 +1,4 @@
--- #Komal
+-- #Komal - 24-08-2025
 
 CREATE TABLE `hash_config` (
   `hash_id` int(11) NOT NULL,
