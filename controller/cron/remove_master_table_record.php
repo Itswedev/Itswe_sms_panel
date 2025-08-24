@@ -5,7 +5,7 @@
 // error_reporting(E_ALL);
 
 
-/*$log_file = "/var/www/html/itswe_panel/error/logfiles/remove_master_table_record.log";
+/*$log_file = "/var/www/html/Itswe_sms_panel/error/logfiles/remove_master_table_record.log";
  
 error_reporting(E_ALL); 
 // setting error logging to be active
@@ -15,9 +15,9 @@ ini_set('error_log', $log_file);*/
 
 
 //error_reporting(0);
-include_once('/var/www/html/itswe_panel/include/connection.php');
+include_once('/var/www/html/Itswe_sms_panel/include/connection.php');
 
-include("/var/www/html/itswe_panel/include/config.php");
+include("/var/www/html/Itswe_sms_panel/include/config.php");
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -59,7 +59,7 @@ update_user_summary_table();
                 $parent_id=$row['parent_id'];
                 $template_id=$row['TID'];
                 $summary_date=time();
-                echo $query_insert="INSERT INTO `user_summary`(`userid`,`bill_credit`,`status`,`route`,`sender`,`service_id`,`created_date`,`summary_date`,`parent_id`,`tid`)
+                $query_insert="INSERT INTO `user_summary`(`userid`,`bill_credit`,`status`,`route`,`sender`,`service_id`,`created_date`,`summary_date`,`parent_id`,`tid`)
                 VALUES('$userid','$bill_credit','$status','$route','$sender','$service_id','$created_dt',$summary_date,'$parent_id',$template_id)";
 
                 $result_insert=mysqli_query($dbc,$query_insert) or die(mysqli_error($dbc));
@@ -83,7 +83,7 @@ update_user_summary_table();
 
 
        $response="Summary generated on ".date('Y-m-d h:i');
-       $myfile = fopen("/var/www/html/itswe_panel/error/remove_master_table_record_log.txt", "a") or die("Unable to open file!");
+       $myfile = fopen("/var/www/html/Itswe_sms_panel/error/remove_master_table_record_log.txt", "a") or die("Unable to open file!");
          
        fwrite($myfile, "\n". $response);
        fclose($myfile);
@@ -160,7 +160,7 @@ update_user_summary_table();
         $response.="no record available on ".$record_dt;
        }
        $response.="Cron end time:- ".date('Y-m-d h:i');
-       $myfile = fopen("/var/www/html/itswe_panel/error/remove_master_table_record_log.txt", "a") or die("Unable to open file!");
+       $myfile = fopen("/var/www/html/Itswe_sms_panel/error/remove_master_table_record_log.txt", "a") or die("Unable to open file!");
          
          fwrite($myfile, "\n". $response);
          fclose($myfile);
