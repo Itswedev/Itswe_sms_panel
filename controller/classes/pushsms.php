@@ -18,7 +18,7 @@ class pushsms extends common{
     function sendQuickSMSSave($userid) {
         
         global $dbc;
-        
+        global $tmid;
         ini_set('date.timezone', 'Asia/Kolkata');
         ini_set('max_execution_time', 300);
         ini_set('memory_limit', '-1');
@@ -29,6 +29,10 @@ class pushsms extends common{
         $ip_address = $_SERVER['REMOTE_ADDR'];
         $method=$_REQUEST['msg_format'];
         $group_id=$_REQUEST['group_id'];
+
+        // $tmid=1702170557243866156;
+        // $tmid_hash='4c7cb31acdb3ff30e403098bbd2855065a002f0976bc8d997e30aa1b44d3ad74';
+
             if(!empty($group_id))
             {
                 $group_name_arr=explode($group_id);
@@ -59,6 +63,12 @@ class pushsms extends common{
         $whitelistnum=array();
         $char_set=$_REQUEST['char_set'];
 
+        $user_status= $this->fetch_user($u_id);
+        if($user_status!=1)
+        {
+            return array('status' => false, 'msg' => 'Inactive User');
+            exit;
+        }
 
         if($char_set=="Unicode")
         {
@@ -102,17 +112,34 @@ class pushsms extends common{
             if($gateway_id==0)
             {
                 $planid=$this->fetch_plan($az_routeid);
-                $service_name =$this->fetch_gateway_name($planid,$az_routeid);
+                $data  =$this->fetch_gateway_name($planid,$az_routeid);
+               
+                $service_name = array_map(function ($item) {
+                    return $item['per']; // Extract the `per` value
+                }, $data);
+
+                $service_name_type = array_map(function ($item) {
+                    return $item['gateway_family']; // Extract the `per` value
+                }, $data);
 
                 
             }
             else
             {
-                $service_name =$this->fetch_gateway_name_byid($gateway_id);
+               // $service_name =$this->fetch_gateway_name_byid($gateway_id);
+                $data  =$this->fetch_gateway_name_byid($gateway_id);
+                
+                        $service_name = array_map(function ($item) {
+                            return $item['per']; // Extract the `per` value
+                        }, $data);
+
+                        $service_name_type = array_map(function ($item) {
+                            return $item['gateway_family']; // Extract the `per` value
+                        }, $data);
             }
           
         }
-        
+      
 
         $template_id = '';
 
@@ -192,6 +219,15 @@ class pushsms extends common{
        
 
         $parent_id=$this->fetch_parent_id($userid);
+         //fetch parent tree
+         $tmid_tree = $this->fetch_parent_tree($userid);
+               
+         $tmid_tree = array_values(array_filter($tmid_tree, function($value) {
+          return $value != 0;
+      }));
+      
+     
+      //$tmid = implode(',', $tmid_tree);
 
         if($parent_id=="4530" || $userid=="4742")
         {
@@ -543,7 +579,9 @@ class pushsms extends common{
         $rId = mysqli_insert_id($dbc);
        // return array('status' => false, 'rid' => $rId);
          $parent_id=$this->fetch_parent_id($userid);
-
+        $hash_val=$this->getTMD();
+        $tm=$hash_val['tm'];
+        $tmd=$hash_val['tmd'];
 
         $str = array();
         $priority = 0;
@@ -588,21 +626,45 @@ class pushsms extends common{
 
             /*cut of insert data start*/
 
+            $total_numbers_insert = count($send_cut_off_num);
+            $service_target_counts = [];
+            foreach ($service_name as $service => $percentage) {
+                $service_target_counts[$service] = (int) round(($percentage / 100) * $total_numbers_insert);
+            }
+
+            $current_service_counts = array_fill_keys(array_keys($service_name), 0);
+            $service_names = array_keys($service_name);
+            $current_service_index = 0; // Start with the first service
         
             foreach ($send_cut_off_num as $index => $value) 
             {
 
-                if(is_array($service_name))
+                $current_service = $service_names[$current_service_index];
+                if ($current_service_counts[$current_service] >= $service_target_counts[$current_service]) {
+                    $current_service_index++; // Move to the next service
+                    $current_service = $service_names[$current_service_index];
+                } 
+                 // Assign the service name
+                $service_name_val = $current_service;
+
+                $gateway_type=$service_name_type[$service_name_val];
+                if($gateway_type=='1')
                 {
-                    $service_index = $index % count($service_name);
-                    $service_name_val=$service_name[$service_index];
+                    //$tm_val=$pe_id.",".$tmid;
+                    $tm_val=$pe_id.",".$tm.",".$tmd;
+                    $tmid_hash=hash('sha256',$tm_val);
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
                 }
-                else{
-                    $service_name_val=$service_name;
+                else
+                {
+                    
+                   // $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid";
+                   $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmd";
                 }
 
-                
-                
+
+                // Increment the count for the current service
+                $current_service_counts[$service_name_val]++;
 
                     if ($cntr == 50) {
                         $priority = 1;
@@ -716,21 +778,49 @@ class pushsms extends common{
             $send_mob_num=$v_num;
             $send_cut_off_num= [];
         }
+
+        $total_numbers_insert = count($send_mob_num);
+        $service_target_counts = [];
+        foreach ($service_name as $service => $percentage) {
+            $service_target_counts[$service] = (int) round(($percentage / 100) * $total_numbers_insert);
+        }
+
+        $current_service_counts = array_fill_keys(array_keys($service_name), 0);
+        $service_names = array_keys($service_name);
+        $current_service_index = 0; // Start with the first service
+
+
       
        
             foreach ($send_mob_num as $index => $value) 
             {
+                $err_code="";
 
-                if(is_array($service_name))
+                $current_service = $service_names[$current_service_index];
+                if ($current_service_counts[$current_service] >= $service_target_counts[$current_service]) {
+                    $current_service_index++; // Move to the next service
+                    $current_service = $service_names[$current_service_index];
+                } 
+                 // Assign the service name
+                $service_name_val = $current_service;
+
+                $gateway_type=$service_name_type[$service_name_val];
+                if($gateway_type=='1')
                 {
-                    $service_index = $index % count($service_name);
-                    $service_name_val=$service_name[$service_index];
+                    //$tm_val=$pe_id.",".$tmid;
+                    $tm_val=$pe_id.",".$tm.",".$tmd;
+                    $tmid_hash=hash('sha256',$tm_val);
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
                 }
-                else{
-                    $service_name_val=$service_name;
+                else
+                {
+                    
+                   // $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid";
+                   $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmd";
                 }
 
-                
+                // Increment the count for the current service
+                $current_service_counts[$service_name_val]++;
 
                     if ($cntr == 50) {
                         $priority = 1;
@@ -783,12 +873,15 @@ class pushsms extends common{
                     }
                     
                     //$service_name='LIVE';
+                    
                      if(!empty($dnd_num))
                         {
                            
                                   if(in_array($num_without, $dnd_num) || in_array($num_with, $dnd_num))
                                     {
                                         $status="DND Preference";
+                                        $err_code="123";
+
                                         $is_picked=1;
                                     }
                                     else
@@ -885,7 +978,8 @@ class pushsms extends common{
 
                 $str[] = '(NULL, "' . $rId . '", "' . $msg1 . '", "'.$num.'", NOW(), "' . $senderid_name . '", "' . $service_name_val . '", "", "' . $is_picked . '", "' . $priority . '", "' . $is_schedule . '", "' . $schdate . '", "' . $msgcredit . '", "' . $userids . '", "' . $is_flash . '", "' . $status . '", "' . $err_code . '", "' . $status_id . '", "'.$route_name.'", "'.$msg_len.'", "'.$job_id.'", "'.$schedule_sent.'", "'.$parent_id.'", "'.$sent_at.'","'.$cut_off_status.'","'.$master_job_id.'","'.$msgdata.'","'.$unicode_type.'","'.$meta_data.'","'.$operator_name.'")';
             }
-        
+
+          
 
         $vsms=$_REQUEST['vsms'];
        
@@ -909,11 +1003,11 @@ class pushsms extends common{
         fclose($fp);
 
        /* $new_send_file="test_sent_sms_".time().".php";
-        copy("/var/www/html/itswe_panel/controller/classes/test_sent_sms.php", "/var/www/html/itswe_panel/controller/classes/sent_sms/".$new_send_file);
+        copy("/var/www/html/Itswe_sms_panel/controller/classes/test_sent_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/sent_sms/".$new_send_file);
    
-           exec("php /var/www/html/itswe_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
+           exec("php /var/www/html/Itswe_sms_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
 
-        $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/message_sending_master.py $filename  &");
+        $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/message_sending_master.py $filename  &");
 
       
 
@@ -929,12 +1023,12 @@ class pushsms extends common{
                 fclose($fp);
 
 
-                $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
+                $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
 
               
 
                     $new_send_file="run_schedule_sms_".time().".php";
-                    copy("/var/www/html/itswe_panel/controller/classes/run_schedule_sms.php", "/var/www/html/itswe_panel/controller/classes/schedule_sms/".$new_send_file);
+                    copy("/var/www/html/Itswe_sms_panel/controller/classes/run_schedule_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/schedule_sms/".$new_send_file);
 
                     $array_schedule = array('php_file' => $new_send_file,'schedule_time' =>$schdate,'message_id' =>$job_id);
                     $schedule_filename="scheduler.json";
@@ -1014,7 +1108,7 @@ class pushsms extends common{
 
                                 if($current_balance[$i]<$bal_limit[$i])
                                 {
-                                    $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$i]."' limit 1";
+                                    $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$i]."' and user_status=1  limit 1";
 
                                         $result_user=mysqli_query($dbc,$sql_user) or die(mysqli_error($dbc));
                                         $row=mysqli_fetch_array($result_user);
@@ -1080,6 +1174,7 @@ class pushsms extends common{
     // SCHEDULE START
     function sendScheduleSMSSave($userid) {
         global $dbc;
+        global $tmid;
         ini_set('date.timezone', 'Asia/Kolkata');
         ini_set('max_execution_time', 300);
         ini_set('memory_limit', '-1');
@@ -1111,6 +1206,9 @@ class pushsms extends common{
         // return array('status' => false, 'msg' => 'Incorrect route selection','schedule'=>$scheduleData);
         // exit;
         $char_set=$_REQUEST['char_set'];
+        $hash_val=$this->getTMD();
+        $tm=$hash_val['tm'];
+        $tmd=$hash_val['tmd'];
 
 
                 if($char_set=="Unicode")
@@ -1154,11 +1252,29 @@ class pushsms extends common{
                     if($gateway_id==0)
                     {
                         $planid=$this->fetch_plan($az_routeid);
-                        $service_name =$this->fetch_gateway_name($planid,$az_routeid);
+                        //$service_name =$this->fetch_gateway_name($planid,$az_routeid);
+                        $data  =$this->fetch_gateway_name($planid,$az_routeid);
+                       
+                        $service_name = array_map(function ($item) {
+                            return $item['per']; // Extract the `per` value
+                        }, $data);
+
+                        $service_name_type = array_map(function ($item) {
+                            return $item['gateway_family']; // Extract the `per` value
+                        }, $data);
                     }
                     else
                     {
-                        $service_name =$this->fetch_gateway_name_byid($gateway_id);
+                        //$service_name =$this->fetch_gateway_name_byid($gateway_id);
+                        $data  =$this->fetch_gateway_name_byid($gateway_id);
+                
+                        $service_name = array_map(function ($item) {
+                            return $item['per']; // Extract the `per` value
+                        }, $data);
+
+                        $service_name_type = array_map(function ($item) {
+                            return $item['gateway_family']; // Extract the `per` value
+                        }, $data);
                     }
                 
                 }
@@ -1256,6 +1372,14 @@ class pushsms extends common{
                 }
 
                 $parent_id=$this->fetch_parent_id($userid);
+                $tmid_tree = $this->fetch_parent_tree($userid);
+               
+                $tmid_tree = array_values(array_filter($tmid_tree, function($value) {
+                    return $value != 0;
+                }));
+             
+            
+             $tmid = implode(',', $tmid_tree);
 
                 if($parent_id=="4530" || $userid=="4742")
                 {
@@ -1644,6 +1768,21 @@ class pushsms extends common{
                     $service_name_val=$service_name;
                 }
 
+                $gateway_type=$service_name_type[$service_name_val];
+                if($gateway_type=='1')
+                {
+                   // $tm_val=$pe_id.",".$tmid;
+                   $tm_val=$pe_id.",".$tm.",".$tmd;
+                    $tmid_hash=hash('sha256',$tm_val);
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
+                }
+                else
+                {
+                    
+                   // $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid";
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmd";
+                }
+
                     if ($cntr == 50) {
                         $priority = 1;
                     } else if ($cntr % 50 == 0) {
@@ -1757,17 +1896,51 @@ class pushsms extends common{
                 $send_cut_off_num= [];
             }
 
+            $total_numbers_insert = count($send_mob_num);
+            $service_target_counts = [];
+            foreach ($service_name as $service => $percentage) {
+                $service_target_counts[$service] = (int) round(($percentage / 100) * $total_numbers_insert);
+            }
+    
+            $current_service_counts = array_fill_keys(array_keys($service_name), 0);
+            $service_names = array_keys($service_name);
+            $current_service_index = 0; // Start with the first service
+
             foreach ($send_mob_num as $index => $value) 
             {
+                $err_code="";
+                $current_service = $service_names[$current_service_index];
+                if ($current_service_counts[$current_service] >= $service_target_counts[$current_service]) {
+                    $current_service_index++; // Move to the next service
+                    $current_service = $service_names[$current_service_index];
+                } 
+                 // Assign the service name
+                $service_name_val = $current_service;
 
-                if(is_array($service_name))
+                $gateway_type=$service_name_type[$service_name_val];
+                if($gateway_type=='1')
                 {
-                    $service_index = $index % count($service_name);
-                    $service_name_val=$service_name[$service_index];
+                    $tm_val=$pe_id.",".$tmid;
+                
+                    $tmid_hash=hash('sha256',$tm_val);
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
                 }
-                else{
-                    $service_name_val=$service_name;
+                else
+                {
+                    
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid";
                 }
+
+                // Increment the count for the current service
+                $current_service_counts[$service_name_val]++;
+                // if(is_array($service_name))
+                // {
+                //     $service_index = $index % count($service_name);
+                //     $service_name_val=$service_name[$service_index];
+                // }
+                // else{
+                //     $service_name_val=$service_name;
+                // }
 
                     if ($cntr == 50) {
                         $priority = 1;
@@ -1825,6 +1998,7 @@ class pushsms extends common{
                                   if(in_array($num_without, $dnd_num) || in_array($num_with, $dnd_num))
                                     {
                                         $status="DND Preference";
+                                        $err_code="123";
                                         $is_picked=1;
                                     }
                                     else
@@ -1943,11 +2117,11 @@ class pushsms extends common{
             fclose($fp);
 
             /* $new_send_file="test_sent_sms_".time().".php";
-            copy("/var/www/html/itswe_panel/controller/classes/test_sent_sms.php", "/var/www/html/itswe_panel/controller/classes/sent_sms/".$new_send_file);
+            copy("/var/www/html/Itswe_sms_panel/controller/classes/test_sent_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/sent_sms/".$new_send_file);
     
-            exec("php /var/www/html/itswe_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
+            exec("php /var/www/html/Itswe_sms_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
 
-            $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/message_sending_master.py $filename  &");
+            $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/message_sending_master.py $filename  &");
 
       
 
@@ -1963,12 +2137,12 @@ class pushsms extends common{
                 fclose($fp);
 
 
-                $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
+                $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
 
               
 
                     $new_send_file="run_schedule_sms_".time().".php";
-                    copy("/var/www/html/itswe_panel/controller/classes/run_schedule_sms.php", "/var/www/html/itswe_panel/controller/classes/schedule_sms/".$new_send_file);
+                    copy("/var/www/html/Itswe_sms_panel/controller/classes/run_schedule_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/schedule_sms/".$new_send_file);
 
                     $array_schedule = array('php_file' => $new_send_file,'schedule_time' =>$schdate,'message_id' =>$job_id);
                     $schedule_filename="scheduler.json";
@@ -2048,7 +2222,7 @@ class pushsms extends common{
 
                                 if($current_balance[$i]<$bal_limit[$i])
                                 {
-                                    $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$i]."' limit 1";
+                                    $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$i]."' and user_status=1 limit 1";
 
                                         $result_user=mysqli_query($dbc,$sql_user) or die(mysqli_error($dbc));
                                         $row=mysqli_fetch_array($result_user);
@@ -2954,11 +3128,11 @@ class pushsms extends common{
     //         fclose($fp);
 
     //         /* $new_send_file="test_sent_sms_".time().".php";
-    //         copy("/var/www/html/itswe_panel/controller/classes/test_sent_sms.php", "/var/www/html/itswe_panel/controller/classes/sent_sms/".$new_send_file);
+    //         copy("/var/www/html/Itswe_sms_panel/controller/classes/test_sent_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/sent_sms/".$new_send_file);
     
-    //         exec("php /var/www/html/itswe_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
+    //         exec("php /var/www/html/Itswe_sms_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
 
-    //         $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/message_sending_master.py $filename  &");
+    //         $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/message_sending_master.py $filename  &");
 
       
 
@@ -2974,12 +3148,12 @@ class pushsms extends common{
     //             fclose($fp);
 
 
-    //             $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
+    //             $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
 
               
 
     //                 $new_send_file="run_schedule_sms_".time().".php";
-    //                 copy("/var/www/html/itswe_panel/controller/classes/run_schedule_sms.php", "/var/www/html/itswe_panel/controller/classes/schedule_sms/".$new_send_file);
+    //                 copy("/var/www/html/Itswe_sms_panel/controller/classes/run_schedule_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/schedule_sms/".$new_send_file);
 
     //                 $array_schedule = array('php_file' => $new_send_file,'schedule_time' =>$schdate,'message_id' =>$job_id);
     //                 $schedule_filename="scheduler.json";
@@ -3174,7 +3348,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
     function get_cut_off($userid)
     {
         global $dbc;
-        $sql="select * from az_user where userid='".$userid."'";
+        $sql="select * from az_user where userid='".$userid."' and user_status=1";
 
         $result=mysqli_query($dbc,$sql);
         while($row=mysqli_fetch_array($result))
@@ -3230,7 +3404,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
         if (!empty($userid)) {
             //$ids = trim(implode(',', $userid));
 
-            $sql_user="select userid from az_user where userid in ($userid) and user_role='mds_ad'";
+            $sql_user="select userid from az_user where userid in ($userid) and user_role='mds_ad' and user_status=1";
             $result_user=mysqli_query($dbc,$sql_user);
             while($row_user=mysqli_fetch_array($result_user))
             {
@@ -3724,10 +3898,10 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
           
 
             $new_send_file="send_rcs_msg".time().".php";
-            copy("/var/www/html/itswe_panel/controller/classes/send_rcs_msg.php", "/var/www/html/itswe_panel/controller/classes/rcs_messages/".$new_send_file);  
+            copy("/var/www/html/Itswe_sms_panel/controller/classes/send_rcs_msg.php", "/var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/".$new_send_file);  
             if($_REQUEST['is_schedule'] != '1')
               {     
-                  $res=exec("php /var/www/html/itswe_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
+                  $res=exec("php /var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
                   return array('status' => true, 'msg' => 'Success','rcs'=>$res,'send_sms'=>'rcs');
                   exit;
               }
@@ -3742,10 +3916,10 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
             fclose($fp);
 
             $new_send_file="send_rcs_msg_standalone_".time().".php";
-            copy("/var/www/html/itswe_panel/controller/classes/send_rcs_msg_standalone.php", "/var/www/html/itswe_panel/controller/classes/rcs_messages/".$new_send_file);  
+            copy("/var/www/html/Itswe_sms_panel/controller/classes/send_rcs_msg_standalone.php", "/var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/".$new_send_file);  
             if($_REQUEST['is_schedule'] != '1')
               {     
-                  $res=exec("php /var/www/html/itswe_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
+                  $res=exec("php /var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
                   return array('status' => true, 'msg' => 'Success','rcs'=>$res,'send_sms'=>'rcs');
                   exit;
               }
@@ -3759,10 +3933,10 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
             fwrite($fp, json_encode($array, JSON_PRETTY_PRINT));   // here it will print the array pretty
             fclose($fp);
             $new_send_file="send_rcs_msg_open_url".time().".php";
-            copy("/var/www/html/itswe_panel/controller/classes/send_rcs_msg_open_url.php", "/var/www/html/itswe_panel/controller/classes/rcs_messages/".$new_send_file);  
+            copy("/var/www/html/Itswe_sms_panel/controller/classes/send_rcs_msg_open_url.php", "/var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/".$new_send_file);  
             if($_REQUEST['is_schedule'] != '1')
               {     
-    $res=exec("php /var/www/html/itswe_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
+    $res=exec("php /var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
                   return array('status' => true, 'msg' => 'Success','rcs'=>$res,'send_sms'=>'rcs');
                   exit;
               }
@@ -3779,10 +3953,10 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
           
 
             $new_send_file="send_rcs_msg_dial_action".time().".php";
-            copy("/var/www/html/itswe_panel/controller/classes/send_rcs_msg_dial_action.php", "/var/www/html/itswe_panel/controller/classes/rcs_messages/".$new_send_file);  
+            copy("/var/www/html/Itswe_sms_panel/controller/classes/send_rcs_msg_dial_action.php", "/var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/".$new_send_file);  
             if($_REQUEST['is_schedule'] != '1')
               {     
-    $res=exec("php /var/www/html/itswe_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
+    $res=exec("php /var/www/html/Itswe_sms_panel/controller/classes/rcs_messages/$new_send_file $filename $u_id > /dev/null 2>/dev/null & "); 
                   return array('status' => true, 'msg' => 'Success','rcs'=>$res,'send_sms'=>'rcs');
                   exit;
               }
@@ -3797,9 +3971,8 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
 
 
     //scheduler dynamic start
-
-    
-    function sendDynamicScheduleSMSSave($userid) {
+    function sendDynamicScheduleSMSSave($userid) 
+    {
         
 
         global $dbc;
@@ -3825,6 +3998,13 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
         $udh = 153;
         $SMS = 160;
         $msgcredit = 1;  
+
+        $user_status= $this->fetch_user($u_id);
+        if($user_status!=1)
+        {
+            return array('status' => false, 'msg' => 'Inactive User');
+            exit;
+        }
         $vsms=$_REQUEST['vsms'];
             if($vsms=='vsms')
             {
@@ -3863,13 +4043,32 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
 
             if($gateway_id==0)
             {
-                 $planid=$this->fetch_plan($az_routeid);
+                $planid=$this->fetch_plan($az_routeid);
           
-                $service_name =$this->fetch_gateway_name($planid,$az_routeid);
+               // $service_name =$this->fetch_gateway_name($planid,$az_routeid);
+                $data  =$this->fetch_gateway_name($planid,$az_routeid);
+                
+                        $service_name = array_map(function ($item) {
+                            return $item['per']; // Extract the `per` value
+                        }, $data);
+
+                        $service_name_type = array_map(function ($item) {
+                            return $item['gateway_family']; // Extract the `per` value
+                        }, $data);
+               
             }
             else
             {
-                $service_name =$this->fetch_gateway_name_byid($gateway_id);
+               // $service_name =$this->fetch_gateway_name_byid($gateway_id);
+               $data  =$this->fetch_gateway_name_byid($gateway_id);
+                
+               $service_name = array_map(function ($item) {
+                   return $item['per']; // Extract the `per` value
+               }, $data);
+
+               $service_name_type = array_map(function ($item) {
+                   return $item['gateway_family']; // Extract the `per` value
+               }, $data);
             }
           
         }
@@ -3913,11 +4112,11 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
         // exit;
       
   
-    $credit = 1;
-   /* $preview = array_unique($preview);*/
+        $credit = 1;
+        /* $preview = array_unique($preview);*/
    
-   foreach ($scheduleData as $schedule_date => $preview) 
-   {    
+        foreach ($scheduleData as $schedule_date => $preview) 
+        {    
         
         
         for ($i = 0; $i < count($preview); $i++) 
@@ -4021,28 +4220,28 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
             }
 
            
-        }//end of preview loop
+            }//end of preview loop
 
-        $total_credit=array_sum($credit_arr);
-        // return array('status' => false, 'msg' => count($numbers));
-        // exit;
+            $total_credit=array_sum($credit_arr);
+            // return array('status' => false, 'msg' => count($numbers));
+            // exit;
 
     
         
-        if (count($numbers) == 0) {
-            return array('status' => false, 'msg' => 'Select File1');
-            exit;
-        }
-       
-        $count = count($numbers);
-        $total_num_count=count($numbers);
+            if (count($numbers) == 0) {
+                return array('status' => false, 'msg' => 'Select File1');
+                exit;
+            }
+        
+            $count = count($numbers);
+            $total_num_count=count($numbers);
 
-        /* $numbers = array_unique($numbers, TRUE);*/
-        $count_unique_num=count($numbers);
+            /* $numbers = array_unique($numbers, TRUE);*/
+            $count_unique_num=count($numbers);
 
-        $duplicate_count=$total_num_count-$count_unique_num;
+            $duplicate_count=$total_num_count-$count_unique_num;
 
-        foreach ($numbers as $value) {
+            foreach ($numbers as $value) {
             if (strlen(trim($value)) > 12 || strlen(trim($value)) < 10 || (strlen(trim($value)) == 11)) {
                 continue;
             } else {
@@ -4057,58 +4256,58 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                 $num_count[] = "$value";
                 $v_num[]="+91$value";
             }
-        } //end of numbers loop
+            } //end of numbers loop
 
        
-        $num_count=$num_count;
-        $v_num=$v_num;
-        $num_split=array_chunk($v_num, 5000);
-        if($dnd_status=='1')
-        {
+            $num_count=$num_count;
+            $v_num=$v_num;
+            $num_split=array_chunk($v_num, 5000);
+            if($dnd_status=='1')
+            {
+                foreach($num_split as $mob_numbers)
+                {
+                $dnd_num= $this->getDNDNumbers($mob_numbers);
+                }
+
+            }
+
             foreach($num_split as $mob_numbers)
             {
-              $dnd_num= $this->getDNDNumbers($mob_numbers);
+
+                $blockNum = $this->getBlockNumbers($mob_numbers);  
             }
-
-        }
-
-        foreach($num_split as $mob_numbers)
-        {
-
-            $blockNum = $this->getBlockNumbers($mob_numbers);  
-        }
-                
-        if(!empty($blockNum))
-        {
-            $blockNum=array_unique($blockNum);
-        }
-
-        if(!empty($dnd_num))
+                    
+            if(!empty($blockNum))
             {
-            $dnd_num=array_unique($dnd_num);
-                
+                $blockNum=array_unique($blockNum);
             }
-        $whitelistnum = $this->getWhitelistNumbers();  
 
-        $total_num=count($v_num);
+            if(!empty($dnd_num))
+                {
+                $dnd_num=array_unique($dnd_num);
+                    
+                }
+            $whitelistnum = $this->getWhitelistNumbers();  
 
-       
-        $sql_cut_off="select `throughput`,`min_cut_value`,`cut_off_status` from cut_off_dtls where userid='".$userid."' and cut_off_route='".$az_routeid."'";
-        $rs_cutoff = mysqli_query($dbc, $sql_cut_off) or die(mysqli_error($dbc));
-        $count_cutoff=mysqli_num_rows($rs_cutoff);
-        if($count_cutoff>0)
-        {
-            while($row_cutoff=mysqli_fetch_array($rs_cutoff)) {
-                $cut_off_throughput=$row_cutoff['throughput'];
-                $min_cut_value=$row_cutoff['min_cut_value'];
-                $new_cut_off_status=$row_cutoff['cut_off_status'];
-            } 
+            $total_num=count($v_num);
 
-            $cut_off_throughput_withcomma=str_replace("-", ",", $cut_off_throughput);
-            $throughput_vals=explode(",",$cut_off_throughput_withcomma);
-            $random_cutoff=rand($throughput_vals[0],$throughput_vals[1]);
+        
+            $sql_cut_off="select `throughput`,`min_cut_value`,`cut_off_status` from cut_off_dtls where userid='".$userid."' and cut_off_route='".$az_routeid."'";
+            $rs_cutoff = mysqli_query($dbc, $sql_cut_off) or die(mysqli_error($dbc));
+            $count_cutoff=mysqli_num_rows($rs_cutoff);
+            if($count_cutoff>0)
+            {
+                while($row_cutoff=mysqli_fetch_array($rs_cutoff)) {
+                    $cut_off_throughput=$row_cutoff['throughput'];
+                    $min_cut_value=$row_cutoff['min_cut_value'];
+                    $new_cut_off_status=$row_cutoff['cut_off_status'];
+                } 
 
-        }
+                $cut_off_throughput_withcomma=str_replace("-", ",", $cut_off_throughput);
+                $throughput_vals=explode(",",$cut_off_throughput_withcomma);
+                $random_cutoff=rand($throughput_vals[0],$throughput_vals[1]);
+
+            }
 
 
         if($random_cutoff!=0)
@@ -4192,35 +4391,14 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
            
             $userids = '';
             $userid = $_SESSION['user_id'];
-            // $idss = $this->getOverSeelingUserids($_SESSION['user_id']);
             
-            //         $ids = implode(',', $idss);
-            //         $userids = $ids;
-            //         $out = $this->checkBalance($idss, $az_routeid, $total_credit);
-            //         if($out!='')
-            //         {
-            //                 if ($out == false) {
-            //                     return array('status' => false, 'msg' => 'Parent Less Balance','out'=>$out);
-            //                     exit;
-            //                 }
-            //              else {
-            //                 $usrcredit = $this->userCreditBalance($userid, $az_routeid);
-            //                 if (($usrcredit <= $total_credit) && $total_credit > 0) {
-            //                     return array('status' => false, 'msg' => 'Less Balance','user'=>$usrcredit,'credit'=>$total_credit,'idss'=>$idss);
-            //                     exit;
-            //                 }
-            //                 $userids = $userid;
-            //             }
-            //         }
-            //         else
-            //         {
                 $usrcredit = $this->userCreditBalance($userid, $az_routeid);
                 if (($usrcredit <= $total_credit) && $total_credit > 0) {
                     return array('status' => false, 'msg' => 'Less Balance','user'=>$usrcredit,'credit'=>$total_credit,'idss'=>$idss);
                     exit;
                 }
                 $userids = $userid;
-        //}
+        
 
          $is_refund = 0;
         
@@ -4267,50 +4445,50 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
         if (isset($sender[2]) && !empty($sender[2])) {
             $service_name = trim($sender[2]);
         }
-    } else {
-        $senderid_name = '';
-        $sid = '';
-    }
+        } else {
+            $senderid_name = '';
+            $sid = '';
+        }
 
-    if (isset($_REQUEST['sid']))
-    {
-        $sender = $_REQUEST['sid'];
-        $sid = $_REQUEST['sid'];
-        $senderid_name = $this->fetch_sender_name($sid);
-    }
-    else {
-        $senderid_name = '';
-        $sid = '';
-    }
-
-
-
-    $pe_id = '';
-    $pe_id = $this->getSingleData('az_senderid', "sid = '{$sid}'", 'pe_id');
-    
-    //mysqli_query($dbc, "START TRANSACTION");
-
-    if (isset($_REQUEST['original_url']) && !empty($_REQUEST['original_url'])) {
-        $orig_url = trim($_REQUEST['original_url']);
-        $url_status = 1;
-    } else {
-        $orig_url = '';
-        $url_status = 0;
-    }
-    $campaign_id = 0;
-    $campaign_name = "";
-// $campaign_type = isset($_REQUEST['campaign_name']) && !empty($_REQUEST['campaign_name']) ? $_REQUEST['campaign_name'] : "";
-    $campaign_name = isset($_REQUEST['campaign_name']) && !empty($_REQUEST['campaign_name']) ? $_REQUEST['campaign_name'] : "";
+        if (isset($_REQUEST['sid']))
+        {
+            $sender = $_REQUEST['sid'];
+            $sid = $_REQUEST['sid'];
+            $senderid_name = $this->fetch_sender_name($sid);
+        }
+        else {
+            $senderid_name = '';
+            $sid = '';
+        }
 
 
 
-    $url_status = (($_REQUEST['original_url'] != '') ? '1' : '0');
+        $pe_id = '';
+        $pe_id = $this->getSingleData('az_senderid', "sid = '{$sid}'", 'pe_id');
+        
+        //mysqli_query($dbc, "START TRANSACTION");
 
-    $vsms=$_REQUEST['vsms'];
+        if (isset($_REQUEST['original_url']) && !empty($_REQUEST['original_url'])) {
+            $orig_url = trim($_REQUEST['original_url']);
+            $url_status = 1;
+        } else {
+            $orig_url = '';
+            $url_status = 0;
+        }
+        $campaign_id = 0;
+        $campaign_name = "";
+        // $campaign_type = isset($_REQUEST['campaign_name']) && !empty($_REQUEST['campaign_name']) ? $_REQUEST['campaign_name'] : "";
+        $campaign_name = isset($_REQUEST['campaign_name']) && !empty($_REQUEST['campaign_name']) ? $_REQUEST['campaign_name'] : "";
 
 
 
-    if($vsms=='vsms')
+        $url_status = (($_REQUEST['original_url'] != '') ? '1' : '0');
+
+        $vsms=$_REQUEST['vsms'];
+
+
+
+        if($vsms=='vsms')
                 {
                 $gvsms='Yes';
                 }
@@ -4337,7 +4515,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                 if($count_cutoff>0)
                 {
                     $cutstatus="Yes";
-                $q = 'INSERT INTO ' . $sendtable . ' (`id`, `message`, `userid`, `campaign_id`, `is_scheduled`, `scheduled_time`, `created_at`, `updated_at`, `unicode_type`, `senderid`, `service_id`, `sms_type`, `is_refund`, `other_operator`, `request_code`, `campaign_name`, `is_picked`, `numbers_count`, `msg_credit`,  `charset`, `senderid_name`,  `original_url`, `url_status`, `pe_id`, `template_id`,`gvsms`,`ip_address`,`method`,`form_type`,`cut_off_value`,`route`,`job_id`,`schedule_sent`,`sent_at`,`cut_off`,`cut_off_throughput`,`total_cutting`) VALUES (NULL, "' . $msg . '", "' . $userid. '", "' . $campaign_id . '", "' . $is_schedule . '", "' . $schdate . '", NOW(), NOW(), "'.$text_type.'", "' . $sid . '" , "' . $az_routeid . '", "' . $_REQUEST['send_type'] . '", ' . $is_refund . ', NULL, "", "' . $campaign_name . '", 0, "' . $count . '", "' . $msgcredit . '",  "utf-8", "' . $senderid_name . '",  "' . $orig_url . '", ' . $url_status . ', "' . $pe_id . '", "' . $template_id . '", "' . $gvsms . '", "' . $ip_address . '"
+                $q = 'INSERT INTO ' . $sendtable . ' (`id`, `message`, `userid`, `campaign_id`, `is_scheduled`, `scheduled_time`, `created_at`, `updated_at`, `unicode_type`, `senderid`, `service_id`, `sms_type`, `is_refund`, `other_operator`, `request_code`, `campaign_name`, `is_picked`, `numbers_count`, `msg_credit`,  `charset`, `senderid_name`,  `original_url`, `url_status`, `pe_id`, `template_id`,`gvsms`,`ip_address`,`method`,`form_type`,`cut_off_value`,`route`,`job_id`,`schedule_sent`,`sent_at`,`cut_off`,`cut_off_throughput`,`total_cutting`) VALUES (NULL, "' . $msg . '", "' . $userid. '", "' . $campaign_id . '", "' . $is_schedule . '", "' . $schdate . '", NOW(), NOW(), "'.$text_type.'", "' . $sid . '" , "' . $az_routeid . '", "' . $_REQUEST['send_type'] . '", ' . $is_refund . ', NULL, "", "' . $campaign_name . '", 0, "' . $count . '", "' . $total_credit . '",  "utf-8", "' . $senderid_name . '",  "' . $orig_url . '", ' . $url_status . ', "' . $pe_id . '", "' . $template_id . '", "' . $gvsms . '", "' . $ip_address . '"
                     , "' . $method . '", "' . $form_type . '", "0","'.$route_name.'","'.$job_id.'","'.$schedule_sent.'","'.$sent_at.'","'.$cutstatus.'","'.$random_cutoff.'","'.$count_cutoff_data.'")';
 
 
@@ -4345,7 +4523,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                 }
                 else
                 {
-                $q = 'INSERT INTO ' . $sendtable . ' (`id`, `message`, `userid`, `campaign_id`, `is_scheduled`, `scheduled_time`, `created_at`, `updated_at`, `unicode_type`, `senderid`, `service_id`, `sms_type`, `is_refund`, `other_operator`, `request_code`, `campaign_name`, `is_picked`, `numbers_count`, `msg_credit`,  `charset`, `senderid_name`,  `original_url`, `url_status`, `pe_id`, `template_id`,`gvsms`,`ip_address`,`method`,`form_type`,`cut_off_value`,`route`,`job_id`,`schedule_sent`,`sent_at`) VALUES (NULL, "' . $msg . '", "' . $userid. '", "' . $campaign_id . '", "' . $is_schedule . '", "' . $schdate . '", NOW(), NOW(), "'.$text_type.'", "' . $sid . '" , "' . $az_routeid . '", "' . $_REQUEST['send_type'] . '", ' . $is_refund . ', NULL, "", "' . $campaign_name . '", 0, "' . $count . '", "' . $msgcredit . '",  "utf-8", "' . $senderid_name . '", "' . $orig_url . '", ' . $url_status . ', "' . $pe_id . '", "' . $template_id . '", "' . $gvsms . '", "' . $ip_address . '"
+                $q = 'INSERT INTO ' . $sendtable . ' (`id`, `message`, `userid`, `campaign_id`, `is_scheduled`, `scheduled_time`, `created_at`, `updated_at`, `unicode_type`, `senderid`, `service_id`, `sms_type`, `is_refund`, `other_operator`, `request_code`, `campaign_name`, `is_picked`, `numbers_count`, `msg_credit`,  `charset`, `senderid_name`,  `original_url`, `url_status`, `pe_id`, `template_id`,`gvsms`,`ip_address`,`method`,`form_type`,`cut_off_value`,`route`,`job_id`,`schedule_sent`,`sent_at`) VALUES (NULL, "' . $msg . '", "' . $userid. '", "' . $campaign_id . '", "' . $is_schedule . '", "' . $schdate . '", NOW(), NOW(), "'.$text_type.'", "' . $sid . '" , "' . $az_routeid . '", "' . $_REQUEST['send_type'] . '", ' . $is_refund . ', NULL, "", "' . $campaign_name . '", 0, "' . $count . '", "' . $total_credit . '",  "utf-8", "' . $senderid_name . '", "' . $orig_url . '", ' . $url_status . ', "' . $pe_id . '", "' . $template_id . '", "' . $gvsms . '", "' . $ip_address . '"
                     , "' . $method . '", "' . $form_type . '", "0","'.$route_name.'","'.$job_id.'","'.$schedule_sent.'","'.$sent_at.'")';
                 }
                 //mysqli_set_charset($dbc, 'utf8');
@@ -4358,6 +4536,14 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                 $rId = mysqli_insert_id($dbc);
                 // return array('status' => false, 'rid' => $rId);
                 $parent_id=$this->fetch_parent_id($userid);
+                $tmid_tree = $this->fetch_parent_tree($userid);
+               
+                $tmid_tree = array_values(array_filter($tmid_tree, function($value) {
+                 return $value != 0;
+                }));
+             
+            
+                $tmid = implode(',', $tmid_tree);
 
 
                 $str = array();
@@ -4539,17 +4725,52 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                     $send_cut_off_num= [];
                 }
 
+                $total_numbers_insert = count($send_mob_num);
+                $service_target_counts = [];
+                foreach ($service_name as $service => $percentage) {
+                    $service_target_counts[$service] = (int) round(($percentage / 100) * $total_numbers_insert);
+                }
+        
+                $current_service_counts = array_fill_keys(array_keys($service_name), 0);
+                $service_names = array_keys($service_name);
+                $current_service_index = 0; // Start with the first service
                 $c=0;
                 foreach ($send_mob_num as $index => $value) 
                 {
-                    if(is_array($service_name))
-                    {
-                        $service_index = $index % count($service_name);
-                        $service_name_val=$service_name[$service_index];
-                    }
-                    else{
-                        $service_name_val=$service_name;
-                    }
+                    $err_code="";
+                    // if(is_array($service_name))
+                    // {
+                    //     $service_index = $index % count($service_name);
+                    //     $service_name_val=$service_name[$service_index];
+                    // }
+                    // else{
+                    //     $service_name_val=$service_name;
+                    // }
+
+                    $current_service = $service_names[$current_service_index];
+                if ($current_service_counts[$current_service] >= $service_target_counts[$current_service]) {
+                    $current_service_index++; // Move to the next service
+                    $current_service = $service_names[$current_service_index];
+                } 
+                 // Assign the service name
+                $service_name_val = $current_service;
+
+                $gateway_type=$service_name_type[$service_name_val];
+                if($gateway_type=='1')
+                {
+                    $tm_val=$pe_id.",".$tmid;
+                
+                    $tmid_hash=hash('sha256',$tm_val);
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
+                }
+                else
+                {
+                    
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid";
+                }
+
+                // Increment the count for the current service
+                $current_service_counts[$service_name_val]++;
 
                     $mob_without = str_replace("+91","",trim($value));
                     $msg=$msgdata[$mob_without];
@@ -4618,6 +4839,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                                 if(in_array($num, $dnd_num))
                                     {
                                         $status="DND Preference";
+                                        $err_code="123";
                                         $is_picked=1;
                                     }
                                     else
@@ -4737,7 +4959,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                     $fp = fopen($file_path, 'w+');
                     fwrite($fp, json_encode($array, JSON_PRETTY_PRINT));   // here it will print the array pretty
                     fclose($fp);
-                    $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/message_sending_master.py $filename  &");
+                    $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/message_sending_master.py $filename  &");
                 }
                 else
                 {
@@ -4756,10 +4978,10 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                         fclose($fp);
 
 
-                        $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
+                        $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
 
                             $new_send_file="run_schedule_sms_".time().".php";
-                            copy("/var/www/html/itswe_panel/controller/classes/run_schedule_sms.php", "/var/www/html/itswe_panel/controller/classes/schedule_sms/".$new_send_file);
+                            copy("/var/www/html/Itswe_sms_panel/controller/classes/run_schedule_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/schedule_sms/".$new_send_file);
 
                             $array_schedule = array('php_file' => $new_send_file,'schedule_time' =>$schdate,'message_id' =>$job_id);
                             $schedule_filename="scheduler.json";
@@ -4839,7 +5061,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
 
                                 if($current_balance[$k]<$bal_limit[$k])
                                 {
-                                                $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$k]."' limit 1";
+                                                $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$k]."' and user_status=1 limit 1";
 
                                                     $result_user=mysqli_query($dbc,$sql_user) or die(mysqli_error($dbc));
                                                     $row=mysqli_fetch_array($result_user);
@@ -4931,9 +5153,9 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
 
         unset($numbers);
 
-    }  //end of scheduledata loop
-//    return array('status' => false, 'msg' => $scheduleData);
- 
+        }  //end of scheduledata loop
+        //    return array('status' => false, 'msg' => $scheduleData);
+    
 
 
         if ($rs) {
@@ -4944,10 +5166,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
             mysqli_rollback($dbc);
             return array('status' => false, 'msg' => 'Failed');
         }
-}
-
-
-
+    }
     //scheduler dynamic end
 
 
@@ -4956,6 +5175,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
         
 
         global $dbc;
+        global $tmid;
         ini_set('date.timezone', 'Asia/Kolkata');
         ini_set('max_execution_time', 300);
         ini_set('memory_limit', '-1');
@@ -5033,11 +5253,29 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
             {
                  $planid=$this->fetch_plan($az_routeid);
           
-                $service_name =$this->fetch_gateway_name($planid,$az_routeid);
+                // $service_name =$this->fetch_gateway_name($planid,$az_routeid);
+                $data  =$this->fetch_gateway_name($planid,$az_routeid);
+                
+                        $service_name = array_map(function ($item) {
+                            return $item['per']; // Extract the `per` value
+                        }, $data);
+
+                        $service_name_type = array_map(function ($item) {
+                            return $item['gateway_family']; // Extract the `per` value
+                        }, $data);
             }
             else
             {
-                $service_name =$this->fetch_gateway_name_byid($gateway_id);
+               // $service_name =$this->fetch_gateway_name_byid($gateway_id);
+               $data  =$this->fetch_gateway_name_byid($gateway_id);
+                
+               $service_name = array_map(function ($item) {
+                   return $item['per']; // Extract the `per` value
+               }, $data);
+
+               $service_name_type = array_map(function ($item) {
+                   return $item['gateway_family']; // Extract the `per` value
+               }, $data);
             }
           
         }
@@ -5539,6 +5777,14 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
         $rId = mysqli_insert_id($dbc);
        // return array('status' => false, 'rid' => $rId);
         $parent_id=$this->fetch_parent_id($userid);
+        $tmid_tree = $this->fetch_parent_tree($userid);
+               
+        $tmid_tree = array_values(array_filter($tmid_tree, function($value) {
+         return $value != 0;
+        }));
+     
+    
+        $tmid = implode(',', $tmid_tree);
 
 
         $str = array();
@@ -5588,6 +5834,21 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                 else{
                     $service_name_val=$service_name;
                 }
+                
+                $gateway_type=$service_name_type[$service_name_val];
+                if($gateway_type=='1')
+                {
+                    $tm_val=$pe_id.",".$tmid;
+                
+                    $tmid_hash=hash('sha256',$tm_val);
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
+                }
+                else
+                {
+                    
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid";
+                }
+
 
                  $mob_without = str_replace("+91","",trim($value));
                  $msg=$msgdata[$mob_without];
@@ -5719,18 +5980,52 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
             $send_cut_off_num= [];
         }
 
+        $total_numbers_insert = count($send_mob_num);
+        $service_target_counts = [];
+        foreach ($service_name as $service => $percentage) {
+            $service_target_counts[$service] = (int) round(($percentage / 100) * $total_numbers_insert);
+        }
+
+        $current_service_counts = array_fill_keys(array_keys($service_name), 0);
+        $service_names = array_keys($service_name);
+        $current_service_index = 0; // Start with the first service
             $c=0;
             foreach ($send_mob_num as $index => $value) 
             {
+                $err_code="";
+                $current_service = $service_names[$current_service_index];
+                if ($current_service_counts[$current_service] >= $service_target_counts[$current_service]) {
+                    $current_service_index++; // Move to the next service
+                    $current_service = $service_names[$current_service_index];
+                } 
+                 // Assign the service name
+                $service_name_val = $current_service;
 
-                if(is_array($service_name))
+                $gateway_type=$service_name_type[$service_name_val];
+                if($gateway_type=='1')
                 {
-                    $service_index = $index % count($service_name);
-                    $service_name_val=$service_name[$service_index];
+                    $tm_val=$pe_id.",".$tmid;
+                
+                    $tmid_hash=hash('sha256',$tm_val);
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
                 }
-                else{
-                    $service_name_val=$service_name;
+                else
+                {
+                    
+                    $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid";
                 }
+
+                // Increment the count for the current service
+                $current_service_counts[$service_name_val]++;
+
+                // if(is_array($service_name))
+                // {
+                //     $service_index = $index % count($service_name);
+                //     $service_name_val=$service_name[$service_index];
+                // }
+                // else{
+                //     $service_name_val=$service_name;
+                // }
 
                 $mob_without = str_replace("+91","",trim($value));
                  $msg=$msgdata[$mob_without];
@@ -5803,6 +6098,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                              if(in_array($num, $dnd_num))
                                 {
                                     $status="DND Preference";
+                                    $err_code="123";
                                     $is_picked=1;
                                 }
                                 else
@@ -5942,11 +6238,11 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
         fclose($fp);
 
        /* $new_send_file="test_sent_sms_".time().".php";
-        copy("/var/www/html/itswe_panel/controller/classes/test_sent_sms.php", "/var/www/html/itswe_panel/controller/classes/sent_sms/".$new_send_file);
+        copy("/var/www/html/Itswe_sms_panel/controller/classes/test_sent_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/sent_sms/".$new_send_file);
    
-        exec("php /var/www/html/itswe_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
+        exec("php /var/www/html/Itswe_sms_panel/controller/classes/sent_sms/$new_send_file $filename > /dev/null 2>/dev/null &"); */
 
-            $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/message_sending_master.py $filename  &");
+            $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/message_sending_master.py $filename  &");
 
 
 
@@ -5968,7 +6264,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                 fclose($fp);
 
 
-                $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
+                $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/rnd/insert_schedule_master.py $filename > /dev/null 2>/dev/null &");
 
 
          /*    $i=0;
@@ -5987,7 +6283,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
 
         
                     $new_send_file="run_schedule_sms_".time().".php";
-                    copy("/var/www/html/itswe_panel/controller/classes/run_schedule_sms.php", "/var/www/html/itswe_panel/controller/classes/schedule_sms/".$new_send_file);
+                    copy("/var/www/html/Itswe_sms_panel/controller/classes/run_schedule_sms.php", "/var/www/html/Itswe_sms_panel/controller/classes/schedule_sms/".$new_send_file);
 
                     $array_schedule = array('php_file' => $new_send_file,'schedule_time' =>$schdate,'message_id' =>$job_id);
                     $schedule_filename="scheduler.json";
@@ -6072,7 +6368,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
 
                                 if($current_balance[$i]<$bal_limit[$i])
                                 {
-                                    $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$i]."' limit 1";
+                                    $sql_user="select client_name,mobile_no from az_user where userid='".$user_ids[$i]."' and user_status=1 limit 1";
 
                                         $result_user=mysqli_query($dbc,$sql_user) or die(mysqli_error($dbc));
                                         $row=mysqli_fetch_array($result_user);
@@ -6086,7 +6382,7 @@ function divideMobileNumbersEqually($mobileNumbers, $dates) {
                                             $mobile_nos= $mobile_no[$i];
                                         }
                                         
-                                        $sql_credit_route="select `az_routeid`,`balance` from az_credit_manage where userid='".$user_ids[$i]."'";
+                                        $sql_credit_route="select `az_routeid`,`balance` from az_credit_manage where userid='".$user_ids[$i]."' and user_status=1";
                                         $result_credit_route=mysqli_query($dbc,$sql_credit_route) or die(mysqli_error($dbc));
 
                                         while($row_credit_route=mysqli_fetch_array($result_credit_route))
@@ -6389,6 +6685,15 @@ function fetch_sender_name($sid)
         return $out;
     }
 
+    function getTMD() {
+        global $dbc;
+        $out = array();
+        $q = "SELECT tm, tmd FROM hash_config WHERE userid = {$_SESSION['user_id']} limit 1";
+        
+        $rs = mysqli_query($dbc, $q);
+        return mysqli_fetch_assoc($rs);
+    }
+
     function getSenderIdName($sid = null) {
         global $dbc;
         if (!empty($sid)) {
@@ -6428,62 +6733,114 @@ function fetch_sender_name($sid)
     // }
 
 
+    // function fetch_gateway_name($planid=null,$routeid = null) {
+    //     global $dbc;
+    //     if (!empty($routeid)) {
+    //         $out = array();
+    //         $q = "SELECT `gateway_id` FROM az_route_plan WHERE  `plan_id`='$planid' and `route_id`='$routeid' and rp_status = 1";
+    //         $rs = mysqli_query($dbc, $q);
+    //         $row = mysqli_fetch_assoc($rs);
+
+    //         $gatewayid=$row['gateway_id'];
+
+    //         $gateway_arr=explode(",",$gatewayid);
+            
+    //         if(count($gateway_arr)>1)
+    //         {
+    //             foreach($gateway_arr as $gateway_ids)
+    //             {
+    //                 $q = "SELECT `smsc_id` FROM az_sms_gateway WHERE gateway_id='$gateway_ids'";
+    //                 $rs = mysqli_query($dbc, $q);
+    //                 $row = mysqli_fetch_assoc($rs);
+
+    //                 $gateway_name[]=$row['smsc_id'];
+                 
+    //             }
+                
+    //         }
+    //         else{
+    //             $gatewayid=$row['gateway_id'];
+    //             if(!empty($gatewayid))
+    //             {
+    //                 $q = "SELECT `smsc_id` FROM az_sms_gateway WHERE gateway_id='$gatewayid'";
+    //                 $rs = mysqli_query($dbc, $q);
+    //                 $row = mysqli_fetch_assoc($rs);
+
+    //                 $gateway_name=$row['smsc_id'];
+                    
+    //             }
+    //         }
+
+    //         return $gateway_name;
+            
+            
+    //     } else {
+    //         return '';
+    //     }
+    // }
+
     function fetch_gateway_name($planid=null,$routeid = null) {
         global $dbc;
         if (!empty($routeid)) {
             $out = array();
-            $q = "SELECT `gateway_id` FROM az_route_plan WHERE  `plan_id`='$planid' and `route_id`='$routeid' and rp_status = 1";
+            $q = "SELECT `gateway_id`,traffic_per FROM az_route_plan WHERE  `plan_id`='$planid' and `route_id`='$routeid' and rp_status = 1";
             $rs = mysqli_query($dbc, $q);
-            $row = mysqli_fetch_assoc($rs);
-
-            $gatewayid=$row['gateway_id'];
-
-            $gateway_arr=explode(",",$gatewayid);
+            //$row = mysqli_fetch_assoc($rs);
+            $row_count = mysqli_num_rows($rs);
             
-            if(count($gateway_arr)>1)
+            while($row=mysqli_fetch_array($rs))
             {
-                foreach($gateway_arr as $gateway_ids)
-                {
-                    $q = "SELECT `smsc_id` FROM az_sms_gateway WHERE gateway_id='$gateway_ids'";
-                    $rs = mysqli_query($dbc, $q);
-                    $row = mysqli_fetch_assoc($rs);
 
-                    $gateway_name[]=$row['smsc_id'];
-                 
-                }
+               $gatewayid=$row['gateway_id'];
+               $per=$row['traffic_per'];
+               $q2 = "SELECT `smsc_id`,`gateway_family` FROM az_sms_gateway WHERE gateway_id='$gatewayid'";
+               $rs2 = mysqli_query($dbc, $q2);
+               $row2 = mysqli_fetch_assoc($rs2);
+               //$gateway_data[$row2['smsc_id']] = $per;
+
+               $gateway_data[$row2['smsc_id']] = [
+                'gateway_family' => $row2['gateway_family'],
+                'per' => $per
+                ];
                 
             }
-            else{
-                $gatewayid=$row['gateway_id'];
-                if(!empty($gatewayid))
-                {
-                    $q = "SELECT `smsc_id` FROM az_sms_gateway WHERE gateway_id='$gatewayid'";
-                    $rs = mysqli_query($dbc, $q);
-                    $row = mysqli_fetch_assoc($rs);
-
-                    $gateway_name=$row['smsc_id'];
-                    
-                }
-            }
-
-            return $gateway_name;
             
+            return $gateway_data;
             
         } else {
             return '';
         }
     }
 
-       function fetch_gateway_name_byid($gateway_id=null) {
+    //    function fetch_gateway_name_byid($gateway_id=null) {
+    //     global $dbc;
+
+          
+    //              $q = "SELECT `smsc_id` FROM az_sms_gateway WHERE gateway_id='$gateway_id'";
+    //             $rs = mysqli_query($dbc, $q);
+    //             $row = mysqli_fetch_assoc($rs);
+
+    //             $gateway_name=$row['smsc_id'];
+    //             return $gateway_name;
+            
+    // }
+
+
+
+    function fetch_gateway_name_byid($gateway_id=null) {
         global $dbc;
 
           
-                 $q = "SELECT `smsc_id` FROM az_sms_gateway WHERE gateway_id='$gateway_id'";
+                 $q = "SELECT `smsc_id`,`gateway_family` FROM az_sms_gateway WHERE gateway_id='$gateway_id'";
                 $rs = mysqli_query($dbc, $q);
                 $row = mysqli_fetch_assoc($rs);
-
-                $gateway_name=$row['smsc_id'];
-                return $gateway_name;
+                $per=100;
+                //$gateway_name=$row['smsc_id'];
+                $gateway_data[$row['smsc_id']] = [
+                    'gateway_family' => $row['gateway_family'],
+                    'per' => $per
+                    ];
+                return $gateway_data;
             
     }
 
@@ -6587,7 +6944,7 @@ function fetch_sender_name($sid)
         if (!empty($userid)) {
             $ids = trim(implode(',', $userid));
 
-            $sql_user="select userid from az_user where userid in ($ids) and user_role='mds_ad'";
+            $sql_user="select userid from az_user where userid in ($ids) and user_role='mds_ad' and user_status=1";
             $result_user=mysqli_query($dbc,$sql_user);
             while($row_user=mysqli_fetch_array($result_user))
             {
@@ -6642,7 +6999,7 @@ function fetch_sender_name($sid)
         fclose($fp);
 
 
-       $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/vsms/create_hashes_example.py $filename $user_id >> /var/www/html/itswe_panel/controller/vsms/test_vsms.log");
+       $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/vsms/create_hashes_example.py $filename $user_id >> /var/www/html/Itswe_sms_panel/controller/vsms/test_vsms.log");
         return $pyout;
     }
 
@@ -6659,7 +7016,7 @@ function fetch_sender_name($sid)
         fclose($fp);
 
 
-       $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/controller/vsms/create_hashes_example1.py $filename $user_id >> /var/www/html/itswe_panel/controller/vsms/test_vsms.log");
+       $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/controller/vsms/create_hashes_example1.py $filename $user_id >> /var/www/html/Itswe_sms_panel/controller/vsms/test_vsms.log");
         return $pyout;
     }
 
@@ -6670,7 +7027,7 @@ function fetch_sender_name($sid)
         $array = array('mobile_number' => $num_count,'msg' => $msg);
        
         //$filename="rcs_send_msg_".time().".json";
-        $filename="/var/www/html/itswe_panel/rcs_send_sms1.json";
+        $filename="/var/www/html/Itswe_sms_panel/rcs_send_sms1.json";
         $file_path="rcs/".$filename;
         $fp = fopen($filename, 'w+');
         
@@ -6680,11 +7037,11 @@ function fetch_sender_name($sid)
         if($message_type=='text')
         {
 
-         $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/rcs/send_simple_text.py rcs_send_sms1.json", $outp, $return);
+         $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/rcs/send_simple_text.py rcs_send_sms1.json", $outp, $return);
         }
         else if($message_type=='standalone' || $message_type=='carousel')
         {
-        $pyout = exec("/var/www/html/itswe_panel/python-venv/bin/python3 /var/www/html/itswe_panel/rcs/rich_card.py rcs_send_sms1.json", $outp, $return);
+        $pyout = exec("/var/www/html/Itswe_sms_panel/python-venv/bin/python3 /var/www/html/Itswe_sms_panel/rcs/rich_card.py rcs_send_sms1.json", $outp, $return);
         }
         return $pyout;
    
@@ -6826,7 +7183,7 @@ function fetch_sender_name($sid)
      function getBlockNumbers_json() {
         global $dbc;
        
-       $dnd_file = "/var/www/html/itswe_panel/controller/classes/block.json";
+       $dnd_file = "/var/www/html/Itswe_sms_panel/controller/classes/block.json";
 
         $jsonString = file_get_contents($dnd_file);
         $data = json_decode($jsonString, true);
@@ -6856,7 +7213,7 @@ function fetch_sender_name($sid)
         function fetch_parent_id($userid) {
         global $dbc;
       
-        $q = "SELECT parent_id FROM `az_user` where userid='$userid'";
+        $q = "SELECT parent_id FROM `az_user` where userid='$userid' and user_status=1";
         $rs = mysqli_query($dbc, $q);
       
         if (mysqli_num_rows($rs)) {
@@ -6865,6 +7222,20 @@ function fetch_sender_name($sid)
             }
         }
         return $parent_id;
+    }
+
+    function fetch_user($userid) {
+        global $dbc;
+      
+        $q = "SELECT user_status FROM `az_user` where userid='$userid'";
+        $rs = mysqli_query($dbc, $q);
+      
+        if (mysqli_num_rows($rs)) {
+            while ($row = mysqli_fetch_assoc($rs)) {
+                $user_status = $row['user_status'];
+            }
+        }
+        return $user_status;
     }
 
        function getDNDNumbers($mob_num) {
@@ -7088,6 +7459,51 @@ function fetch_sender_name($sid)
             return 0;
         }
 
+    }
+
+
+    function fetch_parent_tree($userid, $tmid_array = []) {
+        global $dbc;
+       
+        
+        // Query to get the parent_id and user_role
+        $q = "SELECT parent_id, user_role, tmid,user_level FROM `az_user` WHERE userid='$userid'";
+        $rs = mysqli_query($dbc, $q);
+    
+        if ($rs && mysqli_num_rows($rs) > 0) {
+            $row = mysqli_fetch_assoc($rs);
+            $parent_id = $row['parent_id'];
+            $user_role = $row['user_role'];
+            $tmid = $row['tmid'];
+            $tm_type = $row['user_level'];
+
+
+    
+            // Add the current user to the tree
+          
+            if ($tmid) {
+                $tmid_array[] = $tmid;
+            }
+         
+            
+            // If user_role is not 'mds_adm' and there is a parent, recurse
+            // if (($user_role !== 'mds_adm' && $parent_id ) || ($tm_type!='10')) 
+            if (($user_role === 'mds_adm' || $tm_type=='10')) 
+            {
+                
+                return $tmid_array;
+            }
+            else{
+                
+                $tmid_array =$this->fetch_parent_tree($parent_id, $tmid_array);
+            }
+            // if (($user_role !== 'mds_adm' && $parent_id )) 
+            // {
+            //     $tmid_array =$this->fetch_parent_tree($parent_id, $tmid_array);
+            // }
+        }
+    
+        return $tmid_array;
     }
 
     
