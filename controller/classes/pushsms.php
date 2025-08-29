@@ -806,13 +806,14 @@ class pushsms extends common{
                 $service_name_val = $current_service;
 
                 $gateway_type=$service_name_type[$service_name_val];
+                return array('status' => false, 'msg' => 'Failed','tmd'=>$gateway_type);
+                die();
                 if($gateway_type=='1')
                 {
                     //$tm_val=$pe_id.",".$tmid;
                     $tm_val=$pe_id.",".$tm.",".$tmd;
                     $tmid_hash=hash('sha256',$tm_val);
-                    return array('status' => false, 'msg' => 'Failed','tmd'=>$tmid_hash);
-                    die();
+                   
                     $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
                 }
                 else
@@ -992,8 +993,7 @@ class pushsms extends common{
                
             }
 
-            return array('status' => false, 'msg' => 'Failed','tmd'=>$tmid_hash);
-            die();
+           
            $query_data = array_chunk($str, 5000);
         if($_REQUEST['is_schedule'] != '1')
         {
@@ -1213,6 +1213,7 @@ class pushsms extends common{
         // exit;
         $char_set=$_REQUEST['char_set'];
         $hash_val=$this->getTMD();
+        
         $tm=$hash_val['tm'];
         $tmd=$hash_val['tmd'];
 
