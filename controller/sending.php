@@ -85,7 +85,7 @@ if (isset($_REQUEST['type']) && $_REQUEST['type'] == 'sendSMSsave') {
             
         }
 
-//      print_r($rs);
+     print_r($rs);
          
     //}
 
