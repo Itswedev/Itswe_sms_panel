@@ -806,7 +806,7 @@ class pushsms extends common{
                 $service_name_val = $current_service;
 
                 $gateway_type=$service_name_type[$service_name_val];
-                return array('status' => false, 'msg' => 'Failed','tmd'=>$gateway_type);
+                return array('status' => false, 'msg' => 'Failed','gateway_type'=>$gateway_type);
                 die();
                 if($gateway_type=='1')
                 {
