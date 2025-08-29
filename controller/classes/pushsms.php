@@ -798,14 +798,15 @@ class pushsms extends common{
                 $err_code="";
 
                 $current_service = $service_names[$current_service_index];
+                return array('status' => false, 'msg' => 'Failed','gateway_name'=>$current_service);
+                die();
                 if ($current_service_counts[$current_service] >= $service_target_counts[$current_service]) {
                     $current_service_index++; // Move to the next service
                     $current_service = $service_names[$current_service_index];
                 } 
                  // Assign the service name
                 $service_name_val = $current_service;
-                return array('status' => false, 'msg' => 'Failed','gateway_name'=>$service_names);
-                die();
+               
                 $gateway_type=$service_name_type[$service_name_val];
                
                 if($gateway_type=='1')
