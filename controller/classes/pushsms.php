@@ -779,8 +779,7 @@ class pushsms extends common{
             $send_mob_num=$v_num;
             $send_cut_off_num= [];
         }
-        return array('status' => false, 'msg' => 'Failed','gateway_type'=>$service_name_type);
-        die();
+   
         $total_numbers_insert = count($send_mob_num);
         $service_target_counts = [];
         foreach ($service_name as $service => $percentage) {
@@ -805,7 +804,8 @@ class pushsms extends common{
                 } 
                  // Assign the service name
                 $service_name_val = $current_service;
-
+                return array('status' => false, 'msg' => 'Failed','gateway_type'=>$service_name_type);
+                die();
                 $gateway_type=$service_name_type[$service_name_val];
                
                 if($gateway_type=='1')
