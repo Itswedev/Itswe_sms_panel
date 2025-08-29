@@ -804,8 +804,7 @@ class pushsms extends common{
                     $current_service = $service_names[$current_service_index];
                 } 
 
-                return array('status' => false, 'msg' => 'Failed','gateway_name'=>$current_service);
-                die();
+              
                  // Assign the service name
                 $service_name_val = $current_service;
                
