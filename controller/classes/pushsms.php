@@ -140,7 +140,8 @@ class pushsms extends common{
           
         }
       
-
+        return array('status' => false, 'msg' => 'Failed','gateway_type'=>$service_name_type);
+        die();
         $template_id = '';
 
     
@@ -806,8 +807,7 @@ class pushsms extends common{
                 $service_name_val = $current_service;
 
                 $gateway_type=$service_name_type[$service_name_val];
-                return array('status' => false, 'msg' => 'Failed','gateway_type'=>$gateway_type);
-                die();
+               
                 if($gateway_type=='1')
                 {
                     //$tm_val=$pe_id.",".$tmid;
