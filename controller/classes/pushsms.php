@@ -653,8 +653,7 @@ class pushsms extends common{
                     //$tm_val=$pe_id.",".$tmid;
                     $tm_val=$pe_id.",".$tm.",".$tmd;
                     $tmid_hash=hash('sha256',$tm_val);
-                    return array('status' => false, 'msg' => 'Failed','tmd'=>$tmid_hash);
-                    die();
+                   
                     $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
                 }
                 else
@@ -812,6 +811,8 @@ class pushsms extends common{
                     //$tm_val=$pe_id.",".$tmid;
                     $tm_val=$pe_id.",".$tm.",".$tmd;
                     $tmid_hash=hash('sha256',$tm_val);
+                    return array('status' => false, 'msg' => 'Failed','tmd'=>$tmid_hash);
+                    die();
                     $meta_data="?smpp?PEID=$pe_id&TID=$template_id&TMID=$tmid_hash";
                 }
                 else
