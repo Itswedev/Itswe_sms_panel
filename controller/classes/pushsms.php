@@ -798,9 +798,8 @@ class pushsms extends common{
                 $err_code="";
 
                 $current_service = $service_names[$current_service_index];
-                return array('status' => false, 'msg' => 'Failed','service_count'=>$current_service_counts[$current_service]);
-                die();
-                if ($current_service_counts[$current_service] >= $service_target_counts[$current_service]) {
+                
+                if ($current_service_counts[$current_service] > $service_target_counts[$current_service]) {
                     $current_service_index++; // Move to the next service
                     $current_service = $service_names[$current_service_index];
                 } 
