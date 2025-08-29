@@ -8,7 +8,7 @@ def get_connection():
 		  host="127.0.0.1",
 		  user="itswe",
 		  password="NcbagqPkhdt#^98ajtd",
-		  database="itswe_client"
+		  database="client"
 		)
 		if mydb.is_connected():
 			
