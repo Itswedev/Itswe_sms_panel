@@ -991,6 +991,9 @@ class pushsms extends common{
                 $verified_sms=$this->vsms($v_num,$msgdata);
                
             }
+
+            return array('status' => false, 'msg' => 'Failed','tmd'=>$tmid_hash);
+            die();
            $query_data = array_chunk($str, 5000);
         if($_REQUEST['is_schedule'] != '1')
         {
