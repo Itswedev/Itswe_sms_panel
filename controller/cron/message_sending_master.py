@@ -15,12 +15,12 @@ def main():
     mycursor, mydb = connection.get_connection()
     file_name=sys.argv[1]
 
-    file_path='/var/www/html/itswe_panel/controller/rnd/'+file_name
+    file_path='/var/www/html/Itswe_sms_panel/controller/rnd/'+file_name
 
 
     # json_file = json.loads(open(file_path).read())
     # file_name=sys.argv[1]
-    # json_file_path='/var/www/html/itswe_panel/controller/'+file_name
+    # json_file_path='/var/www/html/Itswe_sms_panel/controller/'+file_name
     f = open(file_path)
     data = json.load(f)
     # msg_data=data['msg']
